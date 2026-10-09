@@ -2604,7 +2604,7 @@
                             <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                                 <span class="metric-label"><i class="fas fa-chart-line" style="color: var(--admin-teal);"></i> Website Visitors</span>
                                 <span class="traffic-pulse-badge" id="traffic-pulse-badge" title="Real-time active visitors browsing website right now">
-                                    <span class="pulse-dot"></span> <span id="kpi-live-active">18</span> Online
+                                    <span class="pulse-dot"></span> <span id="kpi-live-active">0</span> Online
                                 </span>
                             </div>
 
@@ -2612,15 +2612,15 @@
                             <div class="traffic-mini-grid">
                                 <div class="traffic-mini-col">
                                     <span class="traffic-period-tag">Day</span>
-                                    <strong class="traffic-period-val" id="kpi-visitors-day">1,420</strong>
+                                    <strong class="traffic-period-val" id="kpi-visitors-day">0</strong>
                                 </div>
                                 <div class="traffic-mini-col">
                                     <span class="traffic-period-tag">Week</span>
-                                    <strong class="traffic-period-val" id="kpi-visitors-week">9,850</strong>
+                                    <strong class="traffic-period-val" id="kpi-visitors-week">0</strong>
                                 </div>
                                 <div class="traffic-mini-col">
                                     <span class="traffic-period-tag">Month</span>
-                                    <strong class="traffic-period-val" id="kpi-visitors-month">38,400</strong>
+                                    <strong class="traffic-period-val" id="kpi-visitors-month">0</strong>
                                 </div>
                             </div>
 
@@ -3219,33 +3219,33 @@
                 <div class="traffic-modal-kpi-grid">
                     <div class="traffic-modal-kpi-item">
                         <span class="traffic-kpi-lbl"><i class="fas fa-calendar-day" style="color: var(--admin-teal);"></i> Today (Day)</span>
-                        <div class="traffic-kpi-val" id="rep-day-val">1,420</div>
-                        <span class="traffic-kpi-sub text-green"><i class="fas fa-arrow-up"></i> +14.2% vs yesterday</span>
+                        <div class="traffic-kpi-val" id="rep-day-val">0</div>
+                        <span class="traffic-kpi-sub text-green"><i class="fas fa-check-circle"></i> Real-time daily views</span>
                     </div>
                     <div class="traffic-modal-kpi-item">
                         <span class="traffic-kpi-lbl"><i class="fas fa-calendar-week" style="color: var(--admin-yellow);"></i> This Week (7 Days)</span>
-                        <div class="traffic-kpi-val" id="rep-week-val">9,850</div>
-                        <span class="traffic-kpi-sub text-green"><i class="fas fa-arrow-up"></i> +8.6% vs last week</span>
+                        <div class="traffic-kpi-val" id="rep-week-val">0</div>
+                        <span class="traffic-kpi-sub text-green"><i class="fas fa-check-circle"></i> Last 7 days total</span>
                     </div>
                     <div class="traffic-modal-kpi-item">
                         <span class="traffic-kpi-lbl"><i class="fas fa-calendar-alt" style="color: var(--admin-blue);"></i> This Month (30 Days)</span>
-                        <div class="traffic-kpi-val" id="rep-month-val">38,400</div>
-                        <span class="traffic-kpi-sub text-green"><i class="fas fa-arrow-up"></i> +21.5% MoM</span>
+                        <div class="traffic-kpi-val" id="rep-month-val">0</div>
+                        <span class="traffic-kpi-sub text-green"><i class="fas fa-check-circle"></i> Last 30 days total</span>
                     </div>
                     <div class="traffic-modal-kpi-item" style="border: 1px solid rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.06);">
                         <span class="traffic-kpi-lbl" style="color: #34d399;"><span class="pulse-dot" style="display:inline-block; vertical-align:middle; margin-right:4px;"></span> Active Online Now</span>
-                        <div class="traffic-kpi-val" id="rep-active-val" style="color: #34d399;">18</div>
-                        <span class="traffic-kpi-sub text-green"><i class="fas fa-satellite-dish"></i> Live cross-device pulse</span>
+                        <div class="traffic-kpi-val" id="rep-active-val" style="color: #34d399;">0</div>
+                        <span class="traffic-kpi-sub text-green"><i class="fas fa-satellite-dish"></i> Live active sessions</span>
                     </div>
                     <div class="traffic-modal-kpi-item">
-                        <span class="traffic-kpi-lbl"><i class="fas fa-stopwatch" style="color: #a78bfa;"></i> Avg. Session Duration</span>
-                        <div class="traffic-kpi-val">3m 48s</div>
-                        <span class="traffic-kpi-sub"><i class="fas fa-mobile-alt"></i> 74% Mobile traffic</span>
+                        <span class="traffic-kpi-lbl"><i class="fas fa-layer-group" style="color: #a78bfa;"></i> Customer Inquiries</span>
+                        <div class="traffic-kpi-val" id="rep-total-leads">0</div>
+                        <span class="traffic-kpi-sub"><i class="fas fa-ticket-alt"></i> Total real bookings</span>
                     </div>
                     <div class="traffic-modal-kpi-item">
-                        <span class="traffic-kpi-lbl"><i class="fas fa-percentage" style="color: #34d399;"></i> Bounce Rate</span>
-                        <div class="traffic-kpi-val">24.8%</div>
-                        <span class="traffic-kpi-sub text-green"><i class="fas fa-check"></i> High engagement</span>
+                        <span class="traffic-kpi-lbl"><i class="fas fa-percentage" style="color: #34d399;"></i> Lead Conversion Rate</span>
+                        <div class="traffic-kpi-val" id="rep-conversion-rate">0.0%</div>
+                        <span class="traffic-kpi-sub text-green"><i class="fas fa-check"></i> Bookings vs visitors</span>
                     </div>
                 </div>
 
@@ -3505,72 +3505,25 @@
             refreshData();
         }
 
-        // In-memory list of bookings
+        // In-memory list of bookings (strictly real customer entries only)
         let allBookings = [];
 
-        // Sample initial entries if empty (for instant demonstration)
-        const sampleBookings = [
-            {
-                booking_id: '#PK-492104',
-                timestamp: '09/10/2026, 11:20 AM',
-                name: 'Rahul Sharma',
-                phone: '+919876543210',
-                email: 'rahul.sharma@example.com',
-                package: 'Hampi, Gokarna & Dandeli',
-                travel_date: '2026-10-18',
-                travelers: '2',
-                pickup_city: 'Bangalore',
-                total_amount: '₹19,000',
-                notes: 'Booked via package.html with Dandeli rafting upgrade',
-                status: 'Confirmed',
-                source: 'package.html'
-            },
-            {
-                booking_id: '#SA-78213',
-                timestamp: '09/10/2026, 09:45 AM',
-                name: 'Priya Patel',
-                phone: '+919822334455',
-                email: 'priya.patel@gmail.com',
-                package: 'Goa Beach Trip',
-                travel_date: '2026-10-25',
-                travelers: '4',
-                pickup_city: 'Hyderabad',
-                total_amount: '₹34,000',
-                notes: 'Family trip, pure vegetarian food required',
-                status: 'Pending',
-                source: 'booking.html'
-            },
-            {
-                booking_id: '#CT-334190',
-                timestamp: '08/10/2026, 06:15 PM',
-                name: 'Vikram Reddy',
-                phone: '+919944556677',
-                email: 'vikram.reddy@outlook.com',
-                package: 'Custom: Coorg & Ooty',
-                travel_date: '2026-11-02 (4 Days)',
-                travelers: '5 (Friends)',
-                pickup_city: 'Hyderabad',
-                total_amount: '₹25,000 - ₹35,000',
-                notes: 'Stay: 4-Star Luxury | Ride: Innova Crysta | Special: Campfire with BBQ',
-                status: 'Pending',
-                source: 'customize.html'
-            },
-            {
-                booking_id: '#PK-108295',
-                timestamp: '08/10/2026, 02:40 PM',
-                name: 'Ananya Deshmukh',
-                phone: '+919811223344',
-                email: 'ananya.d@gmail.com',
-                package: 'Coorg Getaway',
-                travel_date: '2026-10-22',
-                travelers: '2',
-                pickup_city: 'Bangalore',
-                total_amount: '₹9,998',
-                notes: 'Booked via package.html - Homestay recommendation requested',
-                status: 'Confirmed',
-                source: 'package.html'
-            }
-        ];
+        // Helper to purge any legacy mock/sample test entries from localStorage
+        function purgeLegacyMockEntries() {
+            try {
+                const raw = localStorage.getItem('spirit_local_bookings');
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed)) return;
+                const sampleIds = ['#PK-492104', '#SA-78213', '#CT-334190', '#PK-108295'];
+                const sampleNames = ['Rahul Sharma', 'Priya Patel', 'Vikram Reddy', 'Ananya Deshmukh'];
+                const cleaned = parsed.filter(b => b && b.booking_id && !sampleIds.includes(b.booking_id) && !sampleNames.includes(b.name));
+                if (cleaned.length !== parsed.length) {
+                    localStorage.setItem('spirit_local_bookings', JSON.stringify(cleaned));
+                }
+            } catch (e) {}
+        }
+        purgeLegacyMockEntries();
 
         // Default package catalogue
         const defaultLivePackages = {
@@ -4226,15 +4179,21 @@
                 }
             }
 
-            // 2. If not fetched from remote, merge local storage bookings and sample records
+            // 2. If not fetched from remote, load strictly real customer bookings from local storage
             if (!fetchedFromRemote) {
-                const local = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
-                if (local.length > 0) {
-                    entries = local;
-                } else {
-                    entries = sampleBookings;
-                    localStorage.setItem('spirit_local_bookings', JSON.stringify(sampleBookings));
+                let local = [];
+                try {
+                    local = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
+                } catch (e) {
+                    local = [];
                 }
+                const sampleIds = ['#PK-492104', '#SA-78213', '#CT-334190', '#PK-108295'];
+                const sampleNames = ['Rahul Sharma', 'Priya Patel', 'Vikram Reddy', 'Ananya Deshmukh'];
+                const realOnly = local.filter(b => b && b.booking_id && !sampleIds.includes(b.booking_id) && !sampleNames.includes(b.name));
+                if (realOnly.length !== local.length) {
+                    localStorage.setItem('spirit_local_bookings', JSON.stringify(realOnly));
+                }
+                entries = realOnly;
             }
 
             allBookings = entries;
@@ -4632,57 +4591,102 @@
         }
 
         // =========================================================================
-        // WEBSITE VISITOR TRAFFIC ANALYTICS & EXCEL REPORT ENGINE (REAL-TIME CLOUD)
+        // 9. WEBSITE VISITOR TRAFFIC ANALYTICS & EXCEL REPORT ENGINE (REAL-TIME CLOUD)
         // =========================================================================
         let liveCloudVisitorData = { todayHits: null, totalHits: null, lastSynced: null };
-        let currentActiveVisitors = 18;
+        let currentActiveVisitors = 0;
 
         function getVisitorStats() {
             let localStats = {};
             try {
                 localStats = JSON.parse(localStorage.getItem('spirit_visitor_stats') || '{}');
-            } catch(e) {}
+            } catch(e) {
+                localStats = {};
+            }
 
             let cloudStats = {};
             try {
                 cloudStats = JSON.parse(localStorage.getItem('spirit_cloud_traffic') || '{}');
             } catch(e) {}
 
+            const dates = localStats.dates || {};
             const todayKey = new Date().toISOString().split('T')[0];
-            const todayLocal = (localStats.dates && localStats.dates[todayKey]) ? localStats.dates[todayKey] : { views: 0, uniques: 0 };
+            const todayLocal = dates[todayKey] || { views: 0, uniques: 0 };
 
-            // Baseline operational visitor volume
-            const baseDay = 1420;
-            const baseWeek = 9850;
-            const baseMonth = 38400;
-
-            // Compute dynamic cloud hit offset
             const cloudHitsToday = (liveCloudVisitorData.todayHits || cloudStats.today || 0);
-            const liveIncrement = Math.max(todayLocal.views || 0, cloudHitsToday);
+            const cloudTotalHits = (liveCloudVisitorData.totalHits || cloudStats.total || 0);
 
-            const dayViews = baseDay + liveIncrement;
-            const weekViews = baseWeek + liveIncrement;
-            const monthViews = baseMonth + liveIncrement;
+            // 1. Real Day Views (Today) - Strictly genuine hits
+            const dayViews = Math.max(todayLocal.views || 0, cloudHitsToday);
+            const dayUniques = Math.max(todayLocal.uniques || 0, cloudHitsToday > 0 ? 1 : 0);
 
-            // Device Form Factor Distribution (Real-Time Cross Device)
+            // 2. Real Week Views (Sum of last 7 calendar days)
+            const now = new Date();
+            let weekViews = 0;
+            let weekUniques = 0;
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(now);
+                d.setDate(d.getDate() - i);
+                const k = d.toISOString().split('T')[0];
+                if (dates[k]) {
+                    weekViews += (dates[k].views || 0);
+                    weekUniques += (dates[k].uniques || 0);
+                }
+            }
+            if (dayViews > (todayLocal.views || 0)) {
+                weekViews += (dayViews - (todayLocal.views || 0));
+            }
+
+            // 3. Real Month Views (Sum of last 30 calendar days)
+            let monthViews = 0;
+            let monthUniques = 0;
+            for (let i = 0; i < 30; i++) {
+                const d = new Date(now);
+                d.setDate(d.getDate() - i);
+                const k = d.toISOString().split('T')[0];
+                if (dates[k]) {
+                    monthViews += (dates[k].views || 0);
+                    monthUniques += (dates[k].uniques || 0);
+                }
+            }
+            if (dayViews > (todayLocal.views || 0)) {
+                monthViews += (dayViews - (todayLocal.views || 0));
+            }
+            if (cloudTotalHits > monthViews) {
+                monthViews = cloudTotalHits;
+            }
+
+            // 4. Real Active Online Visitors (Live Session Heartbeats)
+            let realActive = 0;
+            if (window.SpiritTracker && typeof window.SpiritTracker.getActiveOnlineNow === 'function') {
+                realActive = window.SpiritTracker.getActiveOnlineNow();
+            }
+            currentActiveVisitors = realActive;
+
+            // 5. Real Device Breakdown
             const dev = localStats.devices || {};
             const totalRecordedDev = (dev.mobile || 0) + (dev.desktop || 0) + (dev.tablet || 0) + (dev.tv || 0);
-            let mobileShare = 71;
-            let desktopShare = 21;
-            let tabletShare = 5;
-            let tvShare = 3;
-
-            if (totalRecordedDev >= 5) {
+            let mobileShare = 0, desktopShare = 0, tabletShare = 0, tvShare = 0;
+            if (totalRecordedDev > 0) {
                 mobileShare = Math.round(((dev.mobile || 0) / totalRecordedDev) * 100);
                 desktopShare = Math.round(((dev.desktop || 0) / totalRecordedDev) * 100);
                 tabletShare = Math.round(((dev.tablet || 0) / totalRecordedDev) * 100);
                 tvShare = Math.max(0, 100 - (mobileShare + desktopShare + tabletShare));
             }
 
-            // 14 days historical table data
+            // 6. Real Pages Breakdown
+            const pages = localStats.pages || {};
+            const totalPageHits = Object.values(pages).reduce((sum, v) => sum + v, 0);
+
+            // 7. Real Traffic Sources Breakdown
+            const sources = localStats.sources || {};
+            const totalSources = (sources.direct || 0) + (sources.google || 0) + (sources.social || 0) + (sources.whatsapp || 0) + (sources.referral || 0);
+
+            // 8. Real Daily Log (Last 14 Days)
             const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const dailyLog = [];
-            const now = new Date();
+            let totalInquiriesIn14Days = 0;
+            let totalUniquesIn14Days = 0;
 
             for (let i = 0; i < 14; i++) {
                 const d = new Date(now);
@@ -4690,14 +4694,27 @@
                 const dateStr = d.toISOString().split('T')[0];
                 const dayName = daysOfWeek[d.getDay()];
 
-                const isWeekend = (d.getDay() === 0 || d.getDay() === 6);
-                const factor = isWeekend ? 1.25 : (0.9 + (i % 3) * 0.1);
+                const logDay = dates[dateStr] || { views: 0, uniques: 0 };
+                let views = logDay.views || 0;
+                let uniques = logDay.uniques || 0;
+                if (i === 0 && dayViews > views) {
+                    views = dayViews;
+                    uniques = dayUniques;
+                }
 
-                let views = Math.round((i === 0 ? dayViews : (1200 + (14 - i) * 18)) * factor);
-                let uniques = Math.round(views * 0.72);
-                let dayMobShare = 70 + (i % 6);
-                let inquiries = Math.round(uniques * 0.045) + (isWeekend ? 3 : 1);
-                let convRate = ((inquiries / uniques) * 100).toFixed(1);
+                // Match real bookings for this date
+                const dParts = dateStr.split('-');
+                const altFmt = `${dParts[2]}/${dParts[1]}/${dParts[0]}`;
+                const dayBookings = allBookings.filter(b => {
+                    if (!b) return false;
+                    const t = b.timestamp || '';
+                    return t.includes(dateStr) || t.includes(altFmt) || (b.travel_date && b.travel_date.includes(dateStr));
+                });
+                const inquiries = dayBookings.length;
+                totalInquiriesIn14Days += inquiries;
+                totalUniquesIn14Days += uniques;
+
+                const convRate = uniques > 0 ? ((inquiries / uniques) * 100).toFixed(1) : '0.0';
 
                 dailyLog.push({
                     date: dateStr,
@@ -4706,12 +4723,14 @@
                     uniques: uniques.toLocaleString('en-IN'),
                     viewsRaw: views,
                     uniquesRaw: uniques,
-                    mobileShare: `${dayMobShare}%`,
-                    desktopShare: `${100 - dayMobShare}%`,
+                    mobileShare: `${mobileShare}%`,
+                    desktopShare: `${desktopShare}%`,
                     inquiries: inquiries,
                     convRate: `${convRate}%`
                 });
             }
+
+            const overallConversion = totalUniquesIn14Days > 0 ? ((totalInquiriesIn14Days / totalUniquesIn14Days) * 100).toFixed(1) : '0.0';
 
             return {
                 day: dayViews.toLocaleString('en-IN'),
@@ -4720,14 +4739,27 @@
                 dayRaw: dayViews,
                 weekRaw: weekViews,
                 monthRaw: monthViews,
-                activeOnline: currentActiveVisitors,
+                dayUniques: dayUniques,
+                weekUniques: weekUniques,
+                monthUniques: monthUniques,
+                activeOnline: realActive,
                 devices: {
                     mobile: mobileShare,
                     desktop: desktopShare,
                     tablet: tabletShare,
-                    tv: tvShare
+                    tv: tvShare,
+                    mobileCount: dev.mobile || 0,
+                    desktopCount: dev.desktop || 0,
+                    tabletCount: dev.tablet || 0,
+                    tvCount: dev.tv || 0
                 },
-                dailyLog: dailyLog
+                pages: pages,
+                totalPageHits: totalPageHits,
+                sources: sources,
+                totalSources: totalSources,
+                dailyLog: dailyLog,
+                totalInquiries: allBookings.length,
+                conversionRate: `${overallConversion}%`
             };
         }
 
@@ -4769,8 +4801,8 @@
             showRealtimeToast({
                 booking_id: 'CLOUD-SYNC',
                 name: 'Live Visitor Analytics',
-                package: 'Cloud Counter Resynced',
-                total_amount: 'Real-Time Updated',
+                package: 'Real-Time Hit Counter Resynced',
+                total_amount: 'Verified Count',
                 source: 'traffic-analytics'
             }, 'Traffic Synced');
 
@@ -4790,23 +4822,30 @@
             const weekEl = document.getElementById('rep-week-val');
             const monthEl = document.getElementById('rep-month-val');
             const activeEl = document.getElementById('rep-active-val');
+            const totalLeadsEl = document.getElementById('rep-total-leads');
+            const convEl = document.getElementById('rep-conversion-rate');
+
             if (dayEl) dayEl.textContent = stats.day;
             if (weekEl) weekEl.textContent = stats.week;
             if (monthEl) monthEl.textContent = stats.month;
             if (activeEl) activeEl.innerHTML = `<span class="pulse-dot" style="display:inline-block; vertical-align:middle; margin-right:4px;"></span> ${stats.activeOnline}`;
+            if (totalLeadsEl) totalLeadsEl.textContent = stats.totalInquiries;
+            if (convEl) convEl.textContent = stats.conversionRate;
 
-            // Populate Traffic Channels
+            // Populate Traffic Channels (Real detected referrers)
             const channelsContainer = document.getElementById('rep-channels-list');
             if (channelsContainer) {
+                const totalSrc = stats.totalSources || 0;
+                const src = stats.sources || {};
                 const channels = [
-                    { name: 'Google Organic Search', share: 42, icon: 'fab fa-google', color: '#4285F4' },
-                    { name: 'Direct URL / Bookmarks', share: 28, icon: 'fas fa-link', color: 'var(--admin-teal)' },
-                    { name: 'Social (Instagram & YouTube)', share: 18, icon: 'fab fa-instagram', color: '#E1306C' },
-                    { name: 'WhatsApp & Referrals', share: 12, icon: 'fab fa-whatsapp', color: '#25D366' }
+                    { key: 'google', name: 'Google Organic Search', count: src.google || 0, icon: 'fab fa-google', color: '#4285F4' },
+                    { key: 'direct', name: 'Direct URL / Bookmarks', count: src.direct || 0, icon: 'fas fa-link', color: 'var(--admin-teal)' },
+                    { key: 'social', name: 'Social (Instagram & YouTube)', count: src.social || 0, icon: 'fab fa-instagram', color: '#E1306C' },
+                    { key: 'whatsapp', name: 'WhatsApp & Referrals', count: (src.whatsapp || 0) + (src.referral || 0), icon: 'fab fa-whatsapp', color: '#25D366' }
                 ];
 
                 channelsContainer.innerHTML = channels.map(ch => {
-                    const visits = Math.round(stats.monthRaw * (ch.share / 100)).toLocaleString('en-IN');
+                    const share = totalSrc > 0 ? Math.round((ch.count / totalSrc) * 100) : 0;
                     return `
                         <div>
                             <div class="traffic-split-row">
@@ -4814,29 +4853,31 @@
                                     <i class="${ch.icon}" style="color: ${ch.color}; width: 16px;"></i> ${ch.name}
                                 </span>
                                 <span style="color: var(--admin-muted); font-size: 0.8rem;">
-                                    <strong>${visits}</strong> (${ch.share}%)
+                                    <strong>${ch.count}</strong> (${share}%)
                                 </span>
                             </div>
                             <div class="traffic-progress-bar">
-                                <div class="traffic-progress-fill" style="width: ${ch.share}%; background: ${ch.color};"></div>
+                                <div class="traffic-progress-fill" style="width: ${share}%; background: ${ch.color};"></div>
                             </div>
                         </div>
                     `;
                 }).join('');
             }
 
-            // Populate Top Visited Pages
+            // Populate Top Visited Pages (Real recorded page visits)
             const pagesContainer = document.getElementById('rep-pages-list');
             if (pagesContainer) {
+                const totalPages = stats.totalPageHits || 0;
+                const pMap = stats.pages || {};
                 const pages = [
-                    { path: 'index.html', title: 'Home Experience & Showcase', share: 45, icon: 'fas fa-home', color: 'var(--admin-teal)' },
-                    { path: 'package.html', title: 'Tour Package Catalog Hub', share: 30, icon: 'fas fa-box-open', color: 'var(--admin-yellow)' },
-                    { path: 'booking.html', title: 'Direct Booking Portal Wizard', share: 16, icon: 'fas fa-ticket-alt', color: '#60a5fa' },
-                    { path: 'customize.html', title: 'Tailor-Made Custom Trip Planner', share: 9, icon: 'fas fa-sliders-h', color: '#a78bfa' }
+                    { path: 'index.html', title: 'Home Experience & Showcase', count: pMap['index.html'] || 0, icon: 'fas fa-home', color: 'var(--admin-teal)' },
+                    { path: 'package.html', title: 'Tour Package Catalog Hub', count: pMap['package.html'] || 0, icon: 'fas fa-box-open', color: 'var(--admin-yellow)' },
+                    { path: 'booking.html', title: 'Direct Booking Portal Wizard', count: pMap['booking.html'] || 0, icon: 'fas fa-ticket-alt', color: '#60a5fa' },
+                    { path: 'customize.html', title: 'Tailor-Made Custom Trip Planner', count: pMap['customize.html'] || 0, icon: 'fas fa-sliders-h', color: '#a78bfa' }
                 ];
 
                 pagesContainer.innerHTML = pages.map(p => {
-                    const pViews = Math.round(stats.monthRaw * (p.share / 100)).toLocaleString('en-IN');
+                    const pShare = totalPages > 0 ? Math.round((p.count / totalPages) * 100) : 0;
                     return `
                         <div>
                             <div class="traffic-split-row">
@@ -4844,29 +4885,28 @@
                                     <i class="${p.icon}" style="color: ${p.color}; width: 16px;"></i> <code>${p.path}</code> <small style="color: var(--admin-muted); font-size: 0.75rem;">(${p.title})</small>
                                 </span>
                                 <span style="color: var(--admin-muted); font-size: 0.8rem;">
-                                    <strong>${pViews}</strong> (${p.share}%)
+                                    <strong>${p.count}</strong> (${pShare}%)
                                 </span>
                             </div>
                             <div class="traffic-progress-bar">
-                                <div class="traffic-progress-fill" style="width: ${p.share}%; background: ${p.color};"></div>
+                                <div class="traffic-progress-fill" style="width: ${pShare}%; background: ${p.color};"></div>
                             </div>
                         </div>
                     `;
                 }).join('');
             }
 
-            // Populate Device Form Factors Distribution
+            // Populate Device Form Factors Distribution (Real device detections)
             const devicesContainer = document.getElementById('rep-devices-list');
             if (devicesContainer) {
                 const deviceList = [
-                    { name: 'Mobile Phones (iOS & Android)', share: stats.devices.mobile, icon: 'fas fa-mobile-alt', color: '#38bdf8' },
-                    { name: 'Laptops & Desktop PCs', share: stats.devices.desktop, icon: 'fas fa-laptop', color: '#34d399' },
-                    { name: 'Tablets & iPads', share: stats.devices.tablet, icon: 'fas fa-tablet-alt', color: '#fbbf24' },
-                    { name: 'Smart TVs & 4K Displays', share: stats.devices.tv, icon: 'fas fa-tv', color: '#f43f5e' }
+                    { name: 'Mobile Phones (iOS & Android)', count: stats.devices.mobileCount, share: stats.devices.mobile, icon: 'fas fa-mobile-alt', color: '#38bdf8' },
+                    { name: 'Laptops & Desktop PCs', count: stats.devices.desktopCount, share: stats.devices.desktop, icon: 'fas fa-laptop', color: '#34d399' },
+                    { name: 'Tablets & iPads', count: stats.devices.tabletCount, share: stats.devices.tablet, icon: 'fas fa-tablet-alt', color: '#fbbf24' },
+                    { name: 'Smart TVs & 4K Displays', count: stats.devices.tvCount, share: stats.devices.tv, icon: 'fas fa-tv', color: '#f43f5e' }
                 ];
 
                 devicesContainer.innerHTML = deviceList.map(d => {
-                    const est = Math.round(stats.monthRaw * (d.share / 100)).toLocaleString('en-IN');
                     return `
                         <div>
                             <div class="traffic-split-row">
@@ -4874,7 +4914,7 @@
                                     <i class="${d.icon}" style="color: ${d.color}; width: 16px;"></i> ${d.name}
                                 </span>
                                 <span style="color: var(--admin-muted); font-size: 0.8rem;">
-                                    <strong>${est}</strong> (${d.share}%)
+                                    <strong>${d.count}</strong> (${d.share}%)
                                 </span>
                             </div>
                             <div class="traffic-progress-bar">
@@ -4922,41 +4962,41 @@
             csv += 'SPIRIT ADVENTURES - WEBSITE VISITOR TRAFFIC & ANALYTICS REPORT\n';
             csv += `Generated Date:,"${new Date().toLocaleString('en-IN')}"\n`;
             csv += 'Website URL:,"https://spiritadventures.in"\n';
-            csv += 'Report Scope:,"Website Visitors: Day, Week, and Month with Cross-Device Breakdown & Daily Logs"\n';
+            csv += 'Report Scope:,"Website Visitors: Day, Week, and Month with Verified Cross-Device Breakdown & Real Daily Logs"\n';
             csv += '\n';
 
             csv += 'EXECUTIVE TRAFFIC SUMMARY\n';
-            csv += 'Metric,Visitors / Volume,Growth / Trend\n';
-            csv += `Today\'s Visits (Day),${stats.dayRaw},+14.2% vs yesterday\n`;
-            csv += `This Week\'s Visits (7 Days),${stats.weekRaw},+8.6% vs last week\n`;
-            csv += `This Month\'s Visits (30 Days),${stats.monthRaw},+21.5% MoM\n`;
-            csv += `Active Online Visitors Now,${stats.activeOnline},Live Pulse\n`;
-            csv += 'Average Session Duration,3m 48s,High Engagement\n';
-            csv += 'Bounce Rate,24.8%,Healthy\n';
+            csv += 'Metric,Visitors / Volume,Description\n';
+            csv += `Today's Visits (Day),${stats.dayRaw},Real-time recorded views today\n`;
+            csv += `This Week's Visits (7 Days),${stats.weekRaw},Cumulative sum of past 7 days\n`;
+            csv += `This Month's Visits (30 Days),${stats.monthRaw},Cumulative sum of past 30 days\n`;
+            csv += `Active Online Visitors Now,${stats.activeOnline},Active browsing sessions right now\n`;
+            csv += `Total Customer Bookings,${stats.totalInquiries},Real customer inquiries received\n`;
+            csv += `Overall Lead Conversion Rate,${stats.conversionRate},Inquiries vs unique visitors\n`;
             csv += '\n';
 
             csv += 'DEVICE FORM FACTOR DISTRIBUTION (CROSS-DEVICE)\n';
-            csv += 'Device Category,Share (%),Estimated Monthly Volume\n';
-            csv += `Mobile Phones,${stats.devices.mobile}%,${Math.round(stats.monthRaw * (stats.devices.mobile / 100))}\n`;
-            csv += `Laptops & Desktops,${stats.devices.desktop}%,${Math.round(stats.monthRaw * (stats.devices.desktop / 100))}\n`;
-            csv += `Tablets & iPads,${stats.devices.tablet}%,${Math.round(stats.monthRaw * (stats.devices.tablet / 100))}\n`;
-            csv += `Smart TVs & 4K Displays,${stats.devices.tv}%,${Math.round(stats.monthRaw * (stats.devices.tv / 100))}\n`;
+            csv += 'Device Category,Share (%),Actual Visit Count\n';
+            csv += `Mobile Phones,${stats.devices.mobile}%,${stats.devices.mobileCount}\n`;
+            csv += `Laptops & Desktops,${stats.devices.desktop}%,${stats.devices.desktopCount}\n`;
+            csv += `Tablets & iPads,${stats.devices.tablet}%,${stats.devices.tabletCount}\n`;
+            csv += `Smart TVs & 4K Displays,${stats.devices.tv}%,${stats.devices.tvCount}\n`;
             csv += '\n';
 
             csv += 'TRAFFIC SOURCES & CHANNELS\n';
-            csv += 'Channel Source,Share (%),Estimated Monthly Visitors,Intent Level\n';
-            csv += 'Google Organic Search,42%,16128,High Intent\n';
-            csv += 'Direct URL & Bookmarks,28%,10752,Brand Loyalty\n';
-            csv += 'Instagram & YouTube,18%,6912,Social Discovery\n';
-            csv += 'WhatsApp & Referrals,12%,4608,Peer Recommendation\n';
+            csv += 'Channel Source,Actual Visits Recorded\n';
+            csv += `Direct URL & Bookmarks,${stats.sources.direct || 0}\n`;
+            csv += `Google Organic Search,${stats.sources.google || 0}\n`;
+            csv += `Social (Instagram & YouTube),${stats.sources.social || 0}\n`;
+            csv += `WhatsApp & Referrals,${(stats.sources.whatsapp || 0) + (stats.sources.referral || 0)}\n`;
             csv += '\n';
 
             csv += 'TOP VISITED PAGES\n';
-            csv += 'Page File,Page Name,Estimated Monthly Views,Traffic Share (%)\n';
-            csv += 'index.html,Home Portal & Interactive Intro,24500,45%\n';
-            csv += 'package.html,Tour Packages & Itineraries,16200,30%\n';
-            csv += 'booking.html,Direct Booking Portal Wizard,8500,16%\n';
-            csv += 'customize.html,Tailor-Made Custom Trip Planner,4900,9%\n';
+            csv += 'Page File,Page Name,Real Views Recorded\n';
+            csv += `index.html,Home Experience & Showcase,${stats.pages['index.html'] || 0}\n`;
+            csv += `package.html,Tour Package Catalog Hub,${stats.pages['package.html'] || 0}\n`;
+            csv += `booking.html,Direct Booking Portal Wizard,${stats.pages['booking.html'] || 0}\n`;
+            csv += `customize.html,Tailor-Made Custom Trip Planner,${stats.pages['customize.html'] || 0}\n`;
             csv += '\n';
 
             csv += 'DAILY VISITOR BREAKDOWN LOG (LAST 14 DAYS)\n';
@@ -4978,7 +5018,7 @@
             showRealtimeToast({
                 booking_id: 'EXCEL-EXPORT',
                 name: 'Excel Traffic Report',
-                package: 'Day, Week & Month Visitors Exported',
+                package: 'Real Day, Week & Month Visitors Exported',
                 total_amount: `${stats.month} Total Visits`,
                 source: 'traffic-analytics'
             }, 'Traffic Report');

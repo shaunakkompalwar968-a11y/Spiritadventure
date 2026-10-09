@@ -1,5 +1,6 @@
 /**
  * Spirit Adventures - Real-Time Universal Visitor & Traffic Analytics Tracker
+ * Real visitor tracking, real-time multi-tab session heartbeats, and cloud sync.
  */
 
 (function (window) {
@@ -7,6 +8,7 @@
 
     const STORAGE_KEY = 'spirit_visitor_stats';
     const SESSION_KEY = 'spirit_session_active';
+    const HEARTBEAT_KEY = 'spirit_active_heartbeats';
     const CLOUD_NAMESPACE = 'spiritadventures_live';
     const SYNC_CHANNEL_NAME = 'spirit_traffic_sync';
 
@@ -18,6 +20,18 @@
         }
     } catch (e) {
         syncChannel = null;
+    }
+
+    // Unique Tab Session ID for real concurrent visitor heartbeat
+    let tabSessionId = '';
+    try {
+        tabSessionId = sessionStorage.getItem('spirit_tab_session_id');
+        if (!tabSessionId) {
+            tabSessionId = 'tab_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+            sessionStorage.setItem('spirit_tab_session_id', tabSessionId);
+        }
+    } catch (e) {
+        tabSessionId = 'tab_' + Date.now();
     }
 
     // Helper: Detect Device Category
@@ -58,6 +72,16 @@
         return 'index.html';
     }
 
+    // Helper: Detect Referrer / Traffic Source
+    function detectReferrerSource() {
+        const ref = (document.referrer || '').toLowerCase();
+        if (!ref) return 'direct';
+        if (ref.includes('google')) return 'google';
+        if (ref.includes('instagram') || ref.includes('facebook') || ref.includes('youtube') || ref.includes('tiktok') || ref.includes('twitter') || ref.includes('t.co')) return 'social';
+        if (ref.includes('whatsapp') || ref.includes('wa.me')) return 'whatsapp';
+        return 'referral';
+    }
+
     // Helper: Format date as YYYY-MM-DD
     function getTodayKey() {
         return new Date().toISOString().split('T')[0];
@@ -66,7 +90,6 @@
     // Helper: Extract visitor count from visitorbadge.io SVG string
     function parseCountFromSvg(svgText) {
         if (!svgText) return null;
-        // Regex matches: aria-label="VISITORS: 123" or <text ...>123</text>
         const ariaMatch = svgText.match(/aria-label=["']VISITORS:\s*(\d+)["']/i);
         if (ariaMatch && ariaMatch[1]) {
             return parseInt(ariaMatch[1], 10);
@@ -80,12 +103,52 @@
         return null;
     }
 
+    // Real-Time Heartbeat Management for Concurrent Active Visitors
+    function sendHeartbeat(page) {
+        try {
+            let beats = JSON.parse(localStorage.getItem(HEARTBEAT_KEY) || '{}');
+            const now = Date.now();
+            // Purge dead sessions older than 30 seconds
+            for (const id in beats) {
+                if (!beats[id] || (now - (beats[id].lastSeen || 0) > 30000)) {
+                    delete beats[id];
+                }
+            }
+            beats[tabSessionId] = {
+                id: tabSessionId,
+                page: page || detectCurrentPage(),
+                device: detectDeviceType(),
+                lastSeen: now
+            };
+            localStorage.setItem(HEARTBEAT_KEY, JSON.stringify(beats));
+        } catch (e) {}
+    }
+
+    function removeHeartbeat() {
+        try {
+            let beats = JSON.parse(localStorage.getItem(HEARTBEAT_KEY) || '{}');
+            if (beats[tabSessionId]) {
+                delete beats[tabSessionId];
+                localStorage.setItem(HEARTBEAT_KEY, JSON.stringify(beats));
+            }
+            if (syncChannel) {
+                syncChannel.postMessage({ type: 'SESSION_CLOSED', id: tabSessionId });
+            }
+        } catch (e) {}
+    }
+
+    // Start heartbeat
+    sendHeartbeat();
+    setInterval(() => sendHeartbeat(), 10000);
+    window.addEventListener('beforeunload', removeHeartbeat);
+
     // Public Tracker Object
     const SpiritTracker = {
         // Record visit for current page
         recordVisit: async function (pageOverride) {
             const page = pageOverride || detectCurrentPage();
             const device = detectDeviceType();
+            const source = detectReferrerSource();
             const today = getTodayKey();
             const timestamp = Date.now();
             const isNewSession = !sessionStorage.getItem(SESSION_KEY);
@@ -94,7 +157,7 @@
                 sessionStorage.setItem(SESSION_KEY, 'active_' + timestamp);
             }
 
-            // 1. Update Local Cache
+            // 1. Update Local Real Visitor Cache
             let stats = {};
             try {
                 stats = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -106,31 +169,40 @@
             if (!stats.dates[today]) stats.dates[today] = { views: 0, uniques: 0 };
             if (!stats.devices) stats.devices = { mobile: 0, desktop: 0, tablet: 0, tv: 0 };
             if (!stats.pages) stats.pages = {};
+            if (!stats.sources) stats.sources = { direct: 0, google: 0, social: 0, whatsapp: 0, referral: 0 };
 
             stats.dates[today].views = (stats.dates[today].views || 0) + 1;
             if (isNewSession) {
                 stats.dates[today].uniques = (stats.dates[today].uniques || 0) + 1;
             }
 
-            // Update device breakdown
+            // Real device breakdown
             if (device === 'Smart TV') stats.devices.tv = (stats.devices.tv || 0) + 1;
             else if (device === 'Tablet') stats.devices.tablet = (stats.devices.tablet || 0) + 1;
             else if (device === 'Mobile') stats.devices.mobile = (stats.devices.mobile || 0) + 1;
             else stats.devices.desktop = (stats.devices.desktop || 0) + 1;
 
-            // Update page breakdown
+            // Real page breakdown
             stats.pages[page] = (stats.pages[page] || 0) + 1;
+
+            // Real traffic source breakdown
+            stats.sources[source] = (stats.sources[source] || 0) + 1;
+
             stats.lastUpdated = timestamp;
 
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
             } catch (e) {}
 
-            // 2. Broadcast visit event across tabs & windows (instant admin sync)
+            // Send real heartbeat
+            sendHeartbeat(page);
+
+            // 2. Broadcast real visit event across tabs & windows (instant admin sync)
             const eventPayload = {
                 type: 'VISIT_HIT',
                 page: page,
                 device: device,
+                source: source,
                 today: today,
                 timestamp: timestamp,
                 isNewSession: isNewSession
@@ -143,17 +215,14 @@
             }
 
             // 3. Ping Global Cloud Counter (works when website is deployed to internet)
-            // Uses visitorbadge.io with Access-Control-Allow-Origin: *
             let cloudTodayHits = null;
             let cloudTotalHits = null;
 
             try {
-                // Today's global counter (YYYYMMDD)
                 const todayClean = today.replace(/-/g, '');
                 const todayUrl = `https://api.visitorbadge.io/api/visitors?path=${CLOUD_NAMESPACE}_${todayClean}`;
                 const totalUrl = `https://api.visitorbadge.io/api/visitors?path=${CLOUD_NAMESPACE}_total`;
 
-                // Fetch in background without blocking UI
                 const [resToday, resTotal] = await Promise.allSettled([
                     fetch(todayUrl, { mode: 'cors', cache: 'no-store' }),
                     fetch(totalUrl, { mode: 'cors', cache: 'no-store' })
@@ -169,7 +238,6 @@
                     cloudTotalHits = parseCountFromSvg(svgText);
                 }
 
-                // If cloud returned valid numbers, update cached cloud totals
                 if (cloudTodayHits || cloudTotalHits) {
                     let cloudCache = {};
                     try {
@@ -189,6 +257,7 @@
             return {
                 page,
                 device,
+                source,
                 cloudTodayHits,
                 cloudTotalHits
             };
@@ -227,17 +296,21 @@
             };
         },
 
-        // Get currently active online visitors (simulated concurrent pulse + live activity)
+        // Get currently active online visitors (REAL heartbeats of active sessions)
         getActiveOnlineNow: function () {
-            const now = new Date();
-            const hour = now.getHours();
-            // Higher active visitors in afternoon/evening (11 AM - 10 PM)
-            let baseActive = (hour >= 10 && hour <= 22) ? 22 : 14;
-            // Add natural real-time jitter between -3 and +5
-            const jitter = Math.floor(Math.random() * 8) - 3;
-            let active = baseActive + jitter;
-            if (active < 7) active = 7;
-            return active;
+            try {
+                const beats = JSON.parse(localStorage.getItem(HEARTBEAT_KEY) || '{}');
+                const now = Date.now();
+                let count = 0;
+                for (const id in beats) {
+                    if (beats[id] && (now - (beats[id].lastSeen || 0) <= 30000)) {
+                        count++;
+                    }
+                }
+                return count;
+            } catch (e) {
+                return 0;
+            }
         },
 
         // Get device category
@@ -247,7 +320,7 @@
         onLiveTraffic: function (callback) {
             if (syncChannel && typeof callback === 'function') {
                 syncChannel.onmessage = (event) => {
-                    if (event.data && event.data.type === 'VISIT_HIT') {
+                    if (event.data && (event.data.type === 'VISIT_HIT' || event.data.type === 'SESSION_CLOSED')) {
                         callback(event.data);
                     }
                 };
@@ -255,7 +328,7 @@
         }
     };
 
-    // Auto-record visit on customer pages (skip recording on admin page itself)
+    // Auto-record visit on customer pages (skip recording page view count on admin page itself, but maintain heartbeat)
     const curPage = detectCurrentPage();
     if (curPage !== 'admin.html') {
         if (document.readyState === 'loading') {
@@ -271,4 +344,3 @@
     window.SpiritTracker = SpiritTracker;
 
 })(typeof window !== 'undefined' ? window : this);
-
