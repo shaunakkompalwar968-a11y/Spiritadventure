@@ -1027,6 +1027,7 @@
         .stat-pkg::before { background: var(--admin-yellow); }
         .stat-booking::before { background: var(--admin-teal); }
         .stat-custom::before { background: var(--admin-purple); }
+        .stat-enquiry::before { background: #f97316; }
 
         .source-stat-icon {
             width: 46px;
@@ -1042,6 +1043,7 @@
         .stat-pkg .source-stat-icon { background: rgba(245, 158, 11, 0.15); color: var(--admin-yellow); }
         .stat-booking .source-stat-icon { background: rgba(20, 184, 166, 0.15); color: var(--admin-teal); }
         .stat-custom .source-stat-icon { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+        .stat-enquiry .source-stat-icon { background: rgba(249, 115, 22, 0.15); color: #f97316; }
 
         .source-stat-info {
             flex: 1;
@@ -1142,6 +1144,7 @@
         .badge-teal { background: rgba(20, 184, 166, 0.2); color: var(--admin-teal); }
         .badge-purple { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
         .badge-blue { background: rgba(59, 130, 246, 0.2); color: var(--admin-blue); }
+        .badge-amber { background: rgba(249, 115, 22, 0.2); color: #fb923c; }
 
         .code-pill {
             font-family: monospace;
@@ -1325,6 +1328,7 @@
         .sec-package-card { border-left: 4px solid var(--admin-yellow); }
         .sec-booking-card { border-left: 4px solid var(--admin-teal); }
         .sec-custom-card { border-left: 4px solid var(--admin-purple); }
+        .sec-enquiry-card { border-left: 4px solid #f97316; }
 
         .section-card-header {
             display: flex;
@@ -1357,6 +1361,7 @@
         .icon-pkg { background: rgba(245, 158, 11, 0.15); color: var(--admin-yellow); }
         .icon-booking { background: rgba(20, 184, 166, 0.15); color: var(--admin-teal); }
         .icon-custom { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+        .icon-enquiry { background: rgba(249, 115, 22, 0.15); color: #f97316; }
         .icon-master { background: rgba(59, 130, 246, 0.15); color: var(--admin-blue); }
 
         .sec-title-row {
@@ -1550,6 +1555,7 @@
         .badge-booking { background: rgba(20, 184, 166, 0.15); color: #2dd4bf; border: 1px solid rgba(20, 184, 166, 0.35); }
         .badge-custom { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.35); }
         .badge-admin { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.35); }
+        .badge-enquiry { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.35); }
 
         /* Status Badge Select */
         .status-badge {
@@ -2399,6 +2405,14 @@
                     <span class="nav-pill pill-purple" id="side-badge-customize">0</span>
                 </a>
 
+                <a href="javascript:void(0)" class="nav-link" id="nav-item-enquiry" onclick="switchSectionTab('enquiry'); closeSidebarOnMobile();">
+                    <div class="nav-link-main">
+                        <i class="fas fa-paper-plane nav-icon" style="color: #f97316;"></i>
+                        <span>Home Enquiries</span>
+                    </div>
+                    <span class="nav-pill pill-amber" id="side-badge-enquiry">0</span>
+                </a>
+
                 <a href="javascript:void(0)" class="nav-link" id="nav-item-master" onclick="switchSectionTab('master'); closeSidebarOnMobile();">
                     <div class="nav-link-main">
                         <i class="fas fa-database nav-icon" style="color: var(--admin-blue);"></i>
@@ -2530,6 +2544,9 @@
                             </button>
                             <button type="button" onclick="testRealtimeConnection('booking.html'); toggleTestMenu(false);">
                                 <i class="fas fa-ticket-alt" style="color: var(--admin-teal);"></i> Test booking.html Influx
+                            </button>
+                            <button type="button" onclick="testRealtimeConnection('index.html'); toggleTestMenu(false);">
+                                <i class="fas fa-paper-plane" style="color: #f97316;"></i> Test index.html Influx
                             </button>
                         </div>
                     </div>
@@ -2666,6 +2683,15 @@
                             <div class="source-stat-val"><span id="stat-custom-count">0</span> Inquiries <small>Quotes</small></div>
                         </div>
                         <span class="source-stat-tag">customize.html</span>
+                    </div>
+
+                    <div class="source-stat-item stat-enquiry" onclick="switchSectionTab('enquiry')" title="Click to view Home Enquiries section">
+                        <div class="source-stat-icon"><i class="fas fa-paper-plane"></i></div>
+                        <div class="source-stat-info">
+                            <span class="source-stat-label">Home Enquiries (index.html)</span>
+                            <div class="source-stat-val"><span id="stat-enquiry-count">0</span> Enquiries <small>Explore Now</small></div>
+                        </div>
+                        <span class="source-stat-tag">index.html</span>
                     </div>
                 </div>
 
@@ -2853,6 +2879,10 @@
                             <i class="fas fa-sliders-h" style="color: #a78bfa;"></i> Custom Trips (<span class="code-pill">customize.html</span>)
                             <span class="tab-badge badge-purple" id="tab-badge-customize">0</span>
                         </button>
+                        <button class="section-tab-btn" data-tab="enquiry" onclick="switchSectionTab('enquiry')">
+                            <i class="fas fa-paper-plane" style="color: #f97316;"></i> Home Enquiries (<span class="code-pill">index.html</span>)
+                            <span class="tab-badge badge-amber" id="tab-badge-enquiry">0</span>
+                        </button>
                         <button class="section-tab-btn" data-tab="master" onclick="switchSectionTab('master')">
                             <i class="fas fa-table" style="color: var(--admin-blue);"></i> Unified Master Table
                             <span class="tab-badge badge-blue" id="tab-badge-master">0</span>
@@ -3034,7 +3064,65 @@
                     </div>
                 </div>
 
-                <!-- SECTION 4: UNIFIED MASTER TABLE -->
+                <!-- SECTION 4: HOME TRIP ENQUIRIES (index.html) -->
+                <div class="section-card sec-enquiry-card" id="section-enquiry">
+                    <div class="section-card-header">
+                        <div class="section-title-wrap">
+                            <div class="sec-icon icon-enquiry"><i class="fas fa-paper-plane"></i></div>
+                            <div>
+                                <div class="sec-title-row">
+                                    <h3>Home Page Trip Enquiries</h3>
+                                    <span class="source-badge badge-enquiry"><i class="fas fa-code"></i> index.html</span>
+                                    <span class="sec-count-badge" id="enquiry-count-badge">0 Enquiries</span>
+                                </div>
+                                <p class="sec-subtitle">Trip inquiries, custom quote requests, and group plans submitted via the "Explore Now" enquiry form on index.html</p>
+                            </div>
+                        </div>
+                        <div class="sec-actions">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="enquiry-search-input" placeholder="Search home enquiries..." oninput="filterEnquiryBookings()">
+                            </div>
+                            <select id="enquiry-status-filter" class="filter-select" onchange="filterEnquiryBookings()">
+                                <option value="ALL">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                            <button onclick="exportSectionToCSV('enquiry')" class="admin-btn" title="Export Home Enquiries CSV">
+                                <i class="fas fa-file-export"></i> CSV
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>Ref ID</th>
+                                    <th>Source</th>
+                                    <th>Timestamp</th>
+                                    <th>Client Details</th>
+                                    <th>Tour / Inquiry For</th>
+                                    <th>Travel Date</th>
+                                    <th>Pax</th>
+                                    <th>Pickup City</th>
+                                    <th>Quote / Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="enquiry-bookings-tbody"></tbody>
+                        </table>
+                    </div>
+                    <div id="enquiry-empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-paper-plane" style="color: #f97316;"></i>
+                        <h3>No Home Page Enquiries Yet</h3>
+                        <p>Inquiries submitted via the Explore Now form on <code>index.html</code> will arrive here in real time.</p>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: UNIFIED MASTER TABLE -->
                 <div class="section-card" id="section-master" style="display: none;">
                     <div class="section-card-header">
                         <div class="section-title-wrap">
@@ -3044,7 +3132,7 @@
                                     <h3>Unified Master Bookings Table</h3>
                                     <span class="sec-count-badge" id="visible-count">0 Records</span>
                                 </div>
-                                <p class="sec-subtitle">Consolidated view of all bookings from package.html, booking.html, customize.html, and admin desk</p>
+                                <p class="sec-subtitle">Consolidated view of all bookings from index.html, package.html, booking.html, customize.html, and admin desk</p>
                             </div>
                         </div>
 
@@ -3056,6 +3144,7 @@
 
                             <select id="source-filter" class="filter-select" onchange="filterMasterBookings()">
                                 <option value="ALL">All Sources</option>
+                                <option value="index.html">index.html (Home Enquiry)</option>
                                 <option value="package.html">package.html (Package Tours)</option>
                                 <option value="booking.html">booking.html (Direct)</option>
                                 <option value="customize.html">customize.html (Custom)</option>
@@ -3717,7 +3806,11 @@
             let titleText = 'Real-Time Booking Received!';
             let sourceColor = 'var(--admin-teal)';
 
-            if (source === 'package.html') {
+            if (source === 'index.html') {
+                iconClass = 'fa-paper-plane';
+                titleText = 'New Home Page Enquiry!';
+                sourceColor = '#f97316';
+            } else if (source === 'package.html') {
                 iconClass = 'fa-box-open';
                 titleText = 'New Package Tour Booking!';
                 sourceColor = 'var(--admin-yellow)';
@@ -3775,7 +3868,9 @@
 
             const source = getBookingSource(b);
             if (currentSectionTab !== 'split' && currentSectionTab !== 'master') {
-                if (source === 'package.html' && currentSectionTab !== 'package') {
+                if (source === 'index.html' && currentSectionTab !== 'enquiry') {
+                    switchSectionTab('enquiry');
+                } else if (source === 'package.html' && currentSectionTab !== 'package') {
                     switchSectionTab('package');
                 } else if (source === 'booking.html' && currentSectionTab !== 'booking') {
                     switchSectionTab('booking');
@@ -3792,6 +3887,7 @@
 
         function testRealtimeConnection(targetSource = 'package.html') {
             const isPkg = targetSource === 'package.html';
+            const isEnquiry = targetSource === 'index.html';
             const pkgs = [
                 { name: 'Hampi, Gokarna & Dandeli', rate: '₹19,000', dur: '4 Days, 3 Nights' },
                 { name: 'Coorg Getaway', rate: '₹9,998', dur: '2 Days, 1 Night' },
@@ -3799,20 +3895,45 @@
                 { name: 'Kodaikanal, Ooty & Mysore', rate: '₹28,000', dur: '6 Days, 5 Nights' }
             ];
             const p = pkgs[Math.floor(Math.random() * pkgs.length)];
-            const testId = (isPkg ? '#PK-' : '#SA-') + Math.floor(100000 + Math.random() * 900000);
+            let testPrefix = '#SA-';
+            if (isPkg) testPrefix = '#PK-';
+            else if (isEnquiry) testPrefix = '#ENQ-';
+
+            const testId = testPrefix + Math.floor(100000 + Math.random() * 900000);
+
+            let testName = 'Ananya Sharma (Direct Booking)';
+            let testEmail = 'ananya.test@example.com';
+            let testNotes = 'Live real-time booking test simulated from booking.html wizard';
+            let testAmount = p.rate;
+            let testPkgName = p.name;
+            let testCity = 'Hyderabad';
+
+            if (isPkg) {
+                testName = 'Aarav Mehta (Package Tour)';
+                testEmail = 'aarav.pkg@example.com';
+                testNotes = 'Simulated reservation from package.html detail page';
+                testCity = 'Bangalore';
+            } else if (isEnquiry) {
+                testName = 'Rohan Deshmukh (Home Explore Enquiry)';
+                testEmail = 'rohan.enquiry@example.com';
+                testNotes = 'Style: Adventure & Sightseeing | Notes: Interested in weekend group departure with river rafting';
+                testAmount = 'Enquiry (Quote Req.)';
+                testPkgName = 'Enquiry: ' + p.name;
+                testCity = 'Pune';
+            }
 
             const testSample = {
                 booking_id: testId,
                 timestamp: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
-                name: isPkg ? 'Aarav Mehta (Package Tour)' : 'Ananya Sharma (Direct Booking)',
+                name: testName,
                 phone: '+919876543210',
-                email: isPkg ? 'aarav.pkg@example.com' : 'ananya.test@example.com',
-                package: p.name,
+                email: testEmail,
+                package: testPkgName,
                 travel_date: new Date(Date.now() + 86400000 * 7).toISOString().split('T')[0],
-                travelers: '2',
-                pickup_city: isPkg ? 'Bangalore' : 'Hyderabad',
-                total_amount: p.rate,
-                notes: isPkg ? 'Simulated reservation from package.html detail page' : 'Live real-time booking test simulated from booking.html wizard',
+                travelers: '2 Persons',
+                pickup_city: testCity,
+                total_amount: testAmount,
+                notes: testNotes,
                 status: 'Pending',
                 source: targetSource,
                 _isNewRealtime: true
@@ -4214,18 +4335,20 @@
         // =========================================================================
         // 8. SOURCE DETECTION & SECTION ROUTING
         // =========================================================================
-        let currentSectionTab = 'split'; // 'split', 'package', 'booking', 'customize', 'master'
+        let currentSectionTab = 'split'; // 'split', 'package', 'booking', 'customize', 'enquiry', 'master'
 
         function getBookingSource(b) {
             if (!b) return 'booking.html';
             if (b.source) {
                 const s = String(b.source).toLowerCase();
+                if (s.includes('index') || s.includes('enquiry') || s.includes('inquiry')) return 'index.html';
                 if (s.includes('package')) return 'package.html';
                 if (s.includes('custom')) return 'customize.html';
                 if (s.includes('admin')) return 'admin.html';
                 if (s.includes('booking')) return 'booking.html';
             }
             const id = b.booking_id || '';
+            if (id.startsWith('#ENQ-') || id.startsWith('#INQ-')) return 'index.html';
             if (id.startsWith('#PK-')) return 'package.html';
             if (id.startsWith('#CT-') || (b.package && b.package.startsWith('Custom:'))) return 'customize.html';
             if (b.notes && b.notes.includes('Admin creation')) return 'admin.html';
@@ -4246,6 +4369,7 @@
                 'package': 'nav-item-package',
                 'booking': 'nav-item-booking',
                 'customize': 'nav-item-customize',
+                'enquiry': 'nav-item-enquiry',
                 'master': 'nav-item-master'
             };
 
@@ -4262,6 +4386,7 @@
                     'package': '<i class="fas fa-box-open" style="color: var(--admin-yellow);"></i> Package Tours',
                     'booking': '<i class="fas fa-ticket-alt" style="color: var(--admin-teal);"></i> Direct Bookings',
                     'customize': '<i class="fas fa-sliders-h" style="color: #a78bfa;"></i> Custom Trips',
+                    'enquiry': '<i class="fas fa-paper-plane" style="color: #f97316;"></i> Home Enquiries',
                     'master': '<i class="fas fa-database" style="color: var(--admin-blue);"></i> Unified Master'
                 };
                 breadcrumbEl.innerHTML = labels[tab] || labels['split'];
@@ -4270,42 +4395,52 @@
             const secPkg = document.getElementById('section-package');
             const secBooking = document.getElementById('section-booking');
             const secCustom = document.getElementById('section-customize');
+            const secEnquiry = document.getElementById('section-enquiry');
             const secMaster = document.getElementById('section-master');
 
             if (tab === 'split') {
-                secPkg.style.display = 'block';
-                secBooking.style.display = 'block';
-                secCustom.style.display = 'block';
-                secMaster.style.display = 'none';
+                if (secPkg) secPkg.style.display = 'block';
+                if (secBooking) secBooking.style.display = 'block';
+                if (secCustom) secCustom.style.display = 'block';
+                if (secEnquiry) secEnquiry.style.display = 'block';
+                if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'package') {
-                secPkg.style.display = 'block';
-                secBooking.style.display = 'none';
-                secCustom.style.display = 'none';
-                secMaster.style.display = 'none';
-                secPkg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (secPkg) { secPkg.style.display = 'block'; secPkg.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                if (secBooking) secBooking.style.display = 'none';
+                if (secCustom) secCustom.style.display = 'none';
+                if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'booking') {
-                secPkg.style.display = 'none';
-                secBooking.style.display = 'block';
-                secCustom.style.display = 'none';
-                secMaster.style.display = 'none';
-                secBooking.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (secPkg) secPkg.style.display = 'none';
+                if (secBooking) { secBooking.style.display = 'block'; secBooking.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                if (secCustom) secCustom.style.display = 'none';
+                if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'customize') {
-                secPkg.style.display = 'none';
-                secBooking.style.display = 'none';
-                secCustom.style.display = 'block';
-                secMaster.style.display = 'none';
-                secCustom.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (secPkg) secPkg.style.display = 'none';
+                if (secBooking) secBooking.style.display = 'none';
+                if (secCustom) { secCustom.style.display = 'block'; secCustom.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secMaster) secMaster.style.display = 'none';
+            } else if (tab === 'enquiry') {
+                if (secPkg) secPkg.style.display = 'none';
+                if (secBooking) secBooking.style.display = 'none';
+                if (secCustom) secCustom.style.display = 'none';
+                if (secEnquiry) { secEnquiry.style.display = 'block'; secEnquiry.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'master') {
-                secPkg.style.display = 'none';
-                secBooking.style.display = 'none';
-                secCustom.style.display = 'none';
-                secMaster.style.display = 'block';
-                secMaster.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (secPkg) secPkg.style.display = 'none';
+                if (secBooking) secBooking.style.display = 'none';
+                if (secCustom) secCustom.style.display = 'none';
+                if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secMaster) { secMaster.style.display = 'block'; secMaster.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
             }
         }
 
         function renderSourceBadge(source) {
-            if (source === 'package.html') {
+            if (source === 'index.html') {
+                return `<span class="source-badge badge-enquiry"><i class="fas fa-paper-plane"></i> index.html</span>`;
+            } else if (source === 'package.html') {
                 return `<span class="source-badge badge-package"><i class="fas fa-box-open"></i> package.html</span>`;
             } else if (source === 'customize.html') {
                 return `<span class="source-badge badge-custom"><i class="fas fa-sliders-h"></i> customize.html</span>`;
@@ -4425,6 +4560,7 @@
             const pkgList = allBookings.filter(b => getBookingSource(b) === 'package.html');
             const directList = allBookings.filter(b => getBookingSource(b) === 'booking.html' || getBookingSource(b) === 'admin.html');
             const customList = allBookings.filter(b => getBookingSource(b) === 'customize.html');
+            const enquiryList = allBookings.filter(b => getBookingSource(b) === 'index.html');
 
             const calcRev = (list) => {
                 let rev = 0;
@@ -4444,6 +4580,9 @@
                 document.getElementById('stat-booking-count').textContent = directList.length;
                 document.getElementById('stat-booking-rev').textContent = '₹' + directRev.toLocaleString('en-IN');
                 document.getElementById('stat-custom-count').textContent = customList.length;
+                if (document.getElementById('stat-enquiry-count')) {
+                    document.getElementById('stat-enquiry-count').textContent = enquiryList.length;
+                }
             }
 
             // Sync Horizontal tab counts
@@ -4452,6 +4591,9 @@
                 document.getElementById('tab-badge-package').textContent = pkgList.length;
                 document.getElementById('tab-badge-booking').textContent = directList.length;
                 document.getElementById('tab-badge-customize').textContent = customList.length;
+                if (document.getElementById('tab-badge-enquiry')) {
+                    document.getElementById('tab-badge-enquiry').textContent = enquiryList.length;
+                }
                 document.getElementById('tab-badge-master').textContent = allBookings.length;
             }
 
@@ -4461,6 +4603,9 @@
                 document.getElementById('side-badge-package').textContent = pkgList.length;
                 document.getElementById('side-badge-booking').textContent = directList.length;
                 document.getElementById('side-badge-customize').textContent = customList.length;
+                if (document.getElementById('side-badge-enquiry')) {
+                    document.getElementById('side-badge-enquiry').textContent = enquiryList.length;
+                }
                 document.getElementById('side-badge-master').textContent = allBookings.length;
             }
 
@@ -4473,10 +4618,14 @@
             if (document.getElementById('custom-count-badge')) {
                 document.getElementById('custom-count-badge').textContent = `${customList.length} Inquir${customList.length === 1 ? 'y' : 'ies'}`;
             }
+            if (document.getElementById('enquiry-count-badge')) {
+                document.getElementById('enquiry-count-badge').textContent = `${enquiryList.length} Enquir${enquiryList.length === 1 ? 'y' : 'ies'}`;
+            }
 
             filterPackageBookings();
             filterDirectBookings();
             filterCustomBookings();
+            filterEnquiryBookings();
             filterMasterBookings();
         }
 
@@ -4540,6 +4689,26 @@
             renderSectionTable('custom-bookings-tbody', 'custom-empty-state', filtered);
         }
 
+        function filterEnquiryBookings() {
+            const q = (document.getElementById('enquiry-search-input')?.value || '').toLowerCase().trim();
+            const st = document.getElementById('enquiry-status-filter')?.value || 'ALL';
+            const enquiryList = allBookings.filter(b => getBookingSource(b) === 'index.html');
+
+            const filtered = enquiryList.filter(b => {
+                const matchStatus = st === 'ALL' || (b.status || 'Pending').toLowerCase() === st.toLowerCase();
+                const matchQuery = !q ||
+                    (b.name && b.name.toLowerCase().includes(q)) ||
+                    (b.phone && b.phone.toLowerCase().includes(q)) ||
+                    (b.email && b.email.toLowerCase().includes(q)) ||
+                    (b.booking_id && b.booking_id.toLowerCase().includes(q)) ||
+                    (b.package && b.package.toLowerCase().includes(q)) ||
+                    (b.pickup_city && b.pickup_city.toLowerCase().includes(q));
+                return matchStatus && matchQuery;
+            });
+
+            renderSectionTable('enquiry-bookings-tbody', 'enquiry-empty-state', filtered);
+        }
+
         function filterMasterBookings() {
             const q = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
             const st = document.getElementById('status-filter')?.value || 'ALL';
@@ -4577,16 +4746,19 @@
             const pkgInput = document.getElementById('pkg-search-input');
             const dirInput = document.getElementById('direct-search-input');
             const cusInput = document.getElementById('custom-search-input');
+            const enqInput = document.getElementById('enquiry-search-input');
             const masInput = document.getElementById('search-input');
 
             if (pkgInput) pkgInput.value = val;
             if (dirInput) dirInput.value = val;
             if (cusInput) cusInput.value = val;
+            if (enqInput) enqInput.value = val;
             if (masInput) masInput.value = val;
 
             filterPackageBookings();
             filterDirectBookings();
             filterCustomBookings();
+            filterEnquiryBookings();
             filterMasterBookings();
         }
 
@@ -5198,6 +5370,9 @@
             } else if (sectionKey === 'customize') {
                 list = allBookings.filter(b => getBookingSource(b) === 'customize.html');
                 fileName = 'spirit_customize_html_inquiries';
+            } else if (sectionKey === 'enquiry') {
+                list = allBookings.filter(b => getBookingSource(b) === 'index.html');
+                fileName = 'spirit_home_index_enquiries';
             }
 
             if (list.length === 0) {

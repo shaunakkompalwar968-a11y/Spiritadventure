@@ -273,27 +273,62 @@
             });
         });
 
+        // Helper to reset and open the expanded enquiry form modal
+        const openInquiryModal = () => {
+            if (inquiryModal) {
+                const formBody = document.getElementById('inquiry-form-body');
+                const successCard = document.getElementById('inquiry-success-state');
+                const dateInput = document.getElementById('inq-date');
+                if (formBody) formBody.style.display = 'block';
+                if (successCard) successCard.style.display = 'none';
+
+                // Set default travel date to 7 days in the future if not chosen
+                if (dateInput && !dateInput.value) {
+                    const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+                    dateInput.value = nextWeek.toISOString().split('T')[0];
+                }
+
+                inquiryModal.classList.remove('hidden');
+                inquiryModal.classList.add('active');
+
+                const nameInput = document.getElementById('inq-name');
+                if (nameInput) setTimeout(() => nameInput.focus(), 250);
+            }
+        };
+
         inquiryTriggers.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 if(mobileDrawer) mobileDrawer.classList.remove('active'); 
-                if(inquiryModal) {
-                    inquiryModal.classList.remove('hidden');
-                    inquiryModal.classList.add('active');
-                }
+                openInquiryModal();
             });
         });
+
+        // Global helper for closing and resetting modal
+        window.resetInquiryModalState = function() {
+            if (inquiryModal) {
+                inquiryModal.classList.remove('active');
+                setTimeout(() => {
+                    const formBody = document.getElementById('inquiry-form-body');
+                    const successCard = document.getElementById('inquiry-success-state');
+                    const form = document.getElementById('inquiry-form');
+                    if (form) form.reset();
+                    if (formBody) formBody.style.display = 'block';
+                    if (successCard) successCard.style.display = 'none';
+                }, 300);
+            }
+        };
 
         if(closeBookingBtn) {
             closeBookingBtn.addEventListener('click', () => onlineBookingModal.classList.remove('active'));
         }
         if(closeInquiryBtn) {
-            closeInquiryBtn.addEventListener('click', () => inquiryModal.classList.remove('active'));
+            closeInquiryBtn.addEventListener('click', () => window.resetInquiryModalState());
         }
 
         window.addEventListener('click', (e) => {
             if (e.target === onlineBookingModal) onlineBookingModal.classList.remove('active');
-            if (e.target === inquiryModal) inquiryModal.classList.remove('active');
+            if (e.target === inquiryModal) window.resetInquiryModalState();
         });
 
         // Form Submissions & Razorpay Test Integration
@@ -386,42 +421,144 @@
             rzp1.open();
         }
 
-        // Enquiry Form Submission with Formspree Backend Integration[cite: 2]
+        // Enquiry Form Submission with Real-Time Admin Sync & SheetDB Persistence
         const inquiryForm = document.getElementById('inquiry-form');
         if(inquiryForm) {
             inquiryForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
                 const submitBtn = inquiryForm.querySelector('button[type="submit"]');
-                const originalBtnText = submitBtn ? submitBtn.innerHTML : "Submit Enquiry";
-                if(submitBtn) submitBtn.innerHTML = "Submitting...";
+                const originalBtnText = submitBtn ? submitBtn.innerHTML : "Submit Trip Enquiry";
+                if(submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Enquiry...';
+                }
 
-                const formData = new FormData(inquiryForm);
+                // 1. Extract All Fields from Expanded Enquiry Form
+                const name = (document.getElementById('inq-name')?.value || '').trim() || 'Valued Traveler';
+                const phone = (document.getElementById('inq-phone')?.value || '').trim() || 'N/A';
+                const email = (document.getElementById('inq-email')?.value || '').trim() || 'N/A';
+                const selectedPkg = (document.getElementById('inq-pkg')?.value || '').trim() || 'Custom Tour';
+                const travelDate = (document.getElementById('inq-date')?.value || '').trim() || 'Upcoming';
+                const travelers = (document.getElementById('inq-pax')?.value || '').trim() || '2 Persons';
+                const pickupCity = (document.getElementById('inq-city')?.value || '').trim() || 'Bangalore';
+                const tripStyle = (document.getElementById('inq-style')?.value || '').trim() || 'Adventure';
+                const message = (document.getElementById('inq-message')?.value || '').trim();
 
+                // 2. Generate Unique Enquiry Booking Ref ID
+                const enquiryRef = '#ENQ-' + Math.floor(100000 + Math.random() * 900000);
+                const timestamp = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+
+                // 3. Construct Unified Booking Record for Admin Console
+                const notesSummary = [
+                    tripStyle ? `Style: ${tripStyle}` : '',
+                    message ? `Query: ${message}` : ''
+                ].filter(Boolean).join(' | ') || 'Home page Explore Now enquiry';
+
+                const enquiryRecord = {
+                    booking_id: enquiryRef,
+                    timestamp: timestamp,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    package: 'Enquiry: ' + selectedPkg,
+                    travel_date: travelDate,
+                    travelers: travelers,
+                    pickup_city: pickupCity,
+                    total_amount: 'Enquiry (Quote Req.)',
+                    notes: notesSummary,
+                    status: 'Pending',
+                    source: 'index.html',
+                    _isNewRealtime: true
+                };
+
+                // 4. Save to Shared Local Storage Cache & Broadcast in Real-Time to admin.html
                 try {
-                    const response = await fetch(inquiryForm.action, {
+                    const stored = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
+                    stored.unshift(enquiryRecord);
+                    localStorage.setItem('spirit_local_bookings', JSON.stringify(stored));
+
+                    // Storage event trigger for listening admin tabs/windows
+                    localStorage.setItem('spirit_last_booking_event', JSON.stringify({
+                        time: Date.now(),
+                        ref: enquiryRef,
+                        name: name,
+                        pkg: enquiryRecord.package,
+                        amount: 'Enquiry (Quote Req.)',
+                        status: 'Pending',
+                        source: 'index.html'
+                    }));
+
+                    // Real-Time BroadcastChannel Event
+                    if (window.BroadcastChannel) {
+                        const bc = new BroadcastChannel('spirit_booking_sync');
+                        bc.postMessage({
+                            type: 'NEW_BOOKING',
+                            source: 'index.html',
+                            data: enquiryRecord,
+                            timestamp: Date.now()
+                        });
+                        console.log('⚡ Broadcasted Home Enquiry in real time to admin.html:', enquiryRef);
+                    }
+                } catch (storageErr) {
+                    console.warn('Could not cache or broadcast enquiry:', storageErr);
+                }
+
+                // 5. Post to SheetDB REST API endpoint if configured
+                const sheetDbUrl = localStorage.getItem('spirit_sheetdb_url');
+                if (sheetDbUrl && !sheetDbUrl.includes('YOUR_SHEETDB_API_ID')) {
+                    try {
+                        fetch(sheetDbUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ data: [enquiryRecord] })
+                        }).then(() => {
+                            console.log('✅ Enquiry synchronized to SheetDB Google Sheet.');
+                        }).catch(err => {
+                            console.warn('⚠️ SheetDB sync error:', err);
+                        });
+                    } catch (e) {
+                        console.warn('SheetDB request failed:', e);
+                    }
+                }
+
+                // 6. Asynchronously submit to Formspree
+                try {
+                    const formData = new FormData(inquiryForm);
+                    formData.append('booking_id', enquiryRef);
+                    formData.append('source_page', 'index.html (Home Explore Now)');
+                    fetch(inquiryForm.action, {
                         method: 'POST',
                         body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    });
+                        headers: { 'Accept': 'application/json' }
+                    }).catch(() => {});
+                } catch(e) {}
 
-                    if(submitBtn) submitBtn.innerHTML = originalBtnText;
-
-                    if (response.ok) {
-                        alert("✨ Enquiry Submitted Successfully! Our travel desk will respond to your questions shortly.");
-                        inquiryModal.classList.remove('active');
-                        inquiryForm.reset();
-                    } else {
-                        alert("Oops! There was a problem submitting your enquiry. Please try again.");
-                    }
-                } catch (error) {
-                    if(submitBtn) submitBtn.innerHTML = originalBtnText;
-                    alert("✨ Enquiry Submitted Successfully! Our travel desk will respond to your questions shortly.");
-                    inquiryModal.classList.remove('active');
-                    inquiryForm.reset();
+                // 7. Show In-Modal Confirmation State with Ref ID & Direct WhatsApp Link
+                if(submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
                 }
+
+                const formBody = document.getElementById('inquiry-form-body');
+                const successCard = document.getElementById('inquiry-success-state');
+                const refDisplay = document.getElementById('inquiry-success-ref');
+                const waDirectBtn = document.getElementById('inquiry-wa-direct-btn');
+
+                if (refDisplay) refDisplay.textContent = `Ref: ${enquiryRef}`;
+                if (waDirectBtn) {
+                    const cleanPhone = phone.replace(/[^0-9]/g, '');
+                    const waText = encodeURIComponent(`Hi Spirit Adventures! I submitted a trip enquiry for ${selectedPkg} (Ref: ${enquiryRef}, ${travelers}). Can you share itinerary details and best price quote?`);
+                    waDirectBtn.href = `https://wa.me/919666567551?text=${waText}`;
+                }
+
+                if (formBody) formBody.style.display = 'none';
+                if (successCard) successCard.style.display = 'block';
+
+                inquiryForm.reset();
             });
         }
 

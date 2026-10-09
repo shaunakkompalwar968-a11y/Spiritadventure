@@ -571,21 +571,148 @@
         </div>
     </div>
 
-    <!-- 2. Enquiry Form Modal -->
+    <!-- 2. Expanded Enquiry Form Modal (Home Explore Now) -->
     <div id="inquiry-modal" class="modal hidden">
-        <div class="modal-content">
+        <div class="inquiry-modal-container">
             <span id="close-inquiry" class="close-modal">&times;</span>
-            <h2 style="color: var(--teal); font-weight: 800; margin-bottom: 5px;">Send an Enquiry</h2>
-            <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Have questions? Drop your details and our team will get in touch.</p>
             
-            <form id="inquiry-form" action="https://formspree.io/f/mqpavzwl" method="POST">
-                <input type="text" name="name" placeholder="Full Name" required class="modal-input">
-                <input type="tel" name="phone" placeholder="Phone / WhatsApp Number" required class="modal-input">
-                <input type="email" name="email" placeholder="Email Address" required class="modal-input">
-                <textarea name="message" placeholder="Ask us anything about packages, custom dates, or pricing..." rows="3" required class="modal-input" style="resize: none;"></textarea>
+            <!-- Standard Form State -->
+            <div id="inquiry-form-body">
+                <div class="inquiry-header-badge">
+                    <i class="fas fa-compass"></i> Explore With Spirit Adventures
+                </div>
+                <h2 class="inquiry-modal-title">Plan Your Adventure - Trip Enquiry</h2>
+                <p class="inquiry-modal-subtitle">
+                    Tell us your travel plans and our local adventure experts will craft a customized itinerary and our best price quote for you within 30 minutes!
+                </p>
 
-                <button type="submit" class="btn yellow-btn" style="width: 100%; margin-top: 5px;">Submit Enquiry</button>
-            </form>
+                <form id="inquiry-form" action="https://formspree.io/f/mqpavzwl" method="POST">
+                    <div class="inquiry-grid">
+                        <!-- Full Name -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-name"><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="inq-name" name="name" placeholder="e.g. Rahul Sharma" required class="inquiry-input">
+                        </div>
+
+                        <!-- Phone / WhatsApp -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-phone"><i class="fab fa-whatsapp"></i> WhatsApp / Phone Number *</label>
+                            <input type="tel" id="inq-phone" name="phone" placeholder="e.g. +91 98765 43210" required class="inquiry-input">
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-email"><i class="fas fa-envelope"></i> Email Address *</label>
+                            <input type="email" id="inq-email" name="email" placeholder="e.g. rahul@example.com" required class="inquiry-input">
+                        </div>
+
+                        <!-- Destination / Package -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-pkg"><i class="fas fa-map-marker-alt"></i> Interested Package / Destination *</label>
+                            <select id="inq-pkg" name="package" required class="inquiry-select">
+                                <option value="" disabled selected>-- Choose Destination --</option>
+                                <option value="Coorg Getaway">Coorg Getaway (2D/1N - Coffee Hills &amp; Abbey Falls)</option>
+                                <option value="Goa Beach Trip">Goa Beach Trip (3D/2N - Beaches, Water Sports &amp; Sunsets)</option>
+                                <option value="Hampi, Gokarna &amp; Dandeli">Hampi, Gokarna &amp; Dandeli (4D/3N - Heritage &amp; Rafting)</option>
+                                <option value="Kodaikanal, Ooty &amp; Mysore">Kodaikanal, Ooty &amp; Mysore (6D/5N - Queen of Hill Stations)</option>
+                                <option value="Chikmagalur Coffee Trail">Chikmagalur Coffee Trail (2D/1N - Mullayanagiri Peak)</option>
+                                <option value="Wayanad Nature Escape">Wayanad Nature Escape (3D/2N - Caves &amp; Treehouses)</option>
+                                <option value="Kerala Backwaters &amp; Hills">Kerala Backwaters &amp; Hills (5D/4N - Alleppey &amp; Munnar)</option>
+                                <option value="Custom Tailor-Made Adventure">Custom Tailor-Made Adventure / Multi-City Tour</option>
+                            </select>
+                        </div>
+
+                        <!-- Travel Date -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-date"><i class="fas fa-calendar-alt"></i> Preferred Travel Date *</label>
+                            <input type="date" id="inq-date" name="travel_date" required class="inquiry-input">
+                        </div>
+
+                        <!-- Number of Travelers -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-pax"><i class="fas fa-users"></i> Number of Travelers *</label>
+                            <select id="inq-pax" name="travelers" required class="inquiry-select">
+                                <option value="1 Person (Solo)">1 Person (Solo Traveler)</option>
+                                <option value="2 Persons (Couple / Friends)" selected>2 Persons (Couple / Friends)</option>
+                                <option value="3 - 4 Persons (Small Group)">3 - 4 Persons (Small Group)</option>
+                                <option value="5 - 8 Persons (Family Vacation)">5 - 8 Persons (Family Vacation)</option>
+                                <option value="8 - 15 Persons (Adventure Group)">8 - 15 Persons (Adventure Group)</option>
+                                <option value="15+ Persons (College / Corporate)">15+ Persons (College / Corporate)</option>
+                            </select>
+                        </div>
+
+                        <!-- Pickup City -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-city"><i class="fas fa-city"></i> Pickup / Starting City</label>
+                            <select id="inq-city" name="pickup_city" class="inquiry-select">
+                                <option value="Bangalore" selected>Bangalore</option>
+                                <option value="Hyderabad">Hyderabad</option>
+                                <option value="Chennai">Chennai</option>
+                                <option value="Mumbai">Mumbai</option>
+                                <option value="Pune">Pune</option>
+                                <option value="Mysore">Mysore</option>
+                                <option value="Hubli / Mangalore">Hubli / Mangalore</option>
+                                <option value="Other City">Other / Self Travel</option>
+                            </select>
+                        </div>
+
+                        <!-- Trip Style / Preference -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="inq-style"><i class="fas fa-hiking"></i> Trip Style &amp; Preference</label>
+                            <select id="inq-style" name="trip_style" class="inquiry-select">
+                                <option value="Adventure &amp; Sightseeing" selected>Adventure &amp; Sightseeing</option>
+                                <option value="Relaxed &amp; Leisure Getaway">Relaxed &amp; Leisure Getaway</option>
+                                <option value="Family Friendly Vacation">Family Friendly Vacation</option>
+                                <option value="Romantic Couple / Honeymoon">Romantic Couple / Honeymoon</option>
+                                <option value="Budget Backpacker">Budget Backpacker</option>
+                                <option value="Luxury / 4-Star Resort Stay">Luxury / 4-Star Resort Stay</option>
+                            </select>
+                        </div>
+
+                        <!-- Special Requests / Notes -->
+                        <div class="inquiry-field-group full-width">
+                            <label class="inquiry-label" for="inq-message"><i class="fas fa-comment-dots"></i> Questions or Special Requests</label>
+                            <textarea id="inq-message" name="message" placeholder="Ask us anything about itinerary, food preferences, vehicle options, discounts, or custom routes..." rows="2" class="inquiry-textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Trust highlights -->
+                    <div class="inquiry-trust-row">
+                        <div class="inquiry-trust-item"><i class="fas fa-shield-alt"></i> 100% Free Consultation</div>
+                        <div class="inquiry-trust-item"><i class="fab fa-whatsapp" style="color: #25D366;"></i> Instant WhatsApp Response</div>
+                        <div class="inquiry-trust-item"><i class="fas fa-tag" style="color: #f59e0b;"></i> Best Price Guaranteed</div>
+                    </div>
+
+                    <button type="submit" class="inquiry-submit-btn" id="inq-submit-btn">
+                        <span>Submit Trip Enquiry</span> <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success State (Shown after submit) -->
+            <div id="inquiry-success-state" class="inquiry-success-card">
+                <div class="inquiry-success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 style="color: var(--teal); font-size: 1.4rem; font-weight: 800; margin-bottom: 6px;">Enquiry Received Successfully!</h3>
+                <p style="color: #64748b; font-size: 0.9rem; max-width: 480px; margin: 0 auto;">
+                    Thank you! Your trip inquiry has been logged in real time with our travel desk.
+                </p>
+                <div class="inquiry-ref-box" id="inquiry-success-ref">
+                    Ref: #ENQ-000000
+                </div>
+                <p style="color: #334155; font-size: 0.85rem; margin-bottom: 18px;">
+                    Our destination expert is preparing your custom quote and will contact you via WhatsApp or phone call shortly.
+                </p>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" id="inquiry-wa-direct-btn" target="_blank" class="btn yellow-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fab fa-whatsapp"></i> Chat Now on WhatsApp
+                    </a>
+                    <button type="button" class="btn outline-btn" onclick="resetInquiryModalState()" style="color: var(--teal); border-color: var(--teal); padding: 8px 18px; border-radius: 8px; cursor: pointer;">
+                        Close
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
