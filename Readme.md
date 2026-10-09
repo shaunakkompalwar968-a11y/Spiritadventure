@@ -128,10 +128,14 @@ Spiritadventure/
 
 ## 5. Setup & Maintenance Guide
 
-### How to Run Locally
+### How to Run Locally & Access Admin Console
 1. No Node.js build process, compilers, or server installation required.
 2. Open `index.html` in any modern web browser (Chrome, Edge, Firefox, Safari).
 3. To access the admin console, open `admin.html`.
+4. **Admin Portal Authentication:**
+   * **Username:** `spirit_adventure`
+   * **Password:** `spirit@12`
+   * Features a pre-render security gate preventing unauthorized layout visibility, show/hide password toggle, session persistence, and one-click Logout.
 
 ### How to Configure SheetDB Google Sheets Backend
 1. Go to [SheetDB.io](https://sheetdb.io/) and connect your Google Sheet.

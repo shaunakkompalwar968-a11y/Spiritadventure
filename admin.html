@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Instant pre-render authentication gate check to eliminate layout flicker
+        (function() {
+            var isAuth = sessionStorage.getItem('spirit_admin_authenticated') === 'true' || localStorage.getItem('spirit_admin_authenticated') === 'true';
+            if (!isAuth) {
+                document.documentElement.classList.add('auth-pending');
+            }
+        })();
+    </script>
     <title>Executive Admin Dashboard | Spirit Adventures</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="Assests/img/logohead.png">
@@ -2009,9 +2018,318 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* -------------------------------------------------------------
+           13. ADMIN LOGIN / AUTHENTICATION GATE & LOCK STATE
+           ------------------------------------------------------------- */
+        html.auth-pending body.auth-locked .admin-layout,
+        body.auth-locked .admin-layout,
+        body.auth-locked .admin-sidebar,
+        body.auth-locked .admin-main-wrap {
+            display: none !important;
+        }
+
+        .auth-gate-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 15%, rgba(20, 184, 166, 0.18), transparent 60%),
+                        radial-gradient(circle at 85% 85%, rgba(253, 185, 19, 0.08), transparent 50%),
+                        #090d16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999999;
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-gate-card {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(15, 23, 42, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 38px 32px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(20, 184, 166, 0.15);
+            backdrop-filter: blur(18px);
+            text-align: center;
+            animation: authFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-gate-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--admin-teal), var(--admin-yellow));
+        }
+
+        @keyframes authFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes authShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .auth-card-shake {
+            animation: authShake 0.45s ease-in-out !important;
+        }
+
+        .auth-logo-box {
+            background: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .auth-logo-box img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .auth-gate-card h2 {
+            font-size: 1.4rem;
+            color: #fff;
+            margin: 0 0 6px 0;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .auth-gate-card p {
+            font-size: 0.84rem;
+            color: var(--admin-muted);
+            margin: 0 0 22px 0;
+            line-height: 1.45;
+        }
+
+        .auth-field-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .auth-field-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--admin-muted);
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 12px 42px 12px 42px;
+            background: rgba(2, 6, 23, 0.75);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+        }
+
+        .auth-input:focus {
+            border-color: var(--admin-teal);
+            background: rgba(2, 6, 23, 0.95);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.22);
+        }
+
+        .auth-input:focus ~ .auth-input-icon {
+            color: var(--admin-teal);
+        }
+
+        .auth-pw-toggle {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--admin-muted);
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .auth-pw-toggle:hover {
+            color: #fff;
+        }
+
+        .auth-error-banner {
+            display: none;
+            background: rgba(239, 68, 68, 0.14);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            margin-bottom: 16px;
+            text-align: left;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .auth-btn-submit {
+            width: 100%;
+            height: 48px;
+            background: linear-gradient(135deg, var(--admin-teal), #0d9488);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
+            transition: all 0.25s ease;
+            margin-top: 8px;
+        }
+
+        .auth-btn-submit:hover {
+            background: linear-gradient(135deg, #14b8a6, var(--admin-teal));
+            box-shadow: 0 12px 26px rgba(20, 184, 166, 0.45);
+            transform: translateY(-2px);
+        }
+
+        .auth-btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .auth-remember-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-size: 0.8rem;
+            color: var(--admin-muted);
+        }
+
+        .auth-remember-row label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .auth-remember-row input[type="checkbox"] {
+            accent-color: var(--admin-teal);
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .auth-foot-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--admin-muted);
+            font-size: 0.82rem;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: color 0.2s ease;
+        }
+
+        .auth-foot-link:hover {
+            color: var(--admin-teal);
+        }
     </style>
 </head>
-<body class="admin-body">
+<body class="admin-body auth-locked">
+
+    <!-- =========================================================
+         ADMIN AUTHENTICATION & LOGIN GATE
+         ========================================================= -->
+    <div id="admin-auth-gate" class="auth-gate-screen">
+        <div class="auth-gate-card" id="auth-gate-card">
+            <div class="auth-logo-box">
+                <img src="Assests/img/logo.png" alt="Spirit Adventures Logo">
+            </div>
+            <h2>Admin Control Portal</h2>
+            <p>Restricted Area &bull; Enter credentials to unlock administrative controls.</p>
+
+            <div id="auth-error-banner" class="auth-error-banner">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="auth-error-text">Invalid username or password. Please try again.</span>
+            </div>
+
+            <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
+                <div class="auth-field-group">
+                    <label for="auth-username">Admin Username</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-user-shield auth-input-icon"></i>
+                        <input type="text" id="auth-username" class="auth-input" placeholder="e.g. spirit_adventure" autocomplete="username" required>
+                    </div>
+                </div>
+
+                <div class="auth-field-group">
+                    <label for="auth-password">Password</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-lock auth-input-icon"></i>
+                        <input type="password" id="auth-password" class="auth-input" placeholder="Enter password" autocomplete="current-password" required>
+                        <button type="button" class="auth-pw-toggle" onclick="toggleAuthPasswordVisibility()" title="Show/Hide Password">
+                            <i class="fas fa-eye" id="auth-pw-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="auth-remember-row">
+                    <label>
+                        <input type="checkbox" id="auth-remember-me" checked>
+                        <span>Stay signed in on this device</span>
+                    </label>
+                    <span style="font-size: 0.75rem; color: var(--admin-teal);"><i class="fas fa-shield-alt"></i> SSL Secured</span>
+                </div>
+
+                <button type="submit" class="auth-btn-submit" id="auth-submit-btn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In to Admin Console
+                </button>
+            </form>
+
+            <a href="index.html" class="auth-foot-link">
+                <i class="fas fa-arrow-left"></i> Return to Website Home
+            </a>
+        </div>
+    </div>
 
     <!-- Mobile Drawer Overlay Backdrop -->
     <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleMobileSidebar(false)"></div>
@@ -2149,13 +2467,18 @@
                     <div class="user-left">
                         <div class="user-avatar"><i class="fas fa-user-shield"></i></div>
                         <div class="user-meta">
-                            <span class="user-name">Executive Desk</span>
-                            <span class="user-status"><span class="dot-online"></span> Real-Time Online</span>
+                            <span class="user-name">spirit_adventure</span>
+                            <span class="user-status"><span class="dot-online"></span> Authenticated</span>
                         </div>
                     </div>
-                    <button type="button" class="btn-sound-toggle" id="btn-sound-toggle" onclick="toggleSoundChime()" title="Toggle Real-Time Chime Audio">
-                        <i class="fas fa-volume-up" id="sound-icon"></i>
-                    </button>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <button type="button" class="btn-sound-toggle" id="btn-sound-toggle" onclick="toggleSoundChime()" title="Toggle Real-Time Chime Audio">
+                            <i class="fas fa-volume-up" id="sound-icon"></i>
+                        </button>
+                        <button type="button" class="btn-sound-toggle" onclick="adminLogout()" title="Log Out from Admin Portal" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.35);">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -2212,6 +2535,10 @@
 
                     <button onclick="refreshData()" class="admin-btn admin-btn-primary" id="refresh-btn" title="Refresh all records">
                         <i class="fas fa-sync-alt" id="refresh-icon"></i> <span class="btn-text">Refresh</span>
+                    </button>
+
+                    <button onclick="adminLogout()" class="admin-btn" id="logout-btn" title="Log Out from Admin Console" style="border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
+                        <i class="fas fa-sign-out-alt"></i> <span class="btn-text">Logout</span>
                     </button>
                 </div>
             </header>
@@ -3002,6 +3329,158 @@
          ========================================================= -->
     <script src="./tracker.js"></script>
     <script>
+        // =========================================================================
+        // 0. ADMIN AUTHENTICATION & SECURITY CONTROLLER
+        // =========================================================================
+        const ADMIN_AUTH_KEY = 'spirit_admin_authenticated';
+        const VALID_ADMIN_USER = 'spirit_adventure';
+        const VALID_ADMIN_PASS = 'spirit@12';
+
+        function checkAdminAuth() {
+            const isSessionAuth = sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
+            const isLocalAuth = localStorage.getItem(ADMIN_AUTH_KEY) === 'true';
+
+            if (isSessionAuth || isLocalAuth) {
+                document.body.classList.remove('auth-locked');
+                const gate = document.getElementById('admin-auth-gate');
+                if (gate) gate.style.display = 'none';
+                return true;
+            } else {
+                document.body.classList.add('auth-locked');
+                const gate = document.getElementById('admin-auth-gate');
+                if (gate) gate.style.display = 'flex';
+                const userField = document.getElementById('auth-username');
+                if (userField) setTimeout(() => userField.focus(), 250);
+                return false;
+            }
+        }
+
+        // Fast immediate check
+        checkAdminAuth();
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('auth-username');
+            const passInput = document.getElementById('auth-password');
+            const rememberMe = document.getElementById('auth-remember-me');
+            const errorBanner = document.getElementById('auth-error-banner');
+            const errorText = document.getElementById('auth-error-text');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            const card = document.getElementById('auth-gate-card');
+
+            const enteredUser = (userInput ? userInput.value : '').trim();
+            const enteredPass = passInput ? passInput.value : '';
+
+            if (enteredUser === VALID_ADMIN_USER && enteredPass === VALID_ADMIN_PASS) {
+                // Correct credentials
+                if (errorBanner) errorBanner.style.display = 'none';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Authenticated! Entering Console...';
+                    submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                }
+
+                // Persist session
+                sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+                if (rememberMe && rememberMe.checked) {
+                    localStorage.setItem(ADMIN_AUTH_KEY, 'true');
+                } else {
+                    localStorage.removeItem(ADMIN_AUTH_KEY);
+                }
+
+                // Smooth reveal
+                setTimeout(() => {
+                    const gate = document.getElementById('admin-auth-gate');
+                    if (gate) {
+                        gate.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                        gate.style.opacity = '0';
+                        gate.style.transform = 'scale(1.02)';
+                        setTimeout(() => {
+                            gate.style.display = 'none';
+                            gate.style.opacity = '1';
+                            gate.style.transform = 'none';
+                            document.body.classList.remove('auth-locked');
+                        }, 350);
+                    } else {
+                        document.body.classList.remove('auth-locked');
+                    }
+
+                    if (typeof refreshData === 'function') refreshData();
+                    if (typeof updateVisitorKPIs === 'function') updateVisitorKPIs();
+                    showRealtimeToast({
+                        booking_id: 'SEC-LOGIN',
+                        name: 'Welcome, spirit_adventure',
+                        package: 'Admin Console Access Granted',
+                        total_amount: 'Authenticated',
+                        source: 'admin-auth'
+                    }, 'Admin Logged In');
+                }, 400);
+
+            } else {
+                // Invalid credentials
+                if (errorBanner) {
+                    errorBanner.style.display = 'flex';
+                    if (enteredUser !== VALID_ADMIN_USER && enteredPass === VALID_ADMIN_PASS) {
+                        errorText.textContent = 'Incorrect username. Please check your username.';
+                    } else if (enteredUser === VALID_ADMIN_USER && enteredPass !== VALID_ADMIN_PASS) {
+                        errorText.textContent = 'Incorrect password for spirit_adventure.';
+                    } else {
+                        errorText.textContent = 'Invalid username or password. Please try again.';
+                    }
+                }
+
+                // Shake animation on card
+                if (card) {
+                    card.classList.remove('auth-card-shake');
+                    void card.offsetWidth; // trigger reflow
+                    card.classList.add('auth-card-shake');
+                }
+
+                if (passInput) {
+                    passInput.value = '';
+                    passInput.focus();
+                }
+            }
+        }
+
+        function toggleAuthPasswordVisibility() {
+            const passInput = document.getElementById('auth-password');
+            const eyeIcon = document.getElementById('auth-pw-eye');
+            if (passInput && eyeIcon) {
+                if (passInput.type === 'password') {
+                    passInput.type = 'text';
+                    eyeIcon.className = 'fas fa-eye-slash';
+                } else {
+                    passInput.type = 'password';
+                    eyeIcon.className = 'fas fa-eye';
+                }
+            }
+        }
+
+        function adminLogout() {
+            if (confirm('Are you sure you want to log out from the Spirit Adventures Admin Portal?')) {
+                sessionStorage.removeItem(ADMIN_AUTH_KEY);
+                localStorage.removeItem(ADMIN_AUTH_KEY);
+                document.body.classList.add('auth-locked');
+                const gate = document.getElementById('admin-auth-gate');
+                if (gate) {
+                    gate.style.display = 'flex';
+                    gate.style.opacity = '1';
+                    gate.style.transform = 'none';
+                }
+                const passInput = document.getElementById('auth-password');
+                if (passInput) passInput.value = '';
+                const submitBtn = document.getElementById('auth-submit-btn');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In to Admin Console';
+                    submitBtn.style.background = '';
+                }
+                const userField = document.getElementById('auth-username');
+                if (userField) userField.focus();
+            }
+        }
+
         // =========================================================================
         // 1. SHEETDB BACKEND CONFIGURATION & PERSISTENCE
         // =========================================================================
@@ -4792,6 +5271,8 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
+            checkAdminAuth();
+
             // Set tomorrow as default for realtime form date input
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
