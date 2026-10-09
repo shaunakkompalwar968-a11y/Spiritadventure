@@ -110,13 +110,10 @@ Spiritadventure/
 4. **Real-Time Booking Creation Terminal:** Walk-in or phone reservation entry desk that broadcasts instantly across open client tabs.
 5. **Live Rates Controller:** Adjust package base rates and durations directly from the admin panel; broadcasts live to customer booking forms.
 6. **SheetDB Google Sheets Integration:** Dynamic endpoint configuration saving all client entries to Google Sheets.
-7. **Real-Time Cross-Device Visitor Analytics & Cloud Engine (`tracker.js`):**
-   * **Global Deployed Tracking:** Powered by `tracker.js`, tracking hits seamlessly when deployed on the internet across all customer devices via CORS-enabled cloud counter API (`visitorbadge.io`).
-   * **Device Categorization:** Auto-detects device form factors: **Mobile Phones**, **Laptops & Desktops**, **Tablets**, and **Smart TVs**.
-   * **Active Online Now:** Live dynamic active visitor heartbeat with animated green pulsing badge (`● 18 Online`).
-   * **Compact KPI Card:** Real-time **Day**, **Week**, and **Month** visitor counters in `admin.html`.
-   * **Visitor & Traffic Analytics Modal:** Shows real-time device distribution progress bars, traffic channels, top pages visited, and 14-day daily audit logs.
-   * **One-Click Excel Download:** Exports executive traffic summary, cross-device breakdown, channel sources, top pages, and daily logs to Microsoft Excel (`.csv` with UTF-8 BOM).
+7. **Dedicated Home Enquiries Intake (`index.html`):**
+   * **Full Travel Parameter Intake:** Real-time intake for custom quote requests submitted via the expanded "Explore Now" enquiry modal on `index.html`.
+   * **Dedicated Admin Section:** Dedicated card (`#section-enquiry`) with instant search, status filtering, and CSV export (`spirit_home_index_enquiries.csv`).
+   * **Executive KPI Metric Row:** Real-time metrics for Total Bookings, Pending Review, Confirmed Tours, and **Pipeline Value** (total gross booking revenue).
 8. **Universal Cross-Device Responsiveness:**
    * **Smart TVs & 4K Displays (`@media (min-width: 1920px)`, `2560px`, `3840px`):** Scaled typography, remote-friendly focus rings (`:focus-visible`), and balanced container max-widths.
    * **Laptops & Desktops (`1025px - 1919px`):** High-density executive layout with smooth hover interactions.
