@@ -1260,6 +1260,25 @@ html.skip-intro #welcome-popup,
     align-items: center;
 }
 
+/* Embedded Package Booking Section */
+.pkg-booking-integration-section {
+    margin-top: 60px;
+    margin-bottom: 50px;
+    scroll-margin-top: 100px;
+}
+
+.pkg-booking-header {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.pkg-booking-header p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
 /* Responsive Styles for Package Page */
 @media (max-width: 992px) {
     .pkg-hero { min-height: 400px; padding: 110px 20px 45px; }
@@ -1290,6 +1309,24 @@ html.skip-intro #welcome-popup,
     .bar-right { width: 100%; justify-content: center; }
     .bar-right .btn { flex: 1; padding: 10px 14px; font-size: 0.82rem; }
     .pkg-testimonial-box { flex-direction: column; text-align: center; padding: 22px 18px; }
+    .pkg-booking-integration-section {
+        margin-top: 35px;
+        margin-bottom: 35px;
+        scroll-margin-top: 80px;
+    }
+    .pkg-booking-header {
+        margin-bottom: 18px;
+    }
+    .pkg-booking-header p {
+        font-size: 0.9rem;
+    }
+    .pkg-main-container {
+        padding-bottom: 140px;
+    }
+    .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1302,6 +1339,13 @@ html.skip-intro #welcome-popup,
     .bar-left h3 { font-size: 1rem; }
     .bar-left span { font-size: 0.78rem; }
     .spot-modal-card { padding: 20px 16px; }
+    .pkg-booking-integration-section {
+        margin-top: 28px;
+        margin-bottom: 25px;
+    }
+    .pkg-booking-header h2 {
+        font-size: 1.45rem;
+    }
 }
 
 /* ======================================================== */
@@ -1898,7 +1942,8 @@ html.skip-intro #welcome-popup,
     border-bottom: none;
 }
 
-.summary-row.total #sum-total {
+.summary-row.total #sum-total,
+.summary-row.total #pkg-sum-total {
     color: var(--teal);
     font-size: 1.45rem;
     display: inline-block;

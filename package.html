@@ -183,50 +183,50 @@
         </div>
 
         <!-- Dedicated Destination Booking Integration Form Section -->
-        <section id="booking-section" class="pkg-booking-integration-section" style="margin-top: 60px; margin-bottom: 50px;">
-            <div style="text-align: left; margin-bottom: 25px;">
+        <section id="booking-section" class="pkg-booking-integration-section">
+            <div class="pkg-booking-header">
                 <span class="subtitle-tag"><i class="fas fa-calendar-check"></i> Instant Reservation</span>
                 <h2 class="section-heading" style="margin-bottom: 6px;">Book Your <span id="booking-section-title">Coorg Getaway</span></h2>
-                <p style="color: #64748b; font-size: 0.95rem;">Lock in your dates with zero hassle. Fill in your travel details below or book directly via WhatsApp.</p>
+                <p>Lock in your dates with zero hassle. Fill in your travel details below or book directly via WhatsApp.</p>
             </div>
 
-            <div class="booking-grid" style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: flex-start;">
+            <div class="booking-grid">
                 
                 <!-- Booking Form Card -->
-                <div class="form-card" style="background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border: 1px solid #E5E7EB;">
-                    <h3 style="font-size: 1.35rem; color: var(--teal); margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px; font-weight: 800;">
-                        <i class="fas fa-ticket-alt" style="color: var(--yellow);"></i> Traveler Details
-                    </h3>
+                <div class="form-card">
+                    <h2 class="form-card-title">
+                        <i class="fas fa-ticket-alt"></i> Traveler Details
+                    </h2>
                     
                     <form id="pkg-booking-form" action="https://formspree.io/f/mdekbven" method="POST">
                         <input type="hidden" name="destination" id="form-dest-input" value="Coorg Getaway">
 
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <div class="form-group" style="margin-bottom: 18px;">
-                                <label for="pkg-full-name" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Full Name *</label>
-                                <input type="text" id="pkg-full-name" name="name" required placeholder="Your Full Name" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pkg-full-name"><i class="fas fa-user"></i> Full Name *</label>
+                                <input type="text" id="pkg-full-name" name="name" required placeholder="Your Full Name" class="form-control">
                             </div>
-                            <div class="form-group" style="margin-bottom: 18px;">
-                                <label for="pkg-phone" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">WhatsApp / Phone *</label>
-                                <input type="tel" id="pkg-phone" name="phone" required placeholder="+91 98765 43210" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
-                            </div>
-                        </div>
-
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <div class="form-group" style="margin-bottom: 18px;">
-                                <label for="pkg-email" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Email Address *</label>
-                                <input type="email" id="pkg-email" name="email" required placeholder="you@example.com" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 18px;">
-                                <label for="pkg-travel-date" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Preferred Travel Date *</label>
-                                <input type="date" id="pkg-travel-date" name="travel_date" required class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                            <div class="form-group">
+                                <label for="pkg-phone"><i class="fas fa-phone-alt"></i> WhatsApp / Phone *</label>
+                                <input type="tel" id="pkg-phone" name="phone" required placeholder="+91 98765 43210" class="form-control">
                             </div>
                         </div>
 
-                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <div class="form-group" style="margin-bottom: 18px;">
-                                <label for="pkg-travelers" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Number of Travelers</label>
-                                <select id="pkg-travelers" name="travelers" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pkg-email"><i class="fas fa-envelope"></i> Email Address *</label>
+                                <input type="email" id="pkg-email" name="email" required placeholder="you@example.com" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="pkg-travel-date"><i class="fas fa-calendar-day"></i> Preferred Travel Date *</label>
+                                <input type="date" id="pkg-travel-date" name="travel_date" required class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pkg-travelers"><i class="fas fa-users"></i> Number of Travelers</label>
+                                <select id="pkg-travelers" name="travelers" class="form-control">
                                     <option value="1">1 Person (Solo)</option>
                                     <option value="2" selected>2 Persons (Couple / Friends)</option>
                                     <option value="3">3 Persons</option>
@@ -235,58 +235,74 @@
                                     <option value="6">6+ Persons (Group)</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 18px;">
-                                <label for="pkg-pickup-city" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Pickup City</label>
-                                <input type="text" id="pkg-pickup-city" name="pickup_city" placeholder="Hyderabad, Bangalore, etc." class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                            <div class="form-group">
+                                <label for="pkg-pickup-city"><i class="fas fa-location-arrow"></i> Pickup City</label>
+                                <input type="text" id="pkg-pickup-city" name="pickup_city" placeholder="Hyderabad, Bangalore, etc." class="form-control">
                             </div>
                         </div>
 
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label for="pkg-notes" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Special Requests / Notes</label>
-                            <textarea id="pkg-notes" name="notes" rows="3" placeholder="Dietary preferences, room sharing choices, or questions..." class="modal-input" style="background: #F9FAFB; margin-bottom: 0; resize: none;"></textarea>
+                        <div class="form-group">
+                            <label for="pkg-notes"><i class="fas fa-comment-dots"></i> Special Requests / Notes</label>
+                            <textarea id="pkg-notes" name="notes" rows="3" placeholder="Dietary preferences, room sharing choices, or questions..." class="form-control"></textarea>
                         </div>
 
-                        <button type="submit" id="pkg-submit-btn" class="btn yellow-btn" style="width: 100%; padding: 15px; border-radius: 50px; font-weight: 700; font-size: 1rem;">
+                        <button type="submit" id="pkg-submit-btn" class="btn-submit-booking">
                             <i class="fas fa-check-circle"></i> Confirm Booking Request
                         </button>
 
-                        <a id="pkg-wa-book-btn" href="#" target="_blank" class="btn" style="width: 100%; background: #25D366; color: white; padding: 14px; border-radius: 50px; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; margin-top: 12px; box-sizing: border-box;">
-                            <i class="fab fa-whatsapp" style="font-size: 1.25rem;"></i> Book Instantly on WhatsApp
+                        <a id="pkg-wa-book-btn" href="#" target="_blank" class="btn-wa-booking">
+                            <i class="fab fa-whatsapp"></i> Book Instantly on WhatsApp
                         </a>
+
+                        <!-- Trust Guarantees -->
+                        <div class="booking-guarantees">
+                            <div class="guarantee-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>100% Verified Trips</span>
+                            </div>
+                            <div class="guarantee-item">
+                                <i class="fas fa-bolt"></i>
+                                <span>Instant Confirmation</span>
+                            </div>
+                            <div class="guarantee-item">
+                                <i class="fas fa-headset"></i>
+                                <span>24/7 Expert Support</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
                 <!-- Booking Summary Card -->
-                <div class="summary-card" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border: 1px solid #E5E7EB; position: sticky; top: 140px;">
-                    <div style="height: 180px; position: relative;">
-                        <img id="pkg-sum-img" src="" alt="Destination Preview" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,35,40,0.9) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: white;">
-                            <h4 id="pkg-sum-title" style="margin: 0; font-size: 1.35rem; color: var(--yellow); font-weight: 800;">Coorg Getaway</h4>
-                            <span id="pkg-sum-duration" style="font-size: 0.8rem; opacity: 0.9;"><i class="fas fa-clock"></i> 2 Days, 1 Night</span>
+                <div class="summary-card">
+                    <div class="summary-img-wrapper">
+                        <img id="pkg-sum-img" src="" alt="Destination Preview" loading="lazy">
+                        <div class="summary-img-overlay">
+                            <h3 id="pkg-sum-title">Coorg Getaway</h3>
+                            <span id="pkg-sum-duration"><i class="fas fa-clock"></i> 2 Days, 1 Night</span>
                         </div>
                     </div>
 
-                    <div style="padding: 22px;">
-                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.9rem; color: #4B5563;">
+                    <div class="summary-body">
+                        <div class="summary-row">
                             <span>Price per Person:</span>
                             <strong id="pkg-sum-rate">₹4,999</strong>
                         </div>
-                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.9rem; color: #4B5563;">
+                        <div class="summary-row">
                             <span>Travelers:</span>
                             <strong id="pkg-sum-pax">2 Persons</strong>
                         </div>
-                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.9rem; color: #4B5563;">
-                            <span>Taxes & Guided Stays:</span>
-                            <strong style="color: #10B981;">Included</strong>
+                        <div class="summary-row">
+                            <span>All Taxes & Guided Stays:</span>
+                            <strong style="color: #10B981;"><i class="fas fa-check"></i> Included</strong>
                         </div>
-                        <div style="display: flex; justify-content: space-between; padding: 16px 0 10px; font-size: 1.25rem; font-weight: 800; color: var(--teal);">
+                        <div class="summary-row total">
                             <span>Estimated Total:</span>
-                            <span id="pkg-sum-total" style="color: var(--teal); font-weight: 800;">₹9,998</span>
+                            <span id="pkg-sum-total">₹9,998</span>
                         </div>
 
-                        <div style="margin-top: 15px; padding: 14px; background: #F8FAFC; border-radius: 12px; border-left: 4px solid var(--teal);">
-                            <h5 style="margin: 0 0 6px 0; font-size: 0.85rem; color: var(--teal); font-weight: 700;"><i class="fas fa-shield-alt"></i> Included in Reservation:</h5>
-                            <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: #4B5563; line-height: 1.5;">
+                        <div class="inclusions-list">
+                            <h4><i class="fas fa-shield-alt"></i> Included in Reservation:</h4>
+                            <ul>
                                 <li>Comfortable AC transport & stays</li>
                                 <li>All guided tours & entries</li>
                                 <li>Breakfast & campfire dinner</li>

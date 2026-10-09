@@ -1,10 +1,5 @@
 /**
  * Spirit Adventures - Real-Time Universal Visitor & Traffic Analytics Tracker
- * ==============================================================================
- * Enables cross-device live visitor tracking when website is deployed to the internet.
- * Supports: Mobile Phones, Tablets, Laptops/Desktops, and Smart TVs.
- * Syncs via Cloud Hit Counter API (visitorbadge.io) + BroadcastChannel + LocalStorage.
- * ==============================================================================
  */
 
 (function (window) {
