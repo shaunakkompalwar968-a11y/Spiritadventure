@@ -1,0 +1,86 @@
+Connecting Razorpay to your website is a straightforward process. Depending on how you want your customers to pay, you can choose between a Standard Checkout Popup (recommended) or a Simple Payment Link Button.
+
+Here is the step-by-step guide to connecting Razorpay using the Checkout Popup method so it integrates directly with your booking modal:
+
+Step 1: Create a Razorpay Account
+Go to the Razorpay Website and sign up for a merchant account.
+
+Complete your KYC (Know Your Customer) details using your business or personal bank information to activate Live Mode (you can start testing immediately in Test Mode).
+
+Step 2: Get Your API Keys
+Log in to your Razorpay Dashboard.
+
+Navigate to Settings (usually at the bottom left or via your profile icon) -> API Keys.
+
+Click on Generate Key (if you haven't already).
+
+Copy your Key ID (e.g., rzp_test_123456789abcdef). Keep your Key Secret private and never expose it directly in public client-side scripts for live production environments.
+
+Step 3: Embed Razorpay in Your Website Code
+1. Add the Razorpay Checkout Script to index.html
+Open your index.html file and paste the official Razorpay script inside your <head> tag:
+
+HTML
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+2. Update your script.js Form Handler
+In your script.js file, replace your current bookingForm submission logic with the Razorpay Checkout integration code below. This will automatically open the secure payment popup when a customer fills out their booking details:
+
+JavaScript
+const bookingForm = document.getElementById('booking-form');
+const onlineBookingModal = document.getElementById('booking-modal');
+
+if(bookingForm) {
+    bookingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Get user inputs from the form
+        const name = bookingForm.querySelector('input[name="name"]').value;
+        const phone = bookingForm.querySelector('input[name="phone"]').value;
+        const email = bookingForm.querySelector('input[name="email"]').value;
+        const selectedPackage = bookingForm.querySelector('select[name="package"]').value;
+
+        // Razorpay Options Configuration
+        const options = {
+            "key": "YOUR_RAZORPAY_KEY_ID", // Replace with your actual Key ID from Razorpay Dashboard
+            "amount": "500000", // Amount in paise (e.g., 500000 paise = ₹5,000 advance payment)
+            "currency": "INR",
+            "name": "Spirit Adventures",
+            "description": "Tour Package Booking Advance",
+            "image": "Assests/img/logo.png", // Path to your brand logo
+            "handler": function (response){
+                // This function runs automatically after a successful payment
+                alert("🎉 Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                
+                // Close modal and reset form
+                if(onlineBookingModal) onlineBookingModal.classList.remove('active');
+                bookingForm.reset();
+                
+                // Optional: You can send booking & payment confirmation details to your server/email here
+            },
+            "prefill": {
+                "name": name,
+                "email": email,
+                "contact": phone
+            },
+            "notes": {
+                "selected_package": selectedPackage
+            },
+            "theme": {
+                "color": "#136a6e" // Matches your website's primary Teal theme color
+            }
+        };
+
+        // Open Razorpay checkout window
+        const rzp1 = new Razorpay(options);
+        
+        rzp1.on('payment.failed', function (response){
+            alert("Payment failed: " + response.error.description);
+        });
+
+        rzp1.open();
+    });
+}
+Step 4: Test Before Going Live
+Test Mode: While building and checking functionality, use your Test Key ID from the Razorpay dashboard. You can test transactions using Razorpay's simulated test cards, UPI handles, or net banking.
+
+Live Mode: Once your client is ready to accept real payments, switch your Razorpay dashboard toggle to Live Mode, generate your Live Key ID, and swap it into your script.js file.

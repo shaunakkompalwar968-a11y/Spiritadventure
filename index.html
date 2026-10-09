@@ -1,0 +1,627 @@
+<!-- Demo Website For Spirit Adventure -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spirit Adventures | Explore the World, Without Limits</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="Assests/img/logohead.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <!-- RAZORPAY Integration -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Opening Vide Reload Section -->
+    <script>
+        (function() {
+            try {
+                const navEntry = window.performance && performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+                const isReload = (navEntry && navEntry.type === 'reload') || (window.performance && performance.navigation && performance.navigation.type === 1);
+                const hasVisited = sessionStorage.getItem('spirit_intro_played') === 'true';
+                if (isReload || hasVisited) {
+                    document.documentElement.classList.add('skip-intro');
+                }
+            } catch(e) {}
+        })();
+    </script>
+</head>
+
+<body>
+    <!-- Welcome Video Popup Modal -->
+    <div id="welcome-popup" class="welcome-modal">
+        <div class="welcome-modal-content">
+            <button id="close-welcome" class="welcome-close-btn">Skip Video</button>
+            <div class="welcome-video-wrapper">
+                <video id="opening-video" autoplay playsinline controls>
+                    <source src="Assests/video/Openingvideo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <button id="video-unmute-btn" class="video-unmute-badge" type="button">
+                    <i class="fas fa-volume-up"></i> Tap for Sound
+                </button>
+            </div>
+            <div class="welcome-text-box">
+                <h2>Welcome to Spirit Adventures!</h2>
+                <p>Immerse yourself in the ultimate travel experience.</p>
+                <div class="welcome-btn-group">
+                    <button id="enter-site-btn" class="btn yellow-btn">Enter Website</button>
+                    <button id="welcome-book-btn" class="btn outline-btn inquiry-trigger">Enquiry Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar with Mobile Hamburger Drawer -->
+    <nav id="navbar" class="custom-nav">
+        <div class="nav-left">
+            <a href="#home">
+                <img src="Assests/img/logo.png" alt="Spirit Adventures Logo" class="nav-logo-img">
+            </a>
+            <!-- Desktop Links -->
+            <ul class="nav-links">
+                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <!-- Mobile Direct Home Icon Button -->
+            <a href="#home" class="nav-home-icon-btn" title="Back to Home Screen">
+                <i class="fas fa-home"></i>
+            </a>
+            <!-- New Customize Tour Button -->
+            <a href="customize.html" class="nav-customize-btn">
+                <i class="fas fa-route"></i> <span class="btn-text">Customize</span>
+            </a>
+            <!-- Animated Book Now Button for Online Booking -->
+            <a href="booking.html" class="login-btn pulse-nav-btn" style="text-decoration: none;">
+                <i class="fas fa-calendar-check"></i> <span class="btn-text">Book Now</span>
+            </a>
+            <!-- Mobile Menu Toggle Hamburger Button -->
+            <button id="mobile-menu-btn" class="mobile-menu-btn" type="button" aria-label="Toggle Mobile Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer Overlay -->
+    <div id="mobile-drawer" class="mobile-drawer">
+        <button id="mobile-drawer-close" class="mobile-drawer-close" type="button"><i class="fas fa-times"></i></button>
+        <ul class="mobile-nav-links">
+            <li><a href="#home" class="mobile-link"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#about" class="mobile-link">About Us</a></li>
+            <li><a href="#destinations" class="mobile-link">Destinations</a></li>
+            <li><a href="customize.html" class="mobile-link" style="color: var(--yellow); font-weight: 700;"><i class="fas fa-route"></i> Customize Trip</a></li>
+            <li><a href="#gallery" class="mobile-link">Gallery</a></li>
+            <li><a href="#reviews" class="mobile-link">Reviews</a></li>
+            <li><a href="#contact" class="mobile-link">Contact</a></li>
+        </ul>
+        <div class="mobile-drawer-footer" style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="customize.html" class="btn" style="background: rgba(255,255,255,0.15); color: white; border-radius: 30px; text-decoration: none; justify-content: center; font-size: 0.85rem; border: 1.5px solid var(--yellow); text-transform: uppercase;">
+                <i class="fas fa-route"></i> Customize Trip
+            </a>
+            <a href="booking.html" class="login-btn" style="width: 100%; justify-content: center; text-decoration: none;">
+                <i class="fas fa-calendar-check"></i> Book Now
+            </a>
+        </div>
+    </div>
+
+    <!-- Split-Screen Hero Landing Page -->
+    <section class="split-hero" id="home">
+        
+        <!-- Full Animated Background Video -->
+        <video autoplay loop muted playsinline class="full-bg-video">
+            <source src="Assests/video/Bgvideo.mp4" type="video/mp4">
+        </video>
+
+        <!-- Left Side: Frosted Teal -->
+        <div class="hero-left">
+            <div class="hero-content reveal">
+                <svg class="flight-path" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 10 90 Q 50 10 180 50" stroke="white" stroke-width="2" stroke-dasharray="6 6" fill="transparent"/>
+                </svg>
+
+                <h3 class="top-subtitle">IT'S TIME TO</h3>
+                <h1 class="cursive-text">Travel <i class="fas fa-plane plane-icon"></i></h1>
+                <h2 class="main-title">SPIRIT ADVENTURES</h2>
+                <p class="hero-desc">From dream vacations to business trips, we craft seamless travel experiences tailored just for you. Explore the world, without limits.</p>
+                
+                <button class="btn yellow-btn inquiry-trigger" type="button">EXPLORE NOW <i class="fas fa-play-circle"></i></button>
+                <div class="dots-pattern"></div>
+            </div>
+        </div>
+
+        <!-- Right Side: Frosted White with Traveling Woman Video & Animated Badge -->
+        <div class="hero-right">
+            <div class="media-frame tilt-card">
+                <div class="tape tape-top-left"></div>
+                <div class="tape tape-bottom-right"></div>
+                
+                <!-- Stamp Sticker -->
+                <div class="stamp-sticker">
+                    <div class="stamp-photo-container">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80" alt="Adventure Stamp">
+                    </div>
+                    <span>TOP RATED</span>
+                </div>
+
+                <!-- Stamp Section -->
+                <div class="video-container-wrapper">
+                    <video autoplay loop muted playsinline class="featured-media">
+                        <source src="Assests/video/StampVideo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-brand-overlay">
+                        <span class="animated-brand-text">SPIRIT ADVENTURES</span>
+                        <span class="animated-sub-text">Explore Without Limits</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Torn Paper Graphic Divider -->
+    <div class="torn-paper-divider"></div>
+
+    <!-- About Section (Enhanced with Full Global Services & Information) -->
+    <section id="about" class="about-section section-padding">
+        <div class="container">
+            <div class="about-grid reveal">
+                <div class="about-text-content">
+                    <h3 class="subtitle-tag">WE ARE THE BEST TRAVEL AGENCY</h3>
+                    <h2 class="section-heading">Your Trusted Travel Partner</h2>
+                    <p>We are passionate travel experts dedicated to creating unforgettable journeys. From exploring iconic European cities, shopping in Dubai, cruising through Thailand, to relaxing on the beaches of Bali and the Maldives — Spirit Adventures makes international travel easy and hassle-free.</p>
+                    <div class="features-grid">
+                        <div class="feat-item"><i class="fas fa-check-circle"></i> Easy & Quick Booking</div>
+                        <div class="feat-item"><i class="fas fa-check-circle"></i> Best Price Guarantee</div>
+                        <div class="feat-item"><i class="fas fa-check-circle"></i> Personalized Itineraries</div>
+                        <div class="feat-item"><i class="fas fa-check-circle"></i> 24/7 Expert Guidance</div>
+                    </div>
+                </div>
+                <div class="about-services tilt-card">
+                    <h3>Services We Offer</h3>
+                    <div class="service-box">
+                        <i class="fas fa-route"></i>
+                        <div>
+                            <h4>Travel Planning</h4>
+                            <p>Personalized itineraries designed around your preferences, budget, and travel style.</p>
+                        </div>
+                    </div>
+                    <div class="service-box">
+                        <i class="fas fa-plane-departure"></i>
+                        <div>
+                            <h4>Flight & Hotel Booking</h4>
+                            <p>Best deals on flights and accommodations worldwide with trusted partners.</p>
+                        </div>
+                    </div>
+                    <div class="service-box">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <div>
+                            <h4>Holiday Packages</h4>
+                            <p>All-in-one packages including guided tours, cozy stays, pools, and games.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integrated Global Services & Why Choose Us Details -->
+            <div class="services-grid-container reveal" style="margin-top: 60px;">
+                <div class="service-category-card tilt-card">
+                    <div class="category-header">
+                        <i class="fas fa-globe" style="color: var(--teal);"></i>
+                        <h3>What We Offer</h3>
+                    </div>
+                    <ul class="service-feature-list">
+                        <li><i class="fas fa-globe-americas"></i> Customized Tour Packages (Domestic & International)</li>
+                        <li><i class="fas fa-plane"></i> Air Ticketing & Hotel Reservations</li>
+                        <li><i class="fas fa-passport"></i> Visa & Travel Insurance Assistance</li>
+                        <li><i class="fas fa-heart"></i> Honeymoon & Family Holiday Packages</li>
+                        <li><i class="fas fa-briefcase"></i> Corporate & Group Tours</li>
+                        <li><i class="fas fa-ship"></i> Cruise Bookings & Adventure Travel</li>
+                        <li><i class="fas fa-headset"></i> 24/7 Customer Support</li>
+                    </ul>
+                </div>
+
+                <div class="service-category-card tilt-card">
+                    <div class="category-header">
+                        <i class="fas fa-star" style="color: var(--yellow);"></i>
+                        <h3>Why Choose Spirit Adventures?</h3>
+                    </div>
+                    <ul class="service-feature-list">
+                        <li><i class="fas fa-map-marker-alt"></i> Trusted Local Presence in Hyderabad</li>
+                        <li><i class="fas fa-clipboard-check"></i> End-to-End Travel Planning</li>
+                        <li><i class="fas fa-user-tie"></i> Experienced Travel Experts</li>
+                        <li><i class="fas fa-tags"></i> Best Deals & Transparent Pricing</li>
+                        <li><i class="fas fa-network-wired"></i> Strong Global Network</li>
+                        <li><i class="fas fa-smile-beam"></i> Committed to Customer Satisfaction</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Closing Statement Banner -->
+            <div class="closing-quote-banner reveal" style="margin-top: 30px;">
+                <p>"At Spirit Adventures, we don’t just book trips — we create lifelong memories."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section id="destinations" class="destinations section-padding bg-light">
+        <div class="container text-center reveal">
+            <h3 class="subtitle-tag">DISCOVER INDIA WITH US</h3>
+            <h2 class="section-heading">Explore India's Most Incredible Destinations</h2>
+            <div class="grid modern-grid">
+                <div class="tour-card tilt-card glow-card">
+                    <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=600&q=80" alt="Coorg">
+                    <div class="tour-badge">2D 1N</div>
+                    <div class="tour-content">
+                        <div>
+                            <h3>Coorg Getaway</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Abbey Falls & Estates</p>
+                        </div>
+                        <a href="package.html?dest=coorg" class="btn teal-btn">Explore Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="tour-card tilt-card glow-card">
+                    <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80" alt="Goa">
+                    <div class="tour-badge">3D 2N</div>
+                    <div class="tour-content">
+                        <div>
+                            <h3>Goa Beach Trip</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Beaches & Water Sports</p>
+                        </div>
+                        <a href="package.html?dest=goa" class="btn teal-btn">Explore Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="tour-card tilt-card glow-card">
+                    <img src="Assests/img/Hampi.png" alt="Hampi">
+                    <div class="tour-badge">4D 3N</div>
+                    <div class="tour-content">
+                        <div>
+                            <h3>Hampi, Gokarna & Dandeli</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Ruins & Beachside Stays</p>
+                        </div>
+                        <a href="package.html?dest=hampi" class="btn teal-btn">Explore Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="tour-card tilt-card glow-card">
+                    <img src="https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=600&q=80" alt="Ooty">
+                    <div class="tour-badge">6D 5N</div>
+                    <div class="tour-content">
+                        <div>
+                            <h3>Kodaikanal, Ooty & Mysore</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Hill Station Bliss</p>
+                        </div>
+                        <a href="package.html?dest=ooty" class="btn teal-btn">Explore Details <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHOTO GALLERY GRID -->
+    <section id="gallery" class="gallery-section section-padding">
+        <div class="container text-center reveal">
+            <h3 class="subtitle-tag">TIMELESS TRAVEL MOMENTS</h3>
+            <h2 class="section-heading">Discover Beautiful Destinations</h2>
+            <p class="gallery-desc">Click any photo to zoom up and experience our travelers' unforgettable memories!</p>
+            
+            <div class="photo-grid">
+                <!-- First 10 Open Photos -->
+                <div class="photo-item"><img src="Assests/img/Testimonals/01.webp" alt="Mountain Escapade"><div class="photo-overlay"><span>Mountain Escapade</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/02.webp" alt="Sun & Beaches"><div class="photo-overlay"><span>Sun & Beaches</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/03.webp" alt="Coorg Greenery"><div class="photo-overlay"><span>Coorg Greenery</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/04.png" alt="Ancient Hampi"><div class="photo-overlay"><span>Ancient Hampi</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/05.webp" alt="Ooty Hill Station"><div class="photo-overlay"><span>Ooty Hill Station</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/07.webp" alt="Coastal Paradise"><div class="photo-overlay"><span>Coastal Paradise</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/08.webp" alt="Misty Trails"><div class="photo-overlay"><span>Misty Trails</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/09.webp" alt="Adventure Road Trip"><div class="photo-overlay"><span>Adventure Road Trip</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/11.webp" alt="Campfire Nights"><div class="photo-overlay"><span>Campfire & Stargazing</span></div></div>
+                <div class="photo-item"><img src="Assests/img/Testimonals/12.webp" alt="Water Rafting"><div class="photo-overlay"><span>Dandeli Water Rafting</span></div></div>
+
+                <!-- Next 10 Show More-->
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/13.webp" alt="Backpacker Journey"><div class="photo-overlay"><span>Backpacker Journey</span></div></div>
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/14.webp" alt="Golden Horizon"><div class="photo-overlay"><span>Golden Horizon</span></div></div>
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/15.webp" alt="Alpine Lake"><div class="photo-overlay"><span>Alpine Lake Retreat</span></div></div>
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/16.webp" alt="Boat Cruise"><div class="photo-overlay"><span>Serene Boat Cruise</span></div></div>
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/17.webp" alt="Starlit Camping"><div class="photo-overlay"><span>Starlit Night Camping</span></div></div>
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/18.webp" alt="Wildlife Safari"><div class="photo-overlay"><span>Jungle Safari Trip</span></div></div>
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/19.webp" alt="Pine Forest"><div class="photo-overlay"><span>Deep Pine Forest</span></div></div>
+                <div class="photo-item hidden-photo"><img src="Assests/img/Testimonals/20.webp" alt="Desert Safari"><div class="photo-overlay"><span>Golden Sand Dunes</span></div></div>
+                <div class="photo-item hidden-photo"><img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80" alt="Tent Under Stars"><div class="photo-overlay"><span>Adventure Camping</span></div></div>
+                <div class="photo-item hidden-photo"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Snow Peaks"><div class="photo-overlay"><span>Snowy Mountain Peaks</span></div></div>
+            </div>
+
+            <!-- Show More / Show Less Button -->
+            <div class="gallery-btn-wrapper">
+                <button id="toggle-photos-btn" class="btn yellow-btn" type="button">Show More Photos <i class="fas fa-chevron-down" id="toggle-icon"></i></button>
+            </div>
+        </div>
+    </section>
+
+   <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section section-padding bg-light">
+        <div class="container text-center reveal">
+            <h3 class="subtitle-tag">WALL OF FAME</h3>
+            <h2 class="section-heading">Traveler Experiences & Reviews</h2>
+            <p class="gallery-desc">Hear what our happy adventurers have to say about their journeys with Spirit Adventures!</p>
+            
+            <div class="review-grid">
+                <!-- Review 1 -->
+                <div class="review-card tilt-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Shahid Ali</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Gokarna & Dandeli Trip</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"We traveled recently with Spirit Adventures for Gokarna and Dandeli. Our guide Sathwik was very friendly. The stay and food was very good, we enjoyed the pool and beachside stay!"</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card tilt-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Kottana Mounika</h4>
+                             <span class="review-trip"><i class="fas fa-map-pin"></i> Ooty & Coonoor Tour</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"I recently went on an Ooty and Coonoor trip. Special thanks to our tour guide Aditya, who was extremely supportive, approachable, and kept everyone comfortable throughout."</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card tilt-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Avinash Bollaram</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Coorg & Chikmagalur</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"Great hospitality and service on our Coorg and Chikmagalur family trip. Everything went smoothly with our guide Sathvik. Highly recommended!"</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 4 -->
+                <div class="review-card tilt-card hidden-review">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Priya Sharma</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Goa Beach Getaway</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"The water sports and beach parties organized by Spirit Adventures in Goa were top-notch! Everything was perfectly coordinated."</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 5 -->
+                <div class="review-card tilt-card hidden-review">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Rahul Verma</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Hampi Heritage Tour</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"An absolute history lover's dream! The tour guide gave incredible insights into the ruins of Hampi. Excellent management."</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 6 -->
+                <div class="review-card tilt-card hidden-review">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Sneha Reddy</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Wayanad Nature Retreat</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"The treehouse stay in Wayanad was magical. Thank you Spirit Adventures for arranging such a peaceful and memorable vacation."</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 7 -->
+                <div class="review-card tilt-card hidden-review">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Kiran Kumar</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Dandeli Adventure Camp</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"River rafting and ziplining in Dandeli exceeded all expectations. Safety measures were well handled by the team."</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 8 -->
+                <div class="review-card tilt-card hidden-review">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Ananya Swaminathan</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Ooty Botanical Tour</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"The toy train ride booking and resort accommodations were seamless. Will definitely book our next trip with you guys!"</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+
+                <!-- Review 9 -->
+                <div class="review-card tilt-card hidden-review">
+                    <div class="review-header">
+                        <div class="reviewer-avatar"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h4>Vikram Rao</h4>
+                            <span class="review-trip"><i class="fas fa-map-pin"></i> Chikmagalur Coffee Tour</span>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p>"Stunning views of coffee estates and great campfire nights. The food and hospitality were truly exceptional."</p>
+                    <div class="review-footer">Verified Traveler</div>
+                </div>
+            </div>
+
+            <!-- Show More / Show Less Reviews Button -->
+            <div class="gallery-btn-wrapper">
+                <button id="toggle-reviews-btn" class="btn yellow-btn" type="button">Show More Reviews <i class="fas fa-chevron-down"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <img src="Assests/img/logo.png" alt="Spirit Adventures Logo" class="footer-logo-img">
+                <p>From dream vacations to business trips, we craft seamless travel experiences tailored just for you.</p>
+                <div class="social-links">
+                    <a href="https://wa.me/919666567551" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Vasantha Sai Apartments, Opposite Rishi Towers, KPHB, Kukatpally - 500085</p>
+                <p><i class="fas fa-phone-alt"></i> +91 966 656 7551</p>
+                <p><i class="fas fa-envelope"></i> info@spiritadventures.in</p>
+            </div>
+            <div class="footer-col">
+                <h3>Our Office Location</h3>
+                <div class="map-box">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.412586716892!2d78.3947853!3d17.487777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9175390974cf%3A0xc622614a9ec80249!2sVasantha%20Sai%20Apartments!5e0!3m2!1sen!2sin!4v1715000000000!5m2!1sen!2sin" 
+                        width="100%" height="150" style="border:0; border-radius: 10px;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Shaunak Kompalwar & Team. All Rights Reserved. &nbsp;|&nbsp; <a href="admin.html" style="color: inherit; opacity: 0.7; text-decoration: none;"><i class="fas fa-lock"></i> Admin Portal</a></p>
+        </div>
+    </footer>
+
+    <!-- Image Lightbox Zoom Modal -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <span id="lightbox-close" class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Zoomed Travel Photo">
+    </div>
+
+    <!-- 1. Online Booking Modal -->
+    <div id="booking-modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal" class="close-modal">&times;</span>
+            <h2 style="color: var(--teal); font-weight: 800; margin-bottom: 5px;">Secure Online Booking</h2>
+            <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Complete your reservation and online payment process.</p>
+            
+            <form id="booking-form">
+                <input type="text" name="name" id="booking-name" placeholder="Full Name" required class="modal-input">
+                <input type="tel" name="phone" id="booking-phone" placeholder="Phone / WhatsApp Number" required class="modal-input">
+                <input type="email" name="email" id="booking-email" placeholder="Email Address" required class="modal-input">
+                
+                <select name="package" id="booking-package" required class="modal-input">
+                    <option value="" disabled selected>Select Tour Package</option>
+                    <option value="coorg">2D 1N Coorg Getaway (₹5,000)</option>
+                    <option value="goa">3D 2N Goa Trip (₹8,500)</option>
+                    <option value="hampi">4D 3N Hampi, Gokarna & Dandeli (₹9,500)</option>
+                    <option value="ooty">6D 5N Kodaikanal, Ooty & Mysore (₹14,000)</option>
+                </select>
+
+                <div style="margin-bottom: 12px; text-align: left;">
+                    <label style="font-size: 0.75rem; font-weight: 600; color: #555; display: block; margin-bottom: 4px;">Travel Date:</label>
+                    <input type="date" name="travel_date" required class="modal-input" style="margin-bottom: 0;">
+                </div>
+
+                <button type="submit" class="btn yellow-btn" style="width: 100%; margin-top: 5px;">Proceed to Secure Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Enquiry Form Modal -->
+    <div id="inquiry-modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-inquiry" class="close-modal">&times;</span>
+            <h2 style="color: var(--teal); font-weight: 800; margin-bottom: 5px;">Send an Enquiry</h2>
+            <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Have questions? Drop your details and our team will get in touch.</p>
+            
+            <form id="inquiry-form" action="https://formspree.io/f/mqpavzwl" method="POST">
+                <input type="text" name="name" placeholder="Full Name" required class="modal-input">
+                <input type="tel" name="phone" placeholder="Phone / WhatsApp Number" required class="modal-input">
+                <input type="email" name="email" placeholder="Email Address" required class="modal-input">
+                <textarea name="message" placeholder="Ask us anything about packages, custom dates, or pricing..." rows="3" required class="modal-input" style="resize: none;"></textarea>
+
+                <button type="submit" class="btn yellow-btn" style="width: 100%; margin-top: 5px;">Submit Enquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Actions -->
+    <div class="floating-actions">
+        <!-- Google Maps Rating Button -->
+        <a href="https://maps.app.goo.gl/me7tbu9Co6W8F4EHA" target="_blank" class="action-btn map-btn pulse-map" title="Rate Us on Google Maps">
+            <i class="fas fa-star"></i>
+            <span class="tooltip-text">Rate Us!</span>
+        </a>
+        <!-- WhatsApp Floating Button -->
+        <a href="https://wa.me/919666567551?text=Hi%20Spirit%20Adventures,%20I%20want%20to%20know%20more%20about%20your%20packages!" target="_blank" class="action-btn wa-btn pulse-anim" title="Chat on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <!-- Highly Animated & Attractive Chatbot Toggle Button -->
+        <button id="chat-toggle" class="action-btn chat-btn pulse-chatbot" type="button" title="Chat with AI Guide">
+            <i class="fas fa-headset"></i>
+        </button>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chat-window" class="chat-window hidden">
+        <div class="chat-header">
+            <div><i class="fas fa-robot"></i> Spirit AI Guide</div>
+            <button id="chat-close" type="button"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="message bot-msg">Hi! Welcome to Spirit Adventures. How can I help you plan your getaway today?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Ask about Coorg, Goa, Ooty...">
+            <button id="chat-send" type="button"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script src="./tracker.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

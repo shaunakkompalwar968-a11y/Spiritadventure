@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Adventure | Spirit Adventures</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="Assests/img/logohead.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body class="booking-page-body">
+
+    <!-- Ambient Animated Background Orbs -->
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+
+    <!-- Header Navigation -->
+    <nav class="booking-nav">
+        <a href="index.html" class="nav-brand">
+            <img src="Assests/img/logo.png" alt="Spirit Adventures Logo" class="nav-logo-img">
+        </a>
+        <div class="nav-actions">
+            <a href="customize.html" class="btn-nav-outline">
+                <i class="fas fa-route"></i> Customize Trip
+            </a>
+            <a href="index.html" class="btn-go-home">
+                <i class="fas fa-home"></i> Go to Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Booking Page Content -->
+    <div class="booking-container">
+        
+        <div class="booking-header-card">
+            <div class="booking-header-badge">
+                <i class="fas fa-sparkles"></i> Instant Online Reservation
+            </div>
+            <h1>Book Your Dream Getaway</h1>
+            <p>Select your favorite destination package, customize your travel dates, and reserve your seats with instant confirmation.</p>
+        </div>
+
+        <div class="booking-grid">
+            
+            <!-- Booking Form -->
+            <div class="form-card">
+                <h2 class="form-card-title">
+                    <i class="fas fa-ticket-alt"></i> Traveler & Tour Details
+                </h2>
+                
+                <form id="dedicated-booking-form" method="POST">
+                    <div class="form-group">
+                        <label for="package-select"><i class="fas fa-map-marked-alt"></i> Select Tour Package</label>
+                        <select id="package-select" name="package" class="form-control" onchange="updateSummary()" required>
+                            <option value="coorg">Coorg Getaway (2D 1N) - ₹4,999 / person</option>
+                            <option value="goa">Goa Beach Trip (3D 2N) - ₹8,500 / person</option>
+                            <option value="hampi">Hampi, Gokarna & Dandeli (4D 3N) - ₹9,500 / person</option>
+                            <option value="ooty">Kodaikanal, Ooty & Mysore (6D 5N) - ₹14,000 / person</option>
+                            <option value="chikmagalur">Chikmagalur Coffee Trail (2D 1N) - ₹4,499 / person</option>
+                            <option value="wayanad">Wayanad Nature Escape (3D 2N) - ₹5,499 / person</option>
+                            <option value="kerala">Kerala Backwaters & Hills (5D 4N) - ₹8,999 / person</option>
+                            <option value="dandeli">Dandeli River Rafting (2D 1N) - ₹4,200 / person</option>
+                            <option value="gokarna">Gokarna Beach Trek (2D 1N) - ₹4,600 / person</option>
+                            <option value="munnar">Munnar Tea Gardens (3D 2N) - ₹6,500 / person</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="full-name"><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="full-name" name="name" class="form-control" placeholder="e.g. Rahul Sharma" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number"><i class="fas fa-phone-alt"></i> WhatsApp / Phone Number *</label>
+                            <input type="tel" id="phone-number" name="phone" class="form-control" placeholder="+91 98765 43210" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email-address"><i class="fas fa-envelope"></i> Email Address *</label>
+                            <input type="email" id="email-address" name="email" class="form-control" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="travel-date"><i class="fas fa-calendar-alt"></i> Preferred Travel Date *</label>
+                            <input type="date" id="travel-date" name="travel_date" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="traveler-count"><i class="fas fa-users"></i> Number of Travelers</label>
+                            <select id="traveler-count" name="travelers" class="form-control" onchange="updateSummary()">
+                                <option value="1">1 Person (Solo)</option>
+                                <option value="2" selected>2 Persons (Couple / Friends)</option>
+                                <option value="3">3 Persons</option>
+                                <option value="4">4 Persons (Family / Group)</option>
+                                <option value="5">5 Persons</option>
+                                <option value="6">6+ Persons (Large Group)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pickup-city"><i class="fas fa-location-arrow"></i> Pickup City</label>
+                            <input type="text" id="pickup-city" name="pickup_city" class="form-control" placeholder="Hyderabad, Bangalore, etc.">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="special-requests"><i class="fas fa-comment-dots"></i> Special Requests / Notes</label>
+                        <textarea id="special-requests" name="notes" class="form-control" rows="3" placeholder="Dietary preferences, room sharing choices, or questions..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit-booking" id="submit-btn">
+                        <i class="fas fa-check-circle"></i> Confirm Booking Request
+                    </button>
+
+                    <a id="wa-book-link" href="#" target="_blank" class="btn-wa-booking">
+                        <i class="fab fa-whatsapp"></i> Book Instantly on WhatsApp
+                    </a>
+
+                    <!-- Trust Guarantees -->
+                    <div class="booking-guarantees">
+                        <div class="guarantee-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>100% Verified Trips</span>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-bolt"></i>
+                            <span>Instant Confirmation</span>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-headset"></i>
+                            <span>24/7 Expert Support</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Booking Summary Sidebar -->
+            <div class="summary-card">
+                <div class="summary-img-wrapper">
+                    <img id="sum-img" src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80" alt="Package Thumbnail" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';">
+                    <div class="summary-img-overlay">
+                        <h3 id="sum-title">Hampi, Gokarna & Dandeli</h3>
+                        <span id="sum-duration"><i class="fas fa-clock"></i> 4 Days, 3 Nights</span>
+                    </div>
+                </div>
+                
+                <div class="summary-body">
+                    <div class="summary-row">
+                        <span>Price per Person:</span>
+                        <strong id="sum-rate">₹9,500</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Travelers:</span>
+                        <strong id="sum-pax">2 Persons</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>All Taxes & Service Fees:</span>
+                        <strong style="color: #10B981;"><i class="fas fa-check"></i> Included</strong>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Estimated Total:</span>
+                        <span id="sum-total">₹19,000</span>
+                    </div>
+
+                    <div class="inclusions-list">
+                        <h4><i class="fas fa-shield-alt"></i> Package Inclusions:</h4>
+                        <ul>
+                            <li>Comfortable Hotel & Resort Accommodations</li>
+                            <li>AC Pushback Bus / Coach Transportation</li>
+                            <li>Certified Local Guided Sightseeing</li>
+                            <li>Campfire, Breakfast & Guided Experiences</li>
+                            <li>24/7 On-Tour Support Team</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Custom Animated Booking Confirmation Modal -->
+    <div id="booking-modal" class="booking-modal-overlay">
+        <div class="booking-modal-card">
+            <div class="modal-icon-circle">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3>Booking Confirmed!</h3>
+            <p>Thank you for choosing Spirit Adventures. Our tour manager will contact you within 1 hour to finalize your itinerary.</p>
+            <div class="modal-details-box">
+                <div><span>Package:</span> <strong id="modal-pkg-name">Coorg Getaway</strong></div>
+                <div><span>Travelers:</span> <strong id="modal-travelers">2 Persons</strong></div>
+                <div><span>Est. Total:</span> <strong id="modal-total">₹9,998</strong></div>
+                <div><span>Booking Ref:</span> <strong id="modal-ref-id" style="color: var(--teal);">#SA-8492</strong></div>
+            </div>
+            <div class="modal-btn-group">
+                <a href="index.html" class="modal-btn-home">
+                    <i class="fas fa-home"></i> Go to Home
+                </a>
+                <button type="button" onclick="closeModal()" class="modal-btn-close">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Page Footer -->
+    <div class="booking-footer" style="background: var(--dark-teal); color: white; text-align: center; padding: 25px; font-size: 0.9rem; margin-top: auto; position: relative; z-index: 1;">
+        <p>&copy; 2026 Spirit Adventures. All Rights Reserved. Need help? Call us at <strong>+91 966 656 7551</strong> &nbsp;|&nbsp; <a href="admin.html" style="color: rgba(255,255,255,0.7); text-decoration: none; margin-left: 6px;"><i class="fas fa-lock"></i> Admin Portal</a></p>
+    </div>
+
+    <script src="./tracker.js"></script>
+    <script>
+        const pkgDetails = {
+            'coorg': { 
+                title: 'Coorg Getaway', 
+                duration: '2 Days, 1 Night', 
+                rate: 4999, 
+                img: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80' 
+            },
+            'goa': { 
+                title: 'Goa Beach Trip', 
+                duration: '3 Days, 2 Nights', 
+                rate: 8500, 
+                img: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80' 
+            },
+            'hampi': { 
+                title: 'Hampi, Gokarna & Dandeli', 
+                duration: '4 Days, 3 Nights', 
+                rate: 9500, 
+                img: 'https://images.unsplash.com/photo-1600100397608-f010f443b785?auto=format&fit=crop&w=800&q=80' 
+            },
+            'ooty': { 
+                title: 'Kodaikanal, Ooty & Mysore', 
+                duration: '6 Days, 5 Nights', 
+                rate: 14000, 
+                img: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=800&q=80' 
+            },
+            'chikmagalur': { 
+                title: 'Chikmagalur Coffee Trail', 
+                duration: '2 Days, 1 Night', 
+                rate: 4499, 
+                img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80' 
+            },
+            'wayanad': { 
+                title: 'Wayanad Nature Escape', 
+                duration: '3 Days, 2 Nights', 
+                rate: 5499, 
+                img: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80' 
+            },
+            'kerala': { 
+                title: 'Kerala Backwaters & Hills', 
+                duration: '5 Days, 4 Nights', 
+                rate: 8999, 
+                img: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80' 
+            },
+            'dandeli': { 
+                title: 'Dandeli River Rafting', 
+                duration: '2 Days, 1 Night', 
+                rate: 4200, 
+                img: 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?auto=format&fit=crop&w=800&q=80' 
+            },
+            'gokarna': { 
+                title: 'Gokarna Beach Trek', 
+                duration: '2 Days, 1 Night', 
+                rate: 4600, 
+                img: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80' 
+            },
+            'munnar': { 
+                title: 'Munnar Tea Gardens', 
+                duration: '3 Days, 2 Nights', 
+                rate: 6500, 
+                img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80' 
+            }
+        };
+
+        // Load custom rates if managed in real time via Admin Portal
+        try {
+            const savedPackages = JSON.parse(localStorage.getItem('spirit_custom_packages') || '{}');
+            Object.assign(pkgDetails, savedPackages);
+        } catch (e) {}
+
+        // Listen for live package updates from Admin in real time
+        if (window.BroadcastChannel) {
+            try {
+                const liveSyncChannel = new BroadcastChannel('spirit_booking_sync');
+                liveSyncChannel.addEventListener('message', (event) => {
+                    if (event.data && event.data.type === 'PACKAGE_UPDATE') {
+                        if (event.data.packages) {
+                            Object.assign(pkgDetails, event.data.packages);
+                            updateSummary();
+                            console.log('⚡ [Real-Time Sync] Package pricing updated live from Admin Portal:', event.data.packages);
+                        }
+                    }
+                });
+            } catch (err) {
+                console.warn('BroadcastChannel not supported:', err);
+            }
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        let selectedDest = urlParams.get('dest') || urlParams.get('package') || 'coorg';
+        if (!pkgDetails[selectedDest]) selectedDest = 'coorg';
+
+        const pkgSelect = document.getElementById('package-select');
+        pkgSelect.value = selectedDest;
+
+        const dateInput = document.getElementById('travel-date');
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+
+        function triggerPriceAnimation() {
+            const totalEl = document.getElementById('sum-total');
+            totalEl.classList.remove('price-pop-anim');
+            void totalEl.offsetWidth; // Trigger reflow
+            totalEl.classList.add('price-pop-anim');
+        }
+
+        function updateSummary() {
+            const currentPkg = pkgSelect.value;
+            const pax = parseInt(document.getElementById('traveler-count').value, 10) || 1;
+            const data = pkgDetails[currentPkg] || pkgDetails['coorg'];
+
+            document.getElementById('sum-title').textContent = data.title;
+            document.getElementById('sum-duration').innerHTML = `<i class="fas fa-clock"></i> ${data.duration}`;
+            document.getElementById('sum-rate').textContent = `₹${data.rate.toLocaleString('en-IN')}`;
+            document.getElementById('sum-pax').textContent = `${pax} ${pax > 1 ? 'Persons' : 'Person'}`;
+            
+            const sumImg = document.getElementById('sum-img');
+            if (sumImg && data.img) {
+                sumImg.src = data.img;
+                sumImg.alt = `${data.title} Thumbnail`;
+                sumImg.onerror = function() {
+                    this.onerror = null;
+                    this.src = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';
+                };
+            }
+
+            const total = data.rate * pax;
+            document.getElementById('sum-total').textContent = `₹${total.toLocaleString('en-IN')}`;
+            triggerPriceAnimation();
+
+            const travelDate = document.getElementById('travel-date').value || 'Upcoming dates';
+            const waText = encodeURIComponent(
+                `Hi Spirit Adventures! I want to book the *${data.title}* package for *${pax} traveler(s)* around *${travelDate}*. Please share availability and payment details!`
+            const waLink = document.getElementById('wa-book-link');
+            if (waLink) waLink.href = `https://wa.me/919666567551?text=${waText}`;
+        }
+
+        const fullNameEl = document.getElementById('full-name');
+        if (fullNameEl) fullNameEl.addEventListener('input', updateSummary);
+
+        const travelDateEl = document.getElementById('travel-date');
+        if (travelDateEl) travelDateEl.addEventListener('change', updateSummary);
+
+        // =========================================================================
+        // 🌐 SHEETDB BACKEND CONFIGURATION
+        // Replace 'YOUR_SHEETDB_API_ID' with your actual SheetDB API ID or endpoint URL
+        // Example: https://sheetdb.io/api/v1/58f61be4dda40
+        // =========================================================================
+        const DEFAULT_SHEETDB_URL = 'https://sheetdb.io/api/v1/YOUR_SHEETDB_API_ID';
+        const SHEETDB_API_URL = localStorage.getItem('spirit_sheetdb_url') || DEFAULT_SHEETDB_URL;
+
+        function openModal(pkgTitle, pax, total, bookingRef) {
+            const elPkg = document.getElementById('modal-pkg-name');
+            if (elPkg) elPkg.textContent = pkgTitle;
+            const elPax = document.getElementById('modal-travelers');
+            if (elPax) elPax.textContent = `${pax} ${pax > 1 ? 'Persons' : 'Person'}`;
+            const elTot = document.getElementById('modal-total');
+            if (elTot) elTot.textContent = total;
+            const elRef = document.getElementById('modal-ref-id');
+            if (elRef) elRef.textContent = bookingRef || ('#SA-' + Math.floor(1000 + Math.random() * 9000));
+            
+            const modal = document.getElementById('booking-modal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('booking-modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // Close modal on background click
+        const bookingModalEl = document.getElementById('booking-modal');
+        if (bookingModalEl) {
+            bookingModalEl.addEventListener('click', (e) => {
+                if (e.target.id === 'booking-modal') closeModal();
+            });
+        }
+
+        const bookingForm = document.getElementById('dedicated-booking-form');
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reserving Your Seat...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(bookingForm);
+            const currentPkg = pkgSelect.value;
+            const pax = parseInt(document.getElementById('traveler-count').value, 10) || 1;
+            const data = pkgDetails[currentPkg] || pkgDetails['coorg'];
+            const total = `₹${(data.rate * pax).toLocaleString('en-IN')}`;
+            const bookingRef = '#SA-' + Math.floor(100000 + Math.random() * 900000);
+            
+            const clientName = (formData.get('name') || '').trim();
+            const clientPhone = (formData.get('phone') || '').trim();
+            const clientEmail = (formData.get('email') || '').trim();
+            const travelDate = formData.get('travel_date') || '';
+            const pickupCity = (formData.get('pickup_city') || '').trim() || 'Not specified';
+            const notes = (formData.get('notes') || '').trim() || 'None';
+            const timestamp = new Date().toLocaleString('en-IN', {
+                dateStyle: 'medium',
+                timeStyle: 'short'
+            });
+
+            // Structured object matching SheetDB Google Sheet headers
+            const bookingRecord = {
+                booking_id: bookingRef,
+                timestamp: timestamp,
+                name: clientName,
+                phone: clientPhone,
+                email: clientEmail,
+                package: data.title,
+                travel_date: travelDate,
+                travelers: pax,
+                pickup_city: pickupCity,
+                total_amount: total,
+                notes: notes,
+                status: 'Pending',
+                source: 'booking.html'
+            };
+
+            // 1. Always save a local copy and broadcast in REAL TIME to Admin Portal
+            try {
+                const stored = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
+                stored.unshift(bookingRecord);
+                localStorage.setItem('spirit_local_bookings', JSON.stringify(stored));
+
+                // Real-Time Cross-Tab / Cross-Window Broadcast
+                const realtimePayload = {
+                    time: Date.now(),
+                    ref: bookingRef,
+                    name: clientName,
+                    pkg: data.title,
+                    amount: total,
+                    status: 'Pending',
+                    source: 'booking.html'
+                };
+                localStorage.setItem('spirit_last_booking_event', JSON.stringify(realtimePayload));
+
+                if (window.BroadcastChannel) {
+                    const bc = new BroadcastChannel('spirit_booking_sync');
+                    bc.postMessage({
+                        type: 'NEW_BOOKING',
+                        source: 'booking.html',
+                        data: bookingRecord,
+                        timestamp: Date.now()
+                    });
+                }
+            } catch (err) {
+                console.warn('Could not cache or broadcast booking:', err);
+            }
+
+            // 2. Post to SheetDB REST API endpoint
+            try {
+                if (SHEETDB_API_URL && !SHEETDB_API_URL.includes('YOUR_SHEETDB_API_ID')) {
+                    const response = await fetch(SHEETDB_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ data: [bookingRecord] })
+                    });
+
+                    if (response.ok) {
+                        console.log('✅ Booking successfully stored in SheetDB Google Sheet:', bookingRecord);
+                    } else {
+                        const errText = await response.text();
+                        console.warn('⚠️ SheetDB responded with error:', response.status, errText);
+                    }
+                } else {
+                    console.info('ℹ️ SheetDB URL is in demo mode. Update DEFAULT_SHEETDB_URL with your SheetDB API endpoint URL.');
+                }
+            } catch (err) {
+                console.error('❌ Network error submitting to SheetDB:', err);
+            } finally {
+                // Open confirmation modal for customer
+                openModal(data.title, pax, total, bookingRef);
+                bookingForm.reset();
+                updateSummary();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        updateSummary();
+    </script>
+</body>
+</html>

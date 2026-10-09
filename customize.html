@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Your Tour | Spirit Adventures</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="Assests/img/logohead.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+</head>
+<body class="booking-page-body">
+
+    <!-- Ambient Animated Background Orbs -->
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+
+    <!-- Header Navigation -->
+    <nav class="booking-nav">
+        <a href="index.html" class="nav-brand">
+            <img src="Assests/img/logo.png" alt="Spirit Adventures Logo" class="nav-logo-img">
+        </a>
+        <div class="nav-actions">
+            <a href="package.html" class="btn-nav-outline">
+                <i class="fas fa-compass"></i> Packages
+            </a>
+            <a href="booking.html" class="btn-nav-outline">
+                <i class="fas fa-calendar-check"></i> Instant Book
+            </a>
+            <a href="index.html" class="btn-go-home">
+                <i class="fas fa-home"></i> Go to Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Customize Page Content -->
+    <div class="booking-container">
+        
+        <div class="booking-header-card">
+            <div class="booking-header-badge">
+                <i class="fas fa-route"></i> 100% Tailor-Made & Flexible
+            </div>
+            <h1>Customize Your Dream Adventure</h1>
+            <p>Pick your favorite destinations, choose your travel vibe, preferred stay category, and vehicle. We'll build a personalized itinerary with zero hassle!</p>
+        </div>
+
+        <div class="booking-grid">
+            
+            <!-- Custom Booking Form -->
+            <div class="form-card">
+                <h2 class="form-card-title">
+                    <i class="fas fa-compass"></i> Build Your Custom Plan
+                </h2>
+                
+                <form id="custom-tour-form" action="https://formspree.io/f/mdekbven" method="POST">
+                    
+                    <!-- 1. Destination Multi-Select -->
+                    <div class="form-group">
+                        <label><i class="fas fa-map-pin"></i> 1. Select Destinations (Choose 1 or more)</label>
+                        <div class="dest-chips-grid">
+                            <label class="dest-chip active">
+                                <input type="checkbox" name="destinations" value="Coorg" checked onchange="toggleChip(this)">
+                                <i class="fas fa-check"></i> Coorg
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Goa" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Goa
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Hampi" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Hampi
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Gokarna" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Gokarna
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Dandeli" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Dandeli
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Ooty" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Ooty
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Kodaikanal" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Kodaikanal
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Chikmagalur" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Chikmagalur
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Wayanad" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Wayanad
+                            </label>
+                            <label class="dest-chip">
+                                <input type="checkbox" name="destinations" value="Munnar" onchange="toggleChip(this)">
+                                <i class="fas fa-plus"></i> Munnar
+                            </label>
+                        </div>
+                        <input type="text" id="custom-other-dest" name="other_destinations" class="form-control" placeholder="Any other places? (e.g. Pondicherry, Sakleshpur, Manali...)" style="margin-top: 12px;" oninput="updateCustomSummary()">
+                    </div>
+
+                    <!-- 2. Starting Point & Travel Dates -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="starting-city"><i class="fas fa-location-arrow"></i> Starting / Pickup City *</label>
+                            <input type="text" id="starting-city" name="starting_city" class="form-control" placeholder="e.g. Hyderabad, Bangalore, Chennai" required oninput="updateCustomSummary()">
+                        </div>
+                        <div class="form-group">
+                            <label for="custom-date"><i class="fas fa-calendar-alt"></i> Preferred Travel Date *</label>
+                            <input type="date" id="custom-date" name="travel_date" class="form-control" required onchange="updateCustomSummary()">
+                        </div>
+                    </div>
+
+                    <!-- 3. Trip Duration & Group Type -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="custom-duration"><i class="fas fa-clock"></i> Trip Duration</label>
+                            <select id="custom-duration" name="duration" class="form-control" onchange="updateCustomSummary()">
+                                <option value="2 Days, 1 Night (Weekend)">2 Days, 1 Night (Weekend Getaway)</option>
+                                <option value="3 Days, 2 Nights" selected>3 Days, 2 Nights (Short Escape)</option>
+                                <option value="4 Days, 3 Nights">4 Days, 3 Nights (Explorer)</option>
+                                <option value="5 Days, 4 Nights">5 Days, 4 Nights (Full Circuit)</option>
+                                <option value="6+ Days (Extended Vacation)">6+ Days (Extended Vacation)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="group-type"><i class="fas fa-user-friends"></i> Group Type</label>
+                            <select id="group-type" name="group_type" class="form-control" onchange="updateCustomSummary()">
+                                <option value="Couple / Duo">Couple / Duo</option>
+                                <option value="Friends Group" selected>Friends Group</option>
+                                <option value="Family with Kids">Family with Kids</option>
+                                <option value="Solo Traveler">Solo Traveler</option>
+                                <option value="College / Student Batch">College / Student Batch</option>
+                                <option value="Corporate Team Outing">Corporate Team Outing</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 4. Number of Travelers -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adult-count"><i class="fas fa-users"></i> Number of Adults (12+ yrs) *</label>
+                            <select id="adult-count" name="adults" class="form-control" onchange="updateCustomSummary()">
+                                <option value="1">1 Person</option>
+                                <option value="2">2 Persons</option>
+                                <option value="3">3 Persons</option>
+                                <option value="4" selected>4 Persons</option>
+                                <option value="5">5 Persons</option>
+                                <option value="6">6 Persons</option>
+                                <option value="8">8 Persons</option>
+                                <option value="10">10-15 Persons</option>
+                                <option value="20">20+ Persons (Large Group)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget-range"><i class="fas fa-rupee-sign"></i> Estimated Budget / Person</label>
+                            <select id="budget-range" name="budget_per_person" class="form-control" onchange="updateCustomSummary()">
+                                <option value="₹3,500 - ₹5,500 (Budget Friendly)">₹3,500 - ₹5,500 (Budget Friendly)</option>
+                                <option value="₹6,000 - ₹9,500 (Value Comfort)" selected>₹6,000 - ₹9,500 (Value Comfort)</option>
+                                <option value="₹10,000 - ₹16,000 (Premium Experience)">₹10,000 - ₹16,000 (Premium Experience)</option>
+                                <option value="₹16,000+ (Luxury & Private Villas)">₹16,000+ (Luxury & Private Villas)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 5. Accommodation Category -->
+                    <div class="form-group">
+                        <label><i class="fas fa-hotel"></i> Stay & Accommodation Preference</label>
+                        <div class="pref-cards-grid">
+                            <label class="pref-card active" onclick="selectPrefCard(this, 'stay')">
+                                <input type="radio" name="accommodation" value="Comfort 3-Star Hotels" checked>
+                                <i class="fas fa-bed"></i>
+                                <span>3-Star Comfort</span>
+                            </label>
+                            <label class="pref-card" onclick="selectPrefCard(this, 'stay')">
+                                <input type="radio" name="accommodation" value="Scenic Homestay / Nature Camp">
+                                <i class="fas fa-campground"></i>
+                                <span>Homestay / Camp</span>
+                            </label>
+                            <label class="pref-card" onclick="selectPrefCard(this, 'stay')">
+                                <input type="radio" name="accommodation" value="4-Star Luxury Resort with Pool">
+                                <i class="fas fa-swimming-pool"></i>
+                                <span>Luxury Resort</span>
+                            </label>
+                            <label class="pref-card" onclick="selectPrefCard(this, 'stay')">
+                                <input type="radio" name="accommodation" value="Private Heritage Villa">
+                                <i class="fas fa-landmark"></i>
+                                <span>Private Villa</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 6. Vehicle / Transportation Choice -->
+                    <div class="form-group">
+                        <label><i class="fas fa-bus"></i> Transportation Preference</label>
+                        <div class="pref-cards-grid">
+                            <label class="pref-card active" onclick="selectPrefCard(this, 'transport')">
+                                <input type="radio" name="transport" value="AC Tempo Traveller (Private Group)" checked>
+                                <i class="fas fa-shuttle-van"></i>
+                                <span>Tempo Traveller</span>
+                            </label>
+                            <label class="pref-card" onclick="selectPrefCard(this, 'transport')">
+                                <input type="radio" name="transport" value="Private SUV (Innova / Ertiga)">
+                                <i class="fas fa-car-side"></i>
+                                <span>Private SUV</span>
+                            </label>
+                            <label class="pref-card" onclick="selectPrefCard(this, 'transport')">
+                                <input type="radio" name="transport" value="AC Pushback Sleeper / Semi-Sleeper Bus">
+                                <i class="fas fa-bus-alt"></i>
+                                <span>AC Bus Coach</span>
+                            </label>
+                            <label class="pref-card" onclick="selectPrefCard(this, 'transport')">
+                                <input type="radio" name="transport" value="Self-Drive (Hotels & Activities Only)">
+                                <i class="fas fa-key"></i>
+                                <span>Self Drive</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 7. Lead Contact Info -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cust-name"><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="cust-name" name="name" class="form-control" placeholder="Your Full Name" required oninput="updateCustomSummary()">
+                        </div>
+                        <div class="form-group">
+                            <label for="cust-phone"><i class="fas fa-phone-alt"></i> WhatsApp / Phone Number *</label>
+                            <input type="tel" id="cust-phone" name="phone" class="form-control" placeholder="+91 98765 43210" required oninput="updateCustomSummary()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cust-email"><i class="fas fa-envelope"></i> Email Address *</label>
+                        <input type="email" id="cust-email" name="email" class="form-control" placeholder="you@example.com" required>
+                    </div>
+
+                    <!-- Special Requests & Activities -->
+                    <div class="form-group">
+                        <label for="cust-notes"><i class="fas fa-clipboard-list"></i> Specific Activities or Special Wishes</label>
+                        <textarea id="cust-notes" name="special_requests" class="form-control" rows="3" placeholder="e.g. Private campfire & music, river rafting in Dandeli, candlelight dinner, pure veg food, sunrise trek guide..." oninput="updateCustomSummary()"></textarea>
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <button type="submit" class="btn-submit-custom" id="submit-custom-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Custom Tour Request
+                    </button>
+
+                    <a id="wa-custom-link" href="#" target="_blank" class="btn-wa-booking">
+                        <i class="fab fa-whatsapp"></i> Chat & Customize on WhatsApp
+                    </a>
+
+                    <!-- Trust Guarantees -->
+                    <div class="booking-guarantees">
+                        <div class="guarantee-item">
+                            <i class="fas fa-route"></i>
+                            <span>100% Flexible Route</span>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-user-shield"></i>
+                            <span>Verified Safe Stays</span>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-headset"></i>
+                            <span>Personal Trip Lead</span>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Custom Tour Summary Sidebar -->
+            <div class="summary-card">
+                <div class="summary-img-wrapper">
+                    <img id="custom-sum-img" src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80" alt="Destination Preview">
+                    <div class="summary-img-overlay">
+                        <h3 id="custom-sum-title">Coorg Customized Tour</h3>
+                        <span id="custom-sum-duration"><i class="fas fa-clock"></i> 3 Days, 2 Nights</span>
+                    </div>
+                </div>
+                
+                <div class="summary-body">
+                    
+                    <div class="summary-row">
+                        <span>Selected Destinations:</span>
+                    </div>
+                    <div class="selected-dest-tags" id="selected-dest-container">
+                        <span class="selected-dest-tag"><i class="fas fa-map-marker-alt"></i> Coorg</span>
+                    </div>
+
+                    <div class="summary-row" style="margin-top: 10px;">
+                        <span>Starting City:</span>
+                        <strong id="sum-start-city">To be specified</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Group Size:</span>
+                        <strong id="sum-group-size">4 Persons</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Stay Preference:</span>
+                        <strong id="sum-stay-pref">3-Star Comfort</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Transport Choice:</span>
+                        <strong id="sum-trans-pref">Tempo Traveller</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Budget Tier:</span>
+                        <strong id="sum-budget-tier" style="color: var(--teal);">Value Comfort</strong>
+                    </div>
+
+                    <div class="inclusions-list">
+                        <h4><i class="fas fa-gift"></i> Custom Tour Perks:</h4>
+                        <ul>
+                            <li>Fully customized day-wise itinerary schedule</li>
+                            <li>Private sanitized vehicle with experienced driver</li>
+                            <li>Hand-picked accommodations matched to your vibe</li>
+                            <li>Campfire, sightseeing entries & activity passes</li>
+                            <li>24/7 dedicated trip coordinator assistance</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 14px; background: rgba(253, 185, 19, 0.12); border-radius: 10px; border: 1px solid rgba(253, 185, 19, 0.4); text-align: center;">
+                        <span style="font-size: 0.85rem; color: var(--dark-teal); font-weight: 600;">
+                            <i class="fas fa-phone-alt"></i> Want quick instant pricing? Call our experts: <strong>+91 966 656 7551</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Custom Animated Confirmation Modal -->
+    <div id="custom-modal" class="booking-modal-overlay">
+        <div class="booking-modal-card">
+            <div class="modal-icon-circle">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3>Custom Request Received!</h3>
+            <p>Thank you for choosing Spirit Adventures. Our tour designer will craft your customized itinerary and share quotes on WhatsApp & Email within 2 hours.</p>
+            <div class="modal-details-box">
+                <div><span>Destinations:</span> <strong id="modal-cust-dest">Coorg</strong></div>
+                <div><span>Travelers:</span> <strong id="modal-cust-pax">4 Persons</strong></div>
+                <div><span>Duration:</span> <strong id="modal-cust-dur">3 Days, 2 Nights</strong></div>
+                <div><span>Custom Ref:</span> <strong id="modal-cust-ref" style="color: var(--teal);">#CT-7491</strong></div>
+            </div>
+            <div class="modal-btn-group">
+                <a href="index.html" class="modal-btn-home">
+                    <i class="fas fa-home"></i> Go to Home
+                </a>
+                <button type="button" onclick="closeCustomModal()" class="modal-btn-close">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="booking-footer" style="background: var(--dark-teal); color: white; text-align: center; padding: 25px; font-size: 0.9rem; margin-top: auto; position: relative; z-index: 1;">
+        <p>&copy; 2026 Spirit Adventures. All Rights Reserved. Need help? Call us at <strong>+91 966 656 7551</strong></p>
+    </div>
+
+    <script src="./tracker.js"></script>
+    <script>
+        const destImages = {
+            'Coorg': 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80',
+            'Goa': 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+            'Hampi': 'Assests/img/Hampi.png',
+            'Gokarna': 'https://images.unsplash.com/photo-1600100397608-f010f443a99e?auto=format&fit=crop&w=800&q=80',
+            'Dandeli': 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+            'Ooty': 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=800&q=80',
+            'Kodaikanal': 'https://images.unsplash.com/photo-1570789210967-2cac24afeb00?auto=format&fit=crop&w=800&q=80',
+            'Chikmagalur': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+            'Wayanad': 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80',
+            'Munnar': 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80'
+        };
+
+        const dateInput = document.getElementById('custom-date');
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+
+        function toggleChip(checkbox) {
+            const parent = checkbox.closest('.dest-chip');
+            if (checkbox.checked) {
+                parent.classList.add('active');
+                parent.querySelector('i').className = 'fas fa-check';
+            } else {
+                parent.classList.remove('active');
+                parent.querySelector('i').className = 'fas fa-plus';
+            }
+            updateCustomSummary();
+        }
+
+        function selectPrefCard(card, groupName) {
+            const container = card.closest('.pref-cards-grid');
+            container.querySelectorAll('.pref-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            updateCustomSummary();
+        }
+
+        function getSelectedDestinations() {
+            const checked = Array.from(document.querySelectorAll('input[name="destinations"]:checked')).map(cb => cb.value);
+            const other = document.getElementById('custom-other-dest').value.trim();
+            if (other) checked.push(other);
+            return checked.length > 0 ? checked : ['Coorg'];
+        }
+
+        function updateCustomSummary() {
+            const selectedDests = getSelectedDestinations();
+            const primaryDest = selectedDests[0] || 'Coorg';
+            const duration = document.getElementById('custom-duration').value;
+            const adults = document.getElementById('adult-count').value;
+            const groupType = document.getElementById('group-type').value;
+            const startCity = document.getElementById('starting-city').value.trim() || 'Any City';
+            const travelDate = document.getElementById('custom-date').value || 'Upcoming dates';
+
+            // Active stay and transport
+            const activeStay = document.querySelector('input[name="accommodation"]:checked')?.value || '3-Star Comfort';
+            const activeTrans = document.querySelector('input[name="transport"]:checked')?.value || 'Tempo Traveller';
+            const budgetTier = document.getElementById('budget-range').value.split('(')[1]?.replace(')', '') || 'Value Comfort';
+
+            // Update Image
+            const imgSrc = destImages[primaryDest] || 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80';
+            document.getElementById('custom-sum-img').src = imgSrc;
+            document.getElementById('custom-sum-title').textContent = `${selectedDests.slice(0, 2).join(' & ')} Custom Trip`;
+            document.getElementById('custom-sum-duration').innerHTML = `<i class="fas fa-clock"></i> ${duration}`;
+
+            // Update Dest Tags
+            const tagContainer = document.getElementById('selected-dest-container');
+            tagContainer.innerHTML = selectedDests.map(d => `<span class="selected-dest-tag"><i class="fas fa-map-marker-alt"></i> ${d}</span>`).join('');
+
+            document.getElementById('sum-start-city').textContent = startCity;
+            document.getElementById('sum-group-size').textContent = `${adults} Person(s) (${groupType})`;
+            document.getElementById('sum-stay-pref').textContent = activeStay.split('(')[0].trim();
+            document.getElementById('sum-trans-pref').textContent = activeTrans.split('(')[0].trim();
+            document.getElementById('sum-budget-tier').textContent = budgetTier;
+
+            // Generate WhatsApp message
+            const custNotes = document.getElementById('cust-notes').value.trim();
+            const waText = encodeURIComponent(
+                `Hi Spirit Adventures! I want to customize a trip:\n` +
+                `📍 *Destinations:* ${selectedDests.join(', ')}\n` +
+                `🚗 *Pickup City:* ${startCity}\n` +
+                `📅 *Travel Date:* ${travelDate} (${duration})\n` +
+                `👥 *Travelers:* ${adults} Adults (${groupType})\n` +
+                `🏨 *Stay:* ${activeStay}\n` +
+                `🚐 *Vehicle:* ${activeTrans}\n` +
+                (custNotes ? `📝 *Notes:* ${custNotes}\n` : '') +
+                `Please share a customized itinerary and pricing quote!`
+            );
+            document.getElementById('wa-custom-link').href = `https://wa.me/919666567551?text=${waText}`;
+        }
+
+        function openCustomModal(dests, pax, dur) {
+            document.getElementById('modal-cust-dest').textContent = dests.join(', ');
+            document.getElementById('modal-cust-pax').textContent = `${pax} Persons`;
+            document.getElementById('modal-cust-dur').textContent = dur;
+            document.getElementById('modal-cust-ref').textContent = '#CT-' + Math.floor(1000 + Math.random() * 9000);
+            
+            const modal = document.getElementById('custom-modal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeCustomModal() {
+            const modal = document.getElementById('custom-modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // Close modal on background click
+        const customModalEl = document.getElementById('custom-modal');
+        if (customModalEl) {
+            customModalEl.addEventListener('click', (e) => {
+                if (e.target.id === 'custom-modal') closeCustomModal();
+            });
+        }
+
+        const customForm = document.getElementById('custom-tour-form');
+        if (customForm) {
+            customForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-custom-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Your Plan...';
+            submitBtn.disabled = true;
+
+            const selectedDests = getSelectedDestinations();
+            const adults = document.getElementById('adult-count').value;
+            const duration = document.getElementById('custom-duration').value;
+
+            const formData = new FormData(customForm);
+            // Append explicit array string
+            formData.set('destinations_list', selectedDests.join(', '));
+
+            const customRef = '#CT-' + Math.floor(100000 + Math.random() * 900000);
+            const clientName = (formData.get('name') || 'Custom Explorer').trim();
+            const clientPhone = (formData.get('phone') || '').trim();
+            const clientEmail = (formData.get('email') || '').trim();
+            const startCity = (document.getElementById('starting-city')?.value || '').trim() || 'Any City';
+            const travelDate = document.getElementById('custom-date').value || 'Upcoming';
+            const groupType = document.getElementById('group-type').value;
+            const activeStay = document.querySelector('input[name="accommodation"]:checked')?.value || '3-Star Comfort';
+            const activeTrans = document.querySelector('input[name="transport"]:checked')?.value || 'Tempo Traveller';
+            const budgetTier = document.getElementById('budget-range').value.split('(')[1]?.replace(')', '') || 'Custom Quote';
+            const custNotes = document.getElementById('cust-notes').value.trim();
+
+            const customRecord = {
+                booking_id: customRef,
+                timestamp: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+                name: clientName,
+                phone: clientPhone,
+                email: clientEmail,
+                package: `Custom: ${selectedDests.join(' & ')}`,
+                travel_date: `${travelDate} (${duration})`,
+                travelers: `${adults} (${groupType})`,
+                pickup_city: startCity,
+                total_amount: budgetTier,
+                notes: `Stay: ${activeStay} | Ride: ${activeTrans} | Special: ${custNotes || 'None'}`,
+                status: 'Pending',
+                source: 'customize.html'
+            };
+
+            // Store in shared local storage and broadcast to Admin Portal in real time
+            try {
+                const stored = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
+                stored.unshift(customRecord);
+                localStorage.setItem('spirit_local_bookings', JSON.stringify(stored));
+
+                localStorage.setItem('spirit_last_booking_event', JSON.stringify({
+                    time: Date.now(),
+                    ref: customRef,
+                    name: clientName,
+                    pkg: customRecord.package,
+                    amount: budgetTier,
+                    status: 'Pending',
+                    source: 'customize.html'
+                }));
+
+                if (window.BroadcastChannel) {
+                    const bc = new BroadcastChannel('spirit_booking_sync');
+                    bc.postMessage({
+                        type: 'NEW_BOOKING',
+                        source: 'customize.html',
+                        data: customRecord,
+                        timestamp: Date.now()
+                    });
+                }
+            } catch (err) {
+                console.warn('Could not cache custom booking:', err);
+            }
+
+            try {
+                const response = await fetch(customForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                openCustomModal(selectedDests, adults, duration);
+                customForm.reset();
+                updateCustomSummary();
+            } catch (err) {
+                openCustomModal(selectedDests, adults, duration);
+                customForm.reset();
+                updateCustomSummary();
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        updateCustomSummary();
+    </script>
+</body>
+</html>
+

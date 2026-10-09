@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Details | Spirit Adventures</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="Assests/img/logohead.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body style="background: var(--gray);">
+
+    <!-- Top Navigation Bar -->
+    <nav class="custom-nav scrolled" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="Assests/img/logo.png" alt="Spirit Adventures Logo" class="nav-logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#destinations" style="color: var(--yellow);">Destinations</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <a href="index.html" class="nav-home-icon-btn" title="Back to Home Screen">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="customize.html" class="nav-customize-btn">
+                <i class="fas fa-route"></i> <span class="btn-text">Customize</span>
+            </a>
+            <a href="index.html#destinations" class="btn" style="background: rgba(255,255,255,0.15); color: white; padding: 8px 16px; border-radius: 30px; font-size: 0.8rem; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> <span class="btn-text">All Destinations</span>
+            </a>
+            <button onclick="bookNow()" class="login-btn pulse-nav-btn" type="button">
+                <i class="fas fa-calendar-check"></i> <span class="btn-text">Book This Tour</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Dynamic Hero Banner -->
+    <div class="pkg-hero">
+        <img id="hero-img" class="pkg-hero-bg" src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1600&q=80" alt="Destination Banner">
+        <div class="pkg-hero-overlay"></div>
+        <div class="pkg-hero-content">
+            <div class="pkg-breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="index.html#destinations">Destinations</a>
+                <i class="fas fa-chevron-right"></i>
+                <span id="breadcrumb-title" style="color: var(--white); font-weight: 600;">Coorg Getaway</span>
+            </div>
+            <h1 class="pkg-title" id="page-title">Coorg Getaway</h1>
+            <p class="pkg-subtitle" id="page-subtitle">The Scotland of India • Misty Valleys, Coffee Plantations & Waterfalls</p>
+            
+            <div class="pkg-hero-badges">
+                <div class="pkg-hero-badge highlight" id="hero-price"><i class="fas fa-tag"></i> ₹4,999 / person</div>
+                <div class="pkg-hero-badge" id="hero-duration"><i class="fas fa-clock"></i> 2 Days, 1 Night</div>
+                <div class="pkg-hero-badge" id="hero-rating"><i class="fas fa-star"></i> ★ 4.9 (180+ Reviews)</div>
+                <div class="pkg-hero-badge" id="hero-pickup"><i class="fas fa-bus"></i> Pickup: Hyderabad & Bangalore</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Destination Switcher Tabs -->
+    <div class="dest-tabs-wrapper">
+        <div class="dest-tabs">
+            <button class="dest-tab" id="tab-coorg" onclick="switchDest('coorg')">
+                <i class="fas fa-mountain"></i> Coorg Getaway (2D 1N)
+            </button>
+            <button class="dest-tab" id="tab-goa" onclick="switchDest('goa')">
+                <i class="fas fa-umbrella-beach"></i> Goa Beach Trip (3D 2N)
+            </button>
+            <button class="dest-tab" id="tab-hampi" onclick="switchDest('hampi')">
+                <i class="fas fa-monument"></i> Hampi, Gokarna & Dandeli (4D 3N)
+            </button>
+            <button class="dest-tab" id="tab-ooty" onclick="switchDest('ooty')">
+                <i class="fas fa-cloud-sun"></i> Kodaikanal, Ooty & Mysore (6D 5N)
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Subpage Body Content -->
+    <main class="container pkg-main-container">
+        
+        <!-- Metadata 4-Card Summary Grid -->
+        <div class="pkg-meta-grid">
+            <div class="pkg-meta-card">
+                <div class="pkg-meta-icon"><i class="fas fa-hourglass-half"></i></div>
+                <div>
+                    <div class="pkg-meta-label">Trip Duration</div>
+                    <div class="pkg-meta-value" id="meta-duration">2 Days, 1 Night</div>
+                </div>
+            </div>
+            <div class="pkg-meta-card">
+                <div class="pkg-meta-icon"><i class="fas fa-wallet"></i></div>
+                <div>
+                    <div class="pkg-meta-label">Package Pricing</div>
+                    <div class="pkg-meta-value" id="meta-price">₹4,999 / person</div>
+                </div>
+            </div>
+            <div class="pkg-meta-card">
+                <div class="pkg-meta-icon"><i class="fas fa-hotel"></i></div>
+                <div>
+                    <div class="pkg-meta-label">Stay Type</div>
+                    <div class="pkg-meta-value" id="meta-stay" style="font-size: 0.95rem;">Premium Coffee Estate Homestay</div>
+                </div>
+            </div>
+            <div class="pkg-meta-card">
+                <div class="pkg-meta-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div>
+                    <div class="pkg-meta-label">Best Season</div>
+                    <div class="pkg-meta-value" id="meta-season" style="font-size: 1rem;">October to March</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Destination Overview Section -->
+        <div class="pkg-overview-box">
+            <h3><i class="fas fa-compass"></i> Journey Highlights & Overview</h3>
+            <p id="page-desc"></p>
+        </div>
+
+        <!-- Day-by-Day Detailed Itinerary Timeline -->
+        <section class="itinerary-section">
+            <div style="text-align: left; margin-bottom: 25px;">
+                <span class="subtitle-tag"><i class="fas fa-route"></i> Step-by-Step Schedule</span>
+                <h2 class="section-heading" style="margin-bottom: 6px;">Day-by-Day Travel Itinerary</h2>
+                <p style="color: #64748b; font-size: 0.95rem;">Carefully crafted by our experienced tour managers for the perfect balance of adventure and relaxation.</p>
+            </div>
+            <div class="itinerary-timeline" id="itinerary-container">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Curated Sightseeing Spots & Experiences -->
+        <section class="spots-section">
+            <div style="text-align: left; margin-bottom: 25px;">
+                <span class="subtitle-tag"><i class="fas fa-camera"></i> Curated Attractions</span>
+                <h2 class="section-heading" style="margin-bottom: 6px;">Spot Places, Food & Experiences</h2>
+                <p style="color: #64748b; font-size: 0.95rem;">Click on any spot card below to discover regional delicacies, photography spots, and traveler tips!</p>
+            </div>
+            <div class="spots-grid" id="spots-container">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Inclusions vs Exclusions Breakdown -->
+        <section class="inc-exc-section">
+            <div style="text-align: left; margin-bottom: 25px;">
+                <span class="subtitle-tag"><i class="fas fa-clipboard-check"></i> Transparent Pricing</span>
+                <h2 class="section-heading" style="margin-bottom: 6px;">What's Included & Excluded</h2>
+                <p style="color: #64748b; font-size: 0.95rem;">Zero hidden costs — everything is crystal clear before you confirm your journey.</p>
+            </div>
+            <div class="inc-exc-grid">
+                <div class="inc-card">
+                    <h3><i class="fas fa-check-circle"></i> Inclusions (Covered by Us)</h3>
+                    <ul class="feature-check-list inc" id="inclusions-container">
+                        <!-- Injected via JavaScript -->
+                    </ul>
+                </div>
+                <div class="exc-card">
+                    <h3><i class="fas fa-times-circle"></i> Exclusions (Not Covered)</h3>
+                    <ul class="feature-check-list exc" id="exclusions-container">
+                        <!-- Injected via JavaScript -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Traveler Testimonial Spotlight for This Destination -->
+        <div class="pkg-testimonial-box" id="testimonial-box">
+            <div class="pkg-test-avatar"><i class="fas fa-quote-left"></i></div>
+            <div class="pkg-test-content">
+                <p id="test-quote">"Great hospitality and service on our trip. Everything went smoothly!"</p>
+                <div class="pkg-test-author" id="test-author">— Verified Traveler Review</div>
+            </div>
+        </div>
+
+        <!-- Dedicated Destination Booking Integration Form Section -->
+        <section id="booking-section" class="pkg-booking-integration-section" style="margin-top: 60px; margin-bottom: 50px;">
+            <div style="text-align: left; margin-bottom: 25px;">
+                <span class="subtitle-tag"><i class="fas fa-calendar-check"></i> Instant Reservation</span>
+                <h2 class="section-heading" style="margin-bottom: 6px;">Book Your <span id="booking-section-title">Coorg Getaway</span></h2>
+                <p style="color: #64748b; font-size: 0.95rem;">Lock in your dates with zero hassle. Fill in your travel details below or book directly via WhatsApp.</p>
+            </div>
+
+            <div class="booking-grid" style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: flex-start;">
+                
+                <!-- Booking Form Card -->
+                <div class="form-card" style="background: white; padding: 35px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border: 1px solid #E5E7EB;">
+                    <h3 style="font-size: 1.35rem; color: var(--teal); margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px; font-weight: 800;">
+                        <i class="fas fa-ticket-alt" style="color: var(--yellow);"></i> Traveler Details
+                    </h3>
+                    
+                    <form id="pkg-booking-form" action="https://formspree.io/f/mdekbven" method="POST">
+                        <input type="hidden" name="destination" id="form-dest-input" value="Coorg Getaway">
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <label for="pkg-full-name" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Full Name *</label>
+                                <input type="text" id="pkg-full-name" name="name" required placeholder="Your Full Name" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <label for="pkg-phone" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">WhatsApp / Phone *</label>
+                                <input type="tel" id="pkg-phone" name="phone" required placeholder="+91 98765 43210" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <label for="pkg-email" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Email Address *</label>
+                                <input type="email" id="pkg-email" name="email" required placeholder="you@example.com" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <label for="pkg-travel-date" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Preferred Travel Date *</label>
+                                <input type="date" id="pkg-travel-date" name="travel_date" required class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <label for="pkg-travelers" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Number of Travelers</label>
+                                <select id="pkg-travelers" name="travelers" class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                                    <option value="1">1 Person (Solo)</option>
+                                    <option value="2" selected>2 Persons (Couple / Friends)</option>
+                                    <option value="3">3 Persons</option>
+                                    <option value="4">4 Persons (Family / Group)</option>
+                                    <option value="5">5 Persons</option>
+                                    <option value="6">6+ Persons (Group)</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <label for="pkg-pickup-city" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Pickup City</label>
+                                <input type="text" id="pkg-pickup-city" name="pickup_city" placeholder="Hyderabad, Bangalore, etc." class="modal-input" style="background: #F9FAFB; margin-bottom: 0;">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="pkg-notes" style="display: block; font-size: 0.85rem; font-weight: 600; color: #374151; margin-bottom: 6px;">Special Requests / Notes</label>
+                            <textarea id="pkg-notes" name="notes" rows="3" placeholder="Dietary preferences, room sharing choices, or questions..." class="modal-input" style="background: #F9FAFB; margin-bottom: 0; resize: none;"></textarea>
+                        </div>
+
+                        <button type="submit" id="pkg-submit-btn" class="btn yellow-btn" style="width: 100%; padding: 15px; border-radius: 50px; font-weight: 700; font-size: 1rem;">
+                            <i class="fas fa-check-circle"></i> Confirm Booking Request
+                        </button>
+
+                        <a id="pkg-wa-book-btn" href="#" target="_blank" class="btn" style="width: 100%; background: #25D366; color: white; padding: 14px; border-radius: 50px; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; margin-top: 12px; box-sizing: border-box;">
+                            <i class="fab fa-whatsapp" style="font-size: 1.25rem;"></i> Book Instantly on WhatsApp
+                        </a>
+                    </form>
+                </div>
+
+                <!-- Booking Summary Card -->
+                <div class="summary-card" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border: 1px solid #E5E7EB; position: sticky; top: 140px;">
+                    <div style="height: 180px; position: relative;">
+                        <img id="pkg-sum-img" src="" alt="Destination Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,35,40,0.9) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: white;">
+                            <h4 id="pkg-sum-title" style="margin: 0; font-size: 1.35rem; color: var(--yellow); font-weight: 800;">Coorg Getaway</h4>
+                            <span id="pkg-sum-duration" style="font-size: 0.8rem; opacity: 0.9;"><i class="fas fa-clock"></i> 2 Days, 1 Night</span>
+                        </div>
+                    </div>
+
+                    <div style="padding: 22px;">
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.9rem; color: #4B5563;">
+                            <span>Price per Person:</span>
+                            <strong id="pkg-sum-rate">₹4,999</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.9rem; color: #4B5563;">
+                            <span>Travelers:</span>
+                            <strong id="pkg-sum-pax">2 Persons</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 0.9rem; color: #4B5563;">
+                            <span>Taxes & Guided Stays:</span>
+                            <strong style="color: #10B981;">Included</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 16px 0 10px; font-size: 1.25rem; font-weight: 800; color: var(--teal);">
+                            <span>Estimated Total:</span>
+                            <span id="pkg-sum-total" style="color: var(--teal); font-weight: 800;">₹9,998</span>
+                        </div>
+
+                        <div style="margin-top: 15px; padding: 14px; background: #F8FAFC; border-radius: 12px; border-left: 4px solid var(--teal);">
+                            <h5 style="margin: 0 0 6px 0; font-size: 0.85rem; color: var(--teal); font-weight: 700;"><i class="fas fa-shield-alt"></i> Included in Reservation:</h5>
+                            <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: #4B5563; line-height: 1.5;">
+                                <li>Comfortable AC transport & stays</li>
+                                <li>All guided tours & entries</li>
+                                <li>Breakfast & campfire dinner</li>
+                                <li>24/7 dedicated trip leader</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Sticky Fixed Bottom Booking Action Bar -->
+    <div class="booking-bar">
+        <div class="bar-left">
+            <h3 id="bar-title">Coorg Getaway</h3>
+            <span>₹<span id="bar-price">4,999</span> per person • All Taxes & Guided Tours Included</span>
+        </div>
+        <div class="bar-right">
+            <a id="bar-whatsapp" href="#" target="_blank" class="btn" style="background: #25D366; color: white; padding: 12px 22px; border-radius: 50px; font-weight: 600; text-decoration: none;">
+                <i class="fab fa-whatsapp" style="font-size: 1.1rem;"></i> WhatsApp Us
+            </a>
+            <button onclick="bookNow()" class="btn yellow-btn" style="padding: 12px 28px; font-weight: 800; border-radius: 50px;">
+                BOOK THIS TRIP <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Spot Details Modal Overlay -->
+    <div id="spot-modal" class="spot-modal-overlay">
+        <div class="spot-modal-content">
+            <div class="spot-modal-header">
+                <button class="spot-modal-close" onclick="closeSpotModal()" title="Close"><i class="fas fa-times"></i></button>
+                <img id="spot-modal-img" src="" alt="Spot Photo">
+                <div class="spot-modal-header-gradient"></div>
+                <div class="spot-modal-header-tag" id="spot-modal-tag">Featured Spot</div>
+                <div class="spot-modal-header-title">
+                    <h2 id="spot-modal-title">Spot Name</h2>
+                </div>
+            </div>
+            <div class="spot-modal-body">
+                <p id="spot-modal-desc" class="spot-modal-desc"></p>
+                
+                <div class="spot-section">
+                    <div class="spot-section-icon" style="background: #FFF8E7; color: #D97706;"><i class="fas fa-utensils"></i></div>
+                    <div>
+                        <div class="spot-section-label">Must-Try Regional Food</div>
+                        <p id="spot-modal-food" class="spot-section-text"></p>
+                    </div>
+                </div>
+
+                <div class="spot-section">
+                    <div class="spot-section-icon" style="background: #ECFDF5; color: #059669;"><i class="fas fa-compass"></i></div>
+                    <div>
+                        <div class="spot-section-label">Highlight Experience</div>
+                        <p id="spot-modal-activity" class="spot-section-text"></p>
+                    </div>
+                </div>
+
+                <div class="spot-section">
+                    <div class="spot-section-icon" style="background: #EFF6FF; color: #2563EB;"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <div class="spot-section-label">Best Time to Visit & Timings</div>
+                        <p id="spot-modal-timing" class="spot-section-text"></p>
+                    </div>
+                </div>
+
+                <div class="spot-section" style="border-bottom: none; margin-bottom: 0;">
+                    <div class="spot-section-icon" style="background: #FDF4FF; color: #9333EA;"><i class="fas fa-lightbulb"></i></div>
+                    <div>
+                        <div class="spot-section-label">Traveler Pro-Tip</div>
+                        <p id="spot-modal-tip" class="spot-section-text"></p>
+                    </div>
+                </div>
+
+                <div class="modal-action-bar">
+                    <span style="font-size: 0.88rem; color: #64748b; font-weight: 600;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Fully covered in this package</span>
+                    <button onclick="bookNow()" class="btn yellow-btn" style="padding: 11px 26px; font-size: 0.92rem; border-radius: 50px; font-weight: 700;">
+                        Book This Trip <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer" style="padding-bottom: 110px;">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <img src="Assests/img/logo.png" alt="Spirit Adventures Logo" class="footer-logo-img">
+                <p>From dream vacations to weekend getaways, we craft seamless travel experiences tailored just for you.</p>
+                <div class="social-links">
+                    <a href="https://wa.me/919666567551" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Vasantha Sai Apartments, Opposite Rishi Towers, KPHB, Kukatpally - 500085</p>
+                <p><i class="fas fa-phone-alt"></i> +91 966 656 7551</p>
+                <p><i class="fas fa-envelope"></i> info@spiritadventures.in</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <p><a href="index.html#home" style="color: #cbd5e1; text-decoration: none;">Home</a></p>
+                <p><a href="index.html#about" style="color: #cbd5e1; text-decoration: none;">About Us</a></p>
+                <p><a href="index.html#destinations" style="color: #cbd5e1; text-decoration: none;">Destinations</a></p>
+                <p><a href="booking.html" style="color: #cbd5e1; text-decoration: none;">Book a Trip</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Spirit Adventures. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Comprehensive Destination Data & Interactivity Script -->
+    <script src="./tracker.js"></script>
+    <script>
+        const packageData = {
+            'coorg': { 
+                title: 'Coorg Getaway',
+                tagline: 'The Scotland of India • Misty Valleys, Coffee Plantations & Waterfalls',
+                duration: '2 Days, 1 Night',
+                price: 4999,
+                hero: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1600&q=80',
+                rating: '★ 4.9 (180+ Reviews)',
+                pickup: 'Hyderabad & Bangalore',
+                stay: 'Premium Coffee Estate Homestay & Resort',
+                season: 'October to March',
+                desc: 'Escape into the tranquil, emerald hills of Coorg (Kodagu). Known affectionately as the "Scotland of India," Coorg offers refreshing mountain air, cascading silver waterfalls, and endless aromatic coffee and spice plantations. Our weekend package includes cozy estate accommodations, guided waterfall treks, authentic Kodava cuisine, and magical sunset viewpoints at Raja\'s Seat.',
+                itinerary: [
+                    {
+                        day: 'Day 1',
+                        title: 'Arrival, Coffee Trails & Sunset Viewpoint',
+                        meals: 'Campfire Dinner Included',
+                        activities: [
+                            'Scenic morning drive through Western Ghats into Madikeri; check-in at our boutique coffee estate resort.',
+                            'Guided walking tour through sprawling coffee and spice plantations; learn about coffee bean harvesting and roasting.',
+                            'Visit the thundering Abbey Falls nestled deep inside private estates; photograph the falls from the iconic hanging bridge.',
+                            'Witness a spectacular golden sunset at Raja\'s Seat overlooking endless rolling misty valleys.',
+                            'Warm evening campfire with music and an authentic Kodava dinner feast (Pandi Curry / Akki Roti / Vegetarian specialities).'
+                        ]
+                    },
+                    {
+                        day: 'Day 2',
+                        title: 'Gentle Giants, Golden Temple & Return Journey',
+                        meals: 'Breakfast Included',
+                        activities: [
+                            'Enjoy freshly brewed South Indian filter coffee made from estate beans, followed by a buffet breakfast.',
+                            'Excursion to Dubare Elephant Camp on the Kaveri riverbanks; interact with gentle giants and witness river bathing.',
+                            'Tour the majestic Namdroling Monastery (Golden Temple) in Bylakuppe with 40-foot gilded Buddha statues.',
+                            'Shopping stop for authentic Coorg homemade chocolates, pure organic honey, and aromatic spices.',
+                            'Depart on return journey back to Hyderabad / Bangalore with unforgettable memories.'
+                        ]
+                    }
+                ],
+                spots: [
+                    {
+                        name: 'Abbey Falls',
+                        tag: 'Misty Waterfall',
+                        img: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+                        desc: 'A dramatic 70-foot waterfall roaring over massive granite boulders into a serene pool, enveloped by lush coffee estates and pepper vines.',
+                        food: 'Hot spiced roasted sweet corn and traditional steamed Kadambuttu dumplings.',
+                        activity: 'Hanging bridge stroll and mist photography.',
+                        timing: 'Morning (8:30 AM – 11:00 AM) for gentle sunlight and fewer crowds.',
+                        tip: 'Wear slip-resistant sneakers for walking down the estate steps.'
+                    },
+                    {
+                        name: "Raja's Seat",
+                        tag: 'Sunset Point',
+                        img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+                        desc: 'The historic garden viewpoint where the Kings of Kodagu spent evenings admiring spectacular sunsets over endless undulating green valleys.',
+                        food: 'Hot Akki Roti with vegetable sagu and freshly brewed dark roast estate coffee.',
+                        activity: 'Sunset gazing, musical fountain show, and valley photography.',
+                        timing: 'Late afternoon through twilight (4:30 PM – 6:30 PM).',
+                        tip: 'Arrive 30 minutes early to secure a prime spot at the heritage pavilion.'
+                    },
+                    {
+                        name: 'Dubare Elephant Camp',
+                        tag: 'River Wildlife',
+                        img: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=800&q=80',
+                        desc: 'An eco-tourism camp situated on the banks of River Kaveri dedicated to elephant conservation, river bathing, and daily care.',
+                        food: 'Traditional Malnad thali meal with tender bamboo shoot curry.',
+                        activity: 'Elephant feeding, observing river bathing, and still-water boat crossing.',
+                        timing: 'Early morning (9:00 AM – 11:00 AM) during official elephant bathing hours.',
+                        tip: 'Boat crossings fill up quickly; our tour manager coordinates prompt entry.'
+                    },
+                    {
+                        name: 'Namdroling Golden Temple',
+                        tag: 'Tibetan Heritage',
+                        img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80',
+                        desc: 'The largest Tibetan Buddhist settlement in South India, featuring magnificent 40-foot gold-plated Buddha statues and ornate Tibetan artwork.',
+                        food: 'Steamed Tibetan vegetable/chicken momos and steaming Thukpa noodle soup.',
+                        activity: 'Temple prayer observation, peaceful meditation, and Tibetan handicrafts shopping.',
+                        timing: '10:00 AM – 4:30 PM.',
+                        tip: 'Maintain silence inside the sanctum and remember to remove footwear before entering.'
+                    }
+                ],
+                inclusions: [
+                    'Round-trip transportation in comfortable AC Pushback Coach / Tempo Traveller',
+                    '1 Night stay in certified boutique coffee estate resort / homestay',
+                    '1 Delicious Breakfast and 1 Campfire Dinner feast included',
+                    'Guided coffee and spice plantation walking tour with estate expert',
+                    'All scheduled sightseeing in Madikeri, Dubare, and Bylakuppe',
+                    'Evening campfire with acoustic music under starry skies',
+                    'All highway tolls, inter-state vehicle taxes, and driver charges',
+                    '24/7 dedicated Spirit Adventures tour coordinator on trip'
+                ],
+                exclusions: [
+                    'Personal expenses, shopping, and laundry service',
+                    'Lunches during highway and sightseeing stops',
+                    'Monument and monastery camera entry passes (if applicable)',
+                    'River rafting or optional boating tickets at Dubare'
+                ],
+                testimonial: {
+                    quote: '"Great hospitality and service on our Coorg family trip. The estate stay amidst coffee plantations was surreal, and Abbey Falls was breathtaking. Everything went smoothly with our guide Sathvik!"',
+                    author: 'Avinash Bollaram — Verified Coorg Traveler'
+                }
+            },
+            'goa': { 
+                title: 'Goa Beach Trip',
+                tagline: 'Sun, Sand & Portuguese Charm • Water Sports, Forts & Vibrant Nightlife',
+                duration: '3 Days, 2 Nights',
+                price: 8500,
+                hero: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1600&q=80',
+                rating: '★ 4.8 (240+ Reviews)',
+                pickup: 'Hyderabad / Bangalore / Goa Airport',
+                stay: '3-Star Beach Resort with Swimming Pool',
+                season: 'September to April',
+                desc: 'Feel the tropical breeze and soak in the vibrant coastal charm of Goa. From buzzing sandy shores in North Goa and exhilarating water sports to centuries-old Portuguese forts, Dudhsagar waterfalls, and laid-back sunset shacks, this 3 Days, 2 Nights holiday package provides the ultimate mix of thrill and beachside bliss.',
+                itinerary: [
+                    {
+                        day: 'Day 1',
+                        title: 'Welcome to Goa & Baga Beach Sunset',
+                        meals: 'Dinner Included',
+                        activities: [
+                            'Arrival in Goa; pickup and check-in to our 3-star beach resort. Refresh by the pool.',
+                            'Afternoon trip to Baga and Calangute beaches; relax on beach loungers with fresh coconut water.',
+                            'Thrilling water sports session (Parasailing, Jet Ski, and Banana rides).',
+                            'Explore vibrant beach shacks with live music, Goan seafood specials, and night market shopping.'
+                        ]
+                    },
+                    {
+                        day: 'Day 2',
+                        title: 'Heritage Forts, Latin Quarters & River Cruise',
+                        meals: 'Breakfast Included',
+                        activities: [
+                            'Buffet breakfast at resort followed by a visit to 17th-century Portuguese Fort Aguada and Lighthouse.',
+                            'Explore the UNESCO World Heritage Basilica of Bom Jesus and Se Cathedral in Old Goa.',
+                            'Stroll through the pastel-hued Portuguese Latin Quarter of Fontainhas in Panjim.',
+                            'Scenic evening Mandovi River Cruise with live Goan folk dance performances and DJ music.'
+                        ]
+                    },
+                    {
+                        day: 'Day 3',
+                        title: 'Anjuna Cliffs, Bohemian Flea Markets & Departure',
+                        meals: 'Breakfast Included',
+                        activities: [
+                            'Breakfast and resort checkout; morning visit to scenic Anjuna and Vagator cliffs.',
+                            'Visit Chapora Fort overlooking the Arabian Sea (famous "Dil Chahta Hai" viewpoint).',
+                            'Souvenir shopping at local Goan markets for cashew nuts, feni, and beachwear.',
+                            'Drop-off at airport or railway station for return journey.'
+                        ]
+                    }
+                ],
+                spots: [
+                    {
+                        name: 'Baga & Calangute Beach',
+                        tag: 'Sun & Water Sports',
+                        img: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+                        desc: 'Golden sands bustling with sunbeds, beachside shacks, and thrilling Arabian Sea water sports.',
+                        food: 'Goan Fish/Prawn Curry with steamed rice and fresh coconut water.',
+                        activity: 'Parasailing, jet ski, banana boat ride, and swimming.',
+                        timing: '10:00 AM – 6:00 PM for water sports.',
+                        tip: 'Our team negotiates safe bundled water sport combos with certified life jackets.'
+                    },
+                    {
+                        name: 'Fort Aguada & Lighthouse',
+                        tag: 'Portuguese Heritage',
+                        img: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
+                        desc: 'A grand 17th-century coastal fortress standing proudly against the Arabian Sea, housing a freshwater spring and historic 4-tier lighthouse.',
+                        food: 'Warm Goan Poee bread with Chicken Cafreal or Bebinca cake.',
+                        activity: 'Rampart walks, panoramic ocean vistas, and heritage photography.',
+                        timing: 'Late afternoon (3:30 PM – 5:30 PM) for softer coastal daylight.',
+                        tip: 'Walk towards the lower ramparts for unobstructed ocean panoramas.'
+                    },
+                    {
+                        name: 'Basilica of Bom Jesus',
+                        tag: 'UNESCO Heritage',
+                        img: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
+                        desc: 'A landmark of baroque Catholic architecture in Old Goa, holding the sacred mortal remains of St. Francis Xavier.',
+                        food: 'Portuguese Bebinca pastry and Goan Ros Omelette at a nearby bakery.',
+                        activity: 'Architectural appreciation, sacred relics viewing, and museum walk.',
+                        timing: '9:00 AM – 1:00 PM.',
+                        tip: 'Modest attire covering shoulders and knees is recommended.'
+                    },
+                    {
+                        name: 'Dudhsagar Waterfalls',
+                        tag: 'Sea of Milk',
+                        img: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80',
+                        desc: 'A magnificent four-tiered cascade on the Mandovi River resembling a roaring sea of white milk plunging down 310 meters.',
+                        food: 'Packaged picnic lunch and fresh tropical sugarcane juice.',
+                        activity: 'Jeep jungle safari through Bhagwan Mahaveer Sanctuary & freshwater pool dip.',
+                        timing: '8:30 AM – 2:00 PM.',
+                        tip: 'Life jackets are mandatory and provided for swimming in the crystal pool.'
+                    }
+                ],
+                inclusions: [
+                    'Round-trip airport / station transfers in AC vehicle',
+                    '2 Nights stay in 3-star beachside resort with swimming pool',
+                    'Daily morning buffet breakfast at resort',
+                    'Guided North Goa & South Goa sightseeing tours',
+                    'Evening Mandovi River Cruise ticket included',
+                    'Assistance with discounted group water sports combos',
+                    'All tolls, parking, and driver allowances'
+                ],
+                exclusions: [
+                    'Airfare / Train tickets to and from Goa',
+                    'Optional water sports combo activity passes',
+                    'Lunches and specialty club dinners',
+                    'Personal bar expenses, laundry, and tips'
+                ],
+                testimonial: {
+                    quote: '"The water sports and beach parties organized by Spirit Adventures in Goa were top-notch! The resort was within walking distance to the beach, and our tour coordinator handled everything seamlessly."',
+                    author: 'Priya Sharma — Verified Goa Traveler'
+                }
+            },
+            'hampi': { 
+                title: 'Hampi, Gokarna & Dandeli',
+                tagline: 'UNESCO Ruins, Sacred Coastlines & Whitewater Rapids • South India\'s Premier Circuit',
+                duration: '4 Days, 3 Nights',
+                price: 9500,
+                hero: 'https://images.unsplash.com/photo-1600100397608-f010f443b785?auto=format&fit=crop&w=1600&q=80',
+                rating: '★ 4.9 (320+ Reviews)',
+                pickup: 'Hyderabad & Bangalore',
+                stay: 'Riverside Dandeli Jungle Resort & Beachside Gokarna Stay',
+                season: 'September to March',
+                desc: 'The ultimate 3-in-1 adventure experience! Journey through the mystical boulder-strewn kingdom and monolithic temples of the Vijayanagara Empire in Hampi. Unwind on the serene, sacred cliffs of Om Beach in Gokarna, and conquer rushing whitewater rapids on the Kali River in Dandeli.',
+                itinerary: [
+                    {
+                        day: 'Day 1',
+                        title: 'Monolithic Ruins & Sunset Over Hampi',
+                        meals: 'Dinner Included',
+                        activities: [
+                            'Early morning arrival in Hampi; check-in and fresh-up.',
+                            'Explore the 7th-century Virupaksha Temple on the sacred banks of Tungabhadra River.',
+                            'Visit the world-famous Vittala Temple Complex, Stone Chariot, and musical granite pillars.',
+                            'Tour the Royal Enclosure, Lotus Mahal, and Elephant Stables.',
+                            'Hike up Hemakuta Hill for an unforgettable golden sunset over the stone boulder kingdom; campfire dinner.'
+                        ]
+                    },
+                    {
+                        day: 'Day 2',
+                        title: 'Scenic Coastal Drive & Om Beach Gokarna',
+                        meals: 'Breakfast & Beachside Dinner',
+                        activities: [
+                            'Scenic morning drive from Hampi to the Arabian Sea coastline of Gokarna.',
+                            'Visit the sacred Mahabaleshwar Temple with ancient Atmalinga heritage.',
+                            'Explore the naturally curved Om Beach; relax at cliffside cafes (Namaste Cafe).',
+                            'Trek along scenic headlands to Kudle Beach and Half Moon Beach.',
+                            'Sunset beach walk and campfire under starry coastal skies.'
+                        ]
+                    },
+                    {
+                        day: 'Day 3',
+                        title: 'Dandeli River Rafting & Jungle Adventures',
+                        meals: 'Breakfast, Lunch & Barbecue Dinner',
+                        activities: [
+                            'Morning drive into the dense teak and bamboo forests of Dandeli.',
+                            'Gear up with helmets and lifejackets for thrilling Kali River Whitewater Rafting (Grade 2 & 3 rapids).',
+                            'Enjoy kayaking, natural river jacuzzi, and river ziplining.',
+                            'Check-in to riverside jungle resort; rain dance and pool party.',
+                            'Jungle campfire with barbecue dinner and night stargazing.'
+                        ]
+                    },
+                    {
+                        day: 'Day 4',
+                        title: 'Supa Dam Canyon & Return Journey',
+                        meals: 'Breakfast Included',
+                        activities: [
+                            'Early morning jungle birdwatching and nature trail.',
+                            'Buffet breakfast at resort.',
+                            'Visit the grand Supa Dam canyon viewpoint and Syntheri Rocks monolith.',
+                            'Afternoon departure on AC coach back to Hyderabad / Bangalore.'
+                        ]
+                    }
+                ],
+                spots: [
+                    {
+                        name: 'Virupaksha Temple & Ruins',
+                        tag: 'Living UNESCO Heritage',
+                        img: 'Assests/img/Hampi.png',
+                        desc: 'A 7th-century architectural wonder on the Tungabhadra River with an imposing 50-meter gopuram, active for over 1,300 years.',
+                        food: 'Authentic South Indian thali, Benne Dosa & fresh tender coconut.',
+                        activity: 'Coracle boat ride on Tungabhadra & temple architecture exploration.',
+                        timing: 'Early morning (7:00 AM – 10:30 AM) for pleasant weather.',
+                        tip: 'Notice the pinhole camera effect of the inverted gopuram shadow inside the temple.'
+                    },
+                    {
+                        name: 'Om Beach & Kudle Beach',
+                        tag: 'Sacred Coastal Arc',
+                        img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                        desc: 'Naturally shaped in the sacred form of the Hindu Om symbol, fringed with rocky cliffs and azure Arabian Sea waves.',
+                        food: 'Wood-fired pizzas at cliffside cafes, fresh grilled fish, and lemon ginger tea.',
+                        activity: 'Cliff trekking, beach volleyball, ocean sunset swimming.',
+                        timing: 'Twilight for ocean sunsets (3:30 PM – 6:45 PM).',
+                        tip: 'Trek the scenic coastal path between Kudle and Om Beach for panoramic views.'
+                    },
+                    {
+                        name: 'Kali River Rapids Dandeli',
+                        tag: 'Whitewater Rafting',
+                        img: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=800&q=80',
+                        desc: 'Rushing whitewater through the Western Ghats jungle gorges, offering Grade 2 and 3 rapids for world-class river rafting.',
+                        food: 'Hot Jolada Rotti meal with Shenga Chutney and spiced tea.',
+                        activity: '9.5 km river rafting, zipline, natural river jacuzzi, kayaking.',
+                        timing: '9:30 AM – 1:30 PM (dam water release window).',
+                        tip: 'Strictly follow the certified river instructor\'s paddle commands.'
+                    },
+                    {
+                        name: 'Vittala Stone Chariot',
+                        tag: 'Vijayanagara Art',
+                        img: 'https://images.unsplash.com/photo-1600100397608-f010f443b782?auto=format&fit=crop&w=800&q=80',
+                        desc: 'The iconic shrine dedicated to Garuda, sculpted from massive granite blocks to resemble a moving chariot with rotating stone wheels.',
+                        food: 'North Karnataka Jolada Rotti with Yennegai eggplant curry.',
+                        activity: 'Architectural exploration, electric cart ride through ruins.',
+                        timing: '3:00 PM – 5:30 PM.',
+                        tip: 'Carry a ₹50 currency note to match the printed Stone Chariot motif in real life!'
+                    }
+                ],
+                inclusions: [
+                    'Round-trip transportation in sanitized AC Pushback Coach',
+                    '3 Nights comfortable stays (Hampi, Gokarna & Dandeli)',
+                    '3 Breakfasts, 1 Lunch & 3 Campfire Dinners',
+                    'Certified local history guide in Hampi',
+                    'Kali river water activities (Natural Jacuzzi & Kayaking included)',
+                    'Campfire nights with music in Hampi and Dandeli',
+                    'All inter-state vehicle permits, tolls, and parking charges',
+                    '24/7 dedicated Spirit Adventures tour coordinator'
+                ],
+                exclusions: [
+                    'Long-stretch Whitewater river rafting ticket (available as add-on)',
+                    'Lunches in Hampi and Gokarna',
+                    'Camera and monument entry fees',
+                    'Personal adventure sports not listed in inclusions'
+                ],
+                testimonial: {
+                    quote: '"We traveled recently with Spirit Adventures for Gokarna and Dandeli. Our guide Sathwik was very friendly. The stay and food was very good, we enjoyed the pool and beachside stay!"',
+                    author: 'Shahid Ali — Verified Gokarna & Dandeli Traveler'
+                }
+            },
+            'ooty': { 
+                title: 'Kodaikanal, Ooty & Mysore',
+                tagline: 'The Queen of Hill Stations • Nilgiri Toy Train, Tea Plantations & Royal Palaces',
+                duration: '6 Days, 5 Nights',
+                price: 14000,
+                hero: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=1600&q=80',
+                rating: '★ 4.9 (290+ Reviews)',
+                pickup: 'Hyderabad & Bangalore',
+                stay: 'Heritage Hill Resorts in Ooty & Kodaikanal, 3-Star Mysore Hotel',
+                season: 'Year-round (Peak: September to May)',
+                desc: 'Traverse the regal splendor of the Wadiyars in Mysore and ascend into the cool, misty paradise of the Nilgiri Hills. Ride the historic UNESCO mountain railway in Ooty, stroll through endless rolling emerald tea gardens in Coonoor, walk among giant ancient pine forests, and watch the illuminated brilliance of Mysore Palace.',
+                itinerary: [
+                    {
+                        day: 'Day 1',
+                        title: 'Royal Mysore & Grand Palace Illumination',
+                        meals: 'Dinner Included',
+                        activities: [
+                            'Morning departure from Bangalore/Hyderabad; reach historic Mysore.',
+                            'Visit Chamundi Hills and the sacred monolith Nandi Bull statue.',
+                            'Guided tour of the grand Mysore Palace; admire royal artifacts and golden throne.',
+                            'Marvel at the breathtaking spectacle of Mysore Palace illuminated with 100,000 golden bulbs.',
+                            'Stroll through the musical fountains of Brindavan Gardens.'
+                        ]
+                    },
+                    {
+                        day: 'Day 2',
+                        title: 'Ascent to Ooty & Botanical Gardens',
+                        meals: 'Breakfast & Dinner',
+                        activities: [
+                            'Drive through Bandipur and Mudumalai Tiger Reserves up the 36 hairpin bends into Ooty.',
+                            'Check-in to picturesque hill resort overlooking tea slopes.',
+                            'Visit Government Botanical Garden featuring over 1,000 exotic flower species.',
+                            'Evening boating on Ooty Lake surrounded by eucalyptus groves; chocolate tasting.'
+                        ]
+                    },
+                    {
+                        day: 'Day 3',
+                        title: 'UNESCO Toy Train & Coonoor Tea Estates',
+                        meals: 'Breakfast & Campfire Dinner',
+                        activities: [
+                            'Board the UNESCO World Heritage Nilgiri Mountain Railway (Toy Train) to Coonoor.',
+                            'Visit Dolphin\'s Nose viewpoint looking down on Catherine Falls and Lamb\'s Rock.',
+                            'Tour an authentic tea factory; learn orthodox tea manufacturing and enjoy tea tasting.',
+                            'Sunset at Doddabetta Peak (highest peak in the Nilgiris); resort campfire dinner.'
+                        ]
+                    },
+                    {
+                        day: 'Day 4',
+                        title: 'Scenic Drive to Kodaikanal & Star Lake',
+                        meals: 'Breakfast & Dinner',
+                        activities: [
+                            'Morning drive from Nilgiris through Palani hills to Kodaikanal ("Princess of Hill Stations").',
+                            'Check-in to cozy valley resort in Kodaikanal.',
+                            'Leisure walk and cycling around the perimeter of Kodaikanal Star-Shaped Lake.',
+                            'Visit Bryant Park; shop for homemade chocolates and herbal eucalyptus oils.'
+                        ]
+                    },
+                    {
+                        day: 'Day 5',
+                        title: 'Pillar Rocks, Pine Forest & Coaker\'s Walk',
+                        meals: 'Breakfast & Dinner',
+                        activities: [
+                            'Morning visit to the magnificent Pillar Rocks (400-foot sheer granite cliffs).',
+                            'Explore Guna Caves (Devil\'s Kitchen) and Moir Point.',
+                            'Walk through the fairy-tale Pine Forest; visit Silver Cascade and Bear Shola Falls.',
+                            'Evening walk along Coaker\'s Walk with breathtaking misty valley views below.'
+                        ]
+                    },
+                    {
+                        day: 'Day 6',
+                        title: 'Chettiar Park & Journey Back',
+                        meals: 'Breakfast Included',
+                        activities: [
+                            'Leisurely breakfast and visit to Chettiar Park with Kurinji flowers.',
+                            'Scenic descent from the hills with roadside viewpoints and fruit stalls.',
+                            'Return journey back to Bangalore / Hyderabad with lifelong memories.'
+                        ]
+                    }
+                ],
+                spots: [
+                    {
+                        name: 'Mysore Grand Palace',
+                        tag: 'Royal Heritage',
+                        img: 'https://images.unsplash.com/photo-1600100397608-f010f443b782?auto=format&fit=crop&w=800&q=80',
+                        desc: 'The official residence of the Wadiyar dynasty, boasting stained-glass domes, intricately carved teakwood ceilings, and royal armory.',
+                        food: 'Authentic melt-in-the-mouth Mysore Pak & Mysore Masala Dosa.',
+                        activity: 'Palace museum tour and evening golden illumination spectacle.',
+                        timing: 'Illumination on Sundays & holidays (7:00 PM – 7:45 PM).',
+                        tip: 'Socks are recommended inside the palace floors.'
+                    },
+                    {
+                        name: 'Ooty Lake & Mountain Train',
+                        tag: 'UNESCO Heritage',
+                        img: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=800&q=80',
+                        desc: 'Spanning across 65 acres against a backdrop of eucalyptus groves, coupled with the steam-hauled UNESCO mountain railway.',
+                        food: 'Hot roasted corn, handmade chocolates, and Nilgiri spiced tea.',
+                        activity: 'Pedal boating and mountain railway journey through tunnels.',
+                        timing: 'Morning hours for crisp weather and clear mountain views.',
+                        tip: 'Book toy train window seats on the right side for the best valley vistas.'
+                    },
+                    {
+                        name: 'Coonoor Tea Estates',
+                        tag: 'Emerald Hills',
+                        img: 'https://images.unsplash.com/photo-1576487242484-909772bf2016?auto=format&fit=crop&w=800&q=80',
+                        desc: 'Verdant rolling tea plantations ending at an enormous protruding cliff shaped like a dolphin\'s nose, overlooking Catherine Falls.',
+                        food: 'Fresh green tea tasting & homemade fruit jams.',
+                        activity: 'Walking through tea bush trails and tea tasting at the processing factory.',
+                        timing: '10:00 AM – 3:30 PM.',
+                        tip: 'Buy estate-direct single-origin Nilgiri green and white tea.'
+                    },
+                    {
+                        name: 'Kodaikanal Pine Forest',
+                        tag: 'Misty Alpine Woods',
+                        img: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+                        desc: 'Dense rows of towering pine trees planted over a century ago, creating a moody, misty alpine atmosphere straight out of a fairytale.',
+                        food: 'Hot Maggi noodles, roasted corn on the cob, piping hot ginger tea.',
+                        activity: 'Forest photography, nature trekking, and horseback riding.',
+                        timing: 'Morning hours when misty fog rolls between tree trunks.',
+                        tip: 'Fantastic spot for cinematic portrait photography.'
+                    }
+                ],
+                inclusions: [
+                    'Round-trip transportation in premium AC coach',
+                    '5 Nights accommodation in 3-star hill and heritage resorts',
+                    'Daily breakfast and 5 gourmet dinners',
+                    'UNESCO Nilgiri Toy Train reservation assistance',
+                    'Guided tours of Mysore Palace and Tea Factory',
+                    'All interstate entry taxes, tolls, parking, and driver charges',
+                    'Dedicated Spirit Adventures tour coordinator'
+                ],
+                exclusions: [
+                    'Personal boating charges at Ooty and Kodaikanal lakes',
+                    'Lunches and mid-day snacks',
+                    'Entry fees to amusement rides / private parks',
+                    'Room service and personal tips'
+                ],
+                testimonial: {
+                    quote: '"I recently went on the Ooty and Coonoor trip. Special thanks to our tour guide Aditya, who was extremely supportive, approachable, and kept everyone comfortable throughout. The toy train ride was a dream!"',
+                    author: 'Kottana Mounika — Verified Ooty & Mysore Traveler'
+                }
+            }
+        };
+
+        // Determine destination from query parameter (defaults to 'hampi')
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentDest = urlParams.get('dest');
+        if (!currentDest || !packageData[currentDest]) currentDest = 'hampi';
+
+        // Render destination data
+        function renderPackage(destKey) {
+            currentDest = destKey;
+            const data = packageData[destKey];
+            if (!data) return;
+
+            // Page title & metadata
+            document.title = data.title + " | Spirit Adventures";
+            document.getElementById('breadcrumb-title').textContent = data.title;
+            document.getElementById('page-title').textContent = data.title;
+            document.getElementById('page-subtitle').textContent = data.tagline;
+            document.getElementById('hero-img').src = data.hero;
+
+            // Hero badges
+            document.getElementById('hero-price').innerHTML = `<i class="fas fa-tag"></i> ₹${data.price.toLocaleString('en-IN')} / person`;
+            document.getElementById('hero-duration').innerHTML = `<i class="fas fa-clock"></i> ${data.duration}`;
+            document.getElementById('hero-rating').innerHTML = `<i class="fas fa-star"></i> ${data.rating}`;
+            document.getElementById('hero-pickup').innerHTML = `<i class="fas fa-bus"></i> Pickup: ${data.pickup}`;
+
+            // 4-Card Meta grid
+            document.getElementById('meta-duration').textContent = data.duration;
+            document.getElementById('meta-price').textContent = `₹${data.price.toLocaleString('en-IN')} / person`;
+            document.getElementById('meta-stay').textContent = data.stay;
+            document.getElementById('meta-season').textContent = data.season;
+
+            // Description narrative
+            document.getElementById('page-desc').textContent = data.desc;
+
+            // Active Tab Highlight
+            ['coorg', 'goa', 'hampi', 'ooty'].forEach(key => {
+                const tab = document.getElementById(`tab-${key}`);
+                if (tab) {
+                    if (key === destKey) tab.classList.add('active');
+                    else tab.classList.remove('active');
+                }
+            });
+
+            // Itinerary Timeline Rendering
+            const itinContainer = document.getElementById('itinerary-container');
+            itinContainer.innerHTML = '';
+            data.itinerary.forEach((item, index) => {
+                const dayCard = document.createElement('div');
+                dayCard.className = 'itinerary-day-card';
+                
+                let actsHtml = '';
+                item.activities.forEach(act => {
+                    actsHtml += `<li><i class="fas fa-check-circle"></i> <span>${act}</span></li>`;
+                });
+
+                dayCard.innerHTML = `
+                    <div class="day-bullet"></div>
+                    <div class="day-header">
+                        <div class="day-title-wrap">
+                            <span class="day-badge">${item.day}</span>
+                            <span class="day-title">${item.title}</span>
+                        </div>
+                        <span class="day-meals-badge"><i class="fas fa-utensils"></i> ${item.meals}</span>
+                    </div>
+                    <ul class="day-activities">
+                        ${actsHtml}
+                    </ul>
+                `;
+                itinContainer.appendChild(dayCard);
+            });
+
+            // Spots Grid Rendering
+            const spotsContainer = document.getElementById('spots-container');
+            spotsContainer.innerHTML = '';
+            data.spots.forEach(spot => {
+                const card = document.createElement('div');
+                card.className = 'spot-card';
+                card.onclick = () => openSpotModal(spot);
+                card.innerHTML = `
+                    <div class="spot-card-badge">${spot.tag}</div>
+                    <img src="${spot.img}" alt="${spot.name}" loading="lazy">
+                    <div class="spot-overlay">
+                        <h4>${spot.name}</h4>
+                        <div class="spot-quick-info"><i class="fas fa-utensils" style="color:var(--yellow)"></i> Food & Experiences Included</div>
+                        <span class="click-hint"><i class="fas fa-search-plus"></i> Click for details & tips &rarr;</span>
+                    </div>
+                `;
+                spotsContainer.appendChild(card);
+            });
+
+            // Inclusions Rendering
+            const incContainer = document.getElementById('inclusions-container');
+            incContainer.innerHTML = '';
+            data.inclusions.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-check-circle"></i> <span>${item}</span>`;
+                incContainer.appendChild(li);
+            });
+
+            // Exclusions Rendering
+            const excContainer = document.getElementById('exclusions-container');
+            excContainer.innerHTML = '';
+            data.exclusions.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-times-circle"></i> <span>${item}</span>`;
+                excContainer.appendChild(li);
+            });
+
+            // Testimonial Spotlight
+            document.getElementById('test-quote').textContent = data.testimonial.quote;
+            document.getElementById('test-author').textContent = `— ${data.testimonial.author}`;
+
+            // Bottom Sticky Bar
+            document.getElementById('bar-title').textContent = data.title;
+            document.getElementById('bar-price').textContent = data.price.toLocaleString('en-IN');
+            const waMsg = encodeURIComponent(`Hi Spirit Adventures! I am interested in the ${data.title} (${data.duration}) package. Please share availability, departure dates, and booking details.`);
+            document.getElementById('bar-whatsapp').href = `https://wa.me/919666567551?text=${waMsg}`;
+
+            // Update Embedded Booking Integration Form
+            const formTitle = document.getElementById('booking-section-title');
+            if (formTitle) formTitle.textContent = data.title;
+            const destInput = document.getElementById('form-dest-input');
+            if (destInput) destInput.value = data.title;
+            const sumTitle = document.getElementById('pkg-sum-title');
+            if (sumTitle) sumTitle.textContent = data.title;
+            const sumDuration = document.getElementById('pkg-sum-duration');
+            if (sumDuration) sumDuration.innerHTML = `<i class="fas fa-clock"></i> ${data.duration}`;
+            const sumRate = document.getElementById('pkg-sum-rate');
+            if (sumRate) sumRate.textContent = `₹${data.price.toLocaleString('en-IN')}`;
+            const sumImg = document.getElementById('pkg-sum-img');
+            if (sumImg) sumImg.src = data.hero;
+
+            updatePkgBookingCalc();
+        }
+
+        // Live calculation for embedded booking form
+        function updatePkgBookingCalc() {
+            const data = packageData[currentDest];
+            if (!data) return;
+            const paxSelect = document.getElementById('pkg-travelers');
+            const pax = parseInt(paxSelect ? paxSelect.value : 2, 10) || 1;
+            const total = data.price * pax;
+            
+            const paxEl = document.getElementById('pkg-sum-pax');
+            if (paxEl) paxEl.textContent = `${pax} ${pax > 1 ? 'Persons' : 'Person'}`;
+            const totalEl = document.getElementById('pkg-sum-total');
+            if (totalEl) totalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+
+            const dateInput = document.getElementById('pkg-travel-date');
+            const travelDate = (dateInput && dateInput.value) ? dateInput.value : 'Upcoming dates';
+            const waMsg = encodeURIComponent(`Hi Spirit Adventures! I want to book the *${data.title}* package for *${pax} traveler(s)* around *${travelDate}*. Please confirm my reservation and provide payment details!`);
+            const waBtn = document.getElementById('pkg-wa-book-btn');
+            if (waBtn) waBtn.href = `https://wa.me/919666567551?text=${waMsg}`;
+        }
+
+        // Switch destination on tab click
+        function switchDest(destKey) {
+            history.pushState(null, '', `package.html?dest=${destKey}`);
+            renderPackage(destKey);
+            window.scrollTo({ top: 380, behavior: 'smooth' });
+        }
+
+        // Handle browser Back / Forward buttons
+        window.addEventListener('popstate', () => {
+            const params = new URLSearchParams(window.location.search);
+            const dest = params.get('dest') || 'hampi';
+            renderPackage(dest);
+        });
+
+        // Spot Modal Handlers
+        const spotModal = document.getElementById('spot-modal');
+        function openSpotModal(spot) {
+            document.getElementById('spot-modal-title').textContent = spot.name;
+            document.getElementById('spot-modal-tag').textContent = spot.tag;
+            document.getElementById('spot-modal-desc').textContent = spot.desc;
+            document.getElementById('spot-modal-food').textContent = spot.food;
+            document.getElementById('spot-modal-activity').textContent = spot.activity;
+            document.getElementById('spot-modal-timing').textContent = spot.timing;
+            document.getElementById('spot-modal-tip').textContent = spot.tip;
+            document.getElementById('spot-modal-img').src = spot.img;
+            
+            spotModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSpotModal() {
+            spotModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        spotModal.addEventListener('click', (e) => {
+            if (e.target === spotModal) closeSpotModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSpotModal();
+        });
+
+        // Smooth scroll to embedded booking form
+        function bookNow() {
+            const bookingSec = document.getElementById('booking-section');
+            if (bookingSec) {
+                bookingSec.scrollIntoView({ behavior: 'smooth' });
+                const nameInput = document.getElementById('pkg-full-name');
+                if (nameInput) setTimeout(() => nameInput.focus(), 500);
+            } else {
+                window.location.href = `booking.html?dest=${currentDest}`;
+            }
+        }
+
+        // Initialize embedded booking form handlers
+        const dateInput = document.getElementById('pkg-travel-date');
+        if (dateInput) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+            dateInput.addEventListener('change', updatePkgBookingCalc);
+        }
+
+        const paxInput = document.getElementById('pkg-travelers');
+        if (paxInput) paxInput.addEventListener('change', updatePkgBookingCalc);
+
+        const pkgBookingForm = document.getElementById('pkg-booking-form');
+        if (pkgBookingForm) {
+            pkgBookingForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = document.getElementById('pkg-submit-btn');
+                const origText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Reservation...';
+                submitBtn.disabled = true;
+
+                const formData = new FormData(pkgBookingForm);
+                const data = packageData[currentDest] || { title: 'Package Tour', price: 4999 };
+                const paxSelect = document.getElementById('pkg-travelers');
+                const pax = parseInt(paxSelect ? paxSelect.value : 2, 10) || 1;
+                const totalVal = data.price * pax;
+                const totalFormatted = `₹${totalVal.toLocaleString('en-IN')}`;
+                const bookingRef = '#PK-' + Math.floor(100000 + Math.random() * 900000);
+                const timestamp = new Date().toLocaleString('en-IN', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                });
+
+                const clientName = (document.getElementById('pkg-full-name')?.value || '').trim();
+                const clientPhone = (document.getElementById('pkg-phone')?.value || '').trim();
+                const clientEmail = (document.getElementById('pkg-email')?.value || '').trim();
+                const travelDate = document.getElementById('pkg-travel-date')?.value || '';
+                const pickupCity = (document.getElementById('pkg-pickup-city')?.value || '').trim() || 'Not specified';
+                const notes = (document.getElementById('pkg-notes')?.value || '').trim() || 'Booked via package.html';
+
+                const bookingRecord = {
+                    booking_id: bookingRef,
+                    timestamp: timestamp,
+                    name: clientName,
+                    phone: clientPhone,
+                    email: clientEmail,
+                    package: data.title,
+                    travel_date: travelDate,
+                    travelers: pax,
+                    pickup_city: pickupCity,
+                    total_amount: totalFormatted,
+                    notes: notes,
+                    status: 'Pending',
+                    source: 'package.html'
+                };
+
+                // 1. Save locally and broadcast in REAL TIME to admin.html
+                try {
+                    const stored = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
+                    stored.unshift(bookingRecord);
+                    localStorage.setItem('spirit_local_bookings', JSON.stringify(stored));
+
+                    // Storage event trigger for listening tabs/windows
+                    localStorage.setItem('spirit_last_booking_event', JSON.stringify({
+                        time: Date.now(),
+                        ref: bookingRef,
+                        name: clientName,
+                        pkg: data.title,
+                        amount: totalFormatted,
+                        status: 'Pending',
+                        source: 'package.html'
+                    }));
+
+                    if (window.BroadcastChannel) {
+                        const bc = new BroadcastChannel('spirit_booking_sync');
+                        bc.postMessage({
+                            type: 'NEW_BOOKING',
+                            source: 'package.html',
+                            data: bookingRecord,
+                            timestamp: Date.now()
+                        });
+                    }
+                } catch (storageErr) {
+                    console.warn('Could not cache or broadcast package booking:', storageErr);
+                }
+
+                // 2. Post to SheetDB if configured
+                try {
+                    const sheetDbUrl = localStorage.getItem('spirit_sheetdb_url');
+                    if (sheetDbUrl && !sheetDbUrl.includes('YOUR_SHEETDB_API_ID')) {
+                        await fetch(sheetDbUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ data: [bookingRecord] })
+                        });
+                    }
+                } catch (sheetErr) {
+                    console.warn('SheetDB save error from package.html:', sheetErr);
+                }
+
+                // 3. Post to Formspree
+                try {
+                    await fetch(pkgBookingForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                } catch (err) {
+                    console.warn('Formspree submission error:', err);
+                } finally {
+                    alert(`🎉 Booking Request Confirmed!\n\nBooking Reference: ${bookingRef}\nPackage: ${data.title}\nTravelers: ${pax} Person(s)\nEstimated Total: ${totalFormatted}\n\nThank you for choosing Spirit Adventures! Our team will contact you shortly.`);
+                    pkgBookingForm.reset();
+                    updatePkgBookingCalc();
+                    submitBtn.innerHTML = origText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Real-Time rates sync from admin.html
+        if (window.BroadcastChannel) {
+            try {
+                const bc = new BroadcastChannel('spirit_booking_sync');
+                bc.onmessage = (event) => {
+                    if (event.data && event.data.type === 'PACKAGE_UPDATE' && event.data.packages) {
+                        Object.keys(event.data.packages).forEach(key => {
+                            if (packageData[key]) {
+                                packageData[key].price = event.data.packages[key].rate;
+                                packageData[key].duration = event.data.packages[key].duration;
+                            }
+                        });
+                        renderPackage(currentDest);
+                    }
+                };
+            } catch (e) {}
+        }
+
+        // Apply any custom saved package rates on load
+        try {
+            const savedRates = JSON.parse(localStorage.getItem('spirit_custom_packages') || '{}');
+            Object.keys(savedRates).forEach(key => {
+                if (packageData[key]) {
+                    packageData[key].price = savedRates[key].rate || packageData[key].price;
+                    packageData[key].duration = savedRates[key].duration || packageData[key].duration;
+                }
+            });
+        } catch (e) {}
+
+        // Initialize page
+        renderPackage(currentDest);
+    </script>
+</body>
+</html>
