@@ -14,6 +14,7 @@
 
 html { overflow-x: hidden; width: 100%; -webkit-text-size-adjust: 100%; }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-sans); scroll-behavior: smooth; }
+img { max-width: 100%; }
 body { overflow-x: hidden; background: var(--white); color: var(--black); width: 100%; max-width: 100vw; position: relative; }
 
 /* Semi-Transparent Demo Website Watermark Overlay */
@@ -301,11 +302,27 @@ body::before {
 .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
 .feat-item { font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--teal); }
 .about-services { background: var(--gray); padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.about-section.bg-light .about-services { background: var(--white); box-shadow: 0 15px 35px rgba(0,0,0,0.06); border-top: 5px solid var(--yellow); }
 .about-services h3 { font-size: 1.2rem; margin-bottom: 20px; color: var(--teal); font-weight: 800; }
 .service-box { display: flex; gap: 15px; margin-bottom: 15px; align-items: flex-start; }
 .service-box i { font-size: 1.5rem; color: var(--yellow); margin-top: 4px; }
 .service-box h4 { font-size: 0.95rem; margin-bottom: 4px; color: var(--black); }
 .service-box p { font-size: 0.8rem; color: #555; line-height: 1.4; }
+
+.about-reviews-block {
+    margin-top: 65px;
+    padding-top: 30px;
+    position: relative;
+}
+.about-reviews-block::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal), var(--yellow));
+    border-radius: 2px;
+    margin: 0 auto 40px auto;
+}
 
 .services-grid-container {
     display: grid;
