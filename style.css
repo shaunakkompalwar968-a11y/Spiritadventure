@@ -55,7 +55,7 @@ body::before {
     min-height: 100vh; 
     position: relative; 
     overflow: hidden; 
-    background: #04181d;
+    background: #06242a url('Assests/img/hero-poster.jpg') center top / cover no-repeat;
 }
 
 .full-bg-video { 
@@ -64,7 +64,10 @@ body::before {
     left: 0; 
     width: 100%; 
     height: 100%; 
+    min-width: 100%;
+    min-height: 100%;
     object-fit: cover; 
+    object-position: center top;
     z-index: 1; 
     pointer-events: none; 
 }
@@ -901,12 +904,12 @@ html.skip-intro #welcome-popup,
     .hero-left { 
         flex: none; 
         width: 100%; 
-        background: linear-gradient(180deg, rgba(10, 52, 58, 0.88) 0%, rgba(15, 82, 88, 0.74) 100%) !important; 
-        backdrop-filter: blur(8px) !important; 
-        -webkit-backdrop-filter: blur(8px) !important; 
+        background: linear-gradient(180deg, rgba(6, 32, 38, 0.48) 0%, rgba(10, 52, 58, 0.38) 60%, rgba(15, 82, 88, 0.25) 100%) !important; 
+        backdrop-filter: blur(2.5px) !important; 
+        -webkit-backdrop-filter: blur(2.5px) !important; 
         border-right: none !important; 
-        border-bottom: 1.5px solid rgba(255, 255, 255, 0.16) !important; 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22) !important; 
+        border-bottom: none !important; 
+        box-shadow: none !important; 
         padding: 110px 5% 35px 5%; 
         text-align: center;
         display: flex;
@@ -922,9 +925,9 @@ html.skip-intro #welcome-popup,
     .hero-right { 
         flex: none; 
         width: 100%; 
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.20) 100%) !important; 
-        backdrop-filter: blur(6px) !important; 
-        -webkit-backdrop-filter: blur(6px) !important; 
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%) !important; 
+        backdrop-filter: blur(2.5px) !important; 
+        -webkit-backdrop-filter: blur(2.5px) !important; 
         border: none !important; 
         box-shadow: none !important; 
         padding: 30px 5% 70px 5%; 
@@ -948,12 +951,26 @@ html.skip-intro #welcome-popup,
     .section-padding { padding: 50px 0; }
     .section-heading { font-size: clamp(1.6rem, 5vw, 2.2rem); }
     .subtitle-tag { font-size: 0.78rem; letter-spacing: 1.5px; }
-    .hero-left { padding: 100px 20px 20px 20px; }
+    .hero-left { padding: 95px 20px 20px 20px; }
     .hero-right { padding: 15px 20px 55px 20px; }
-    .top-subtitle { font-size: clamp(1rem, 3.5vw, 1.3rem); }
-    .cursive-text { font-size: clamp(3.2rem, 11vw, 4.8rem); }
+    .top-subtitle { 
+        font-size: clamp(1rem, 3.5vw, 1.3rem); 
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75) !important; 
+    }
+    .cursive-text { 
+        font-size: clamp(3.2rem, 11vw, 4.8rem); 
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65) !important; 
+    }
     .plane-icon { font-size: 1.4rem; top: 6px; right: -15px; }
-    .hero-desc { font-size: 0.88rem; max-width: 100%; }
+    .main-title {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75) !important;
+    }
+    .hero-desc { 
+        font-size: 0.88rem; 
+        max-width: 100%; 
+        color: #ffffff !important;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85) !important; 
+    }
     .dots-pattern { display: none; }
     .flight-path { display: none; }
     .custom-nav { padding: 12px 18px !important; }

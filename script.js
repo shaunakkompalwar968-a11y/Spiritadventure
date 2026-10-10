@@ -686,6 +686,10 @@
         const heroBgVideo = document.querySelector('.full-bg-video');
         if (heroBgVideo) {
             heroBgVideo.muted = true;
+            heroBgVideo.defaultMuted = true;
+            heroBgVideo.playsInline = true;
+            heroBgVideo.setAttribute('playsinline', '');
+            heroBgVideo.setAttribute('webkit-playsinline', '');
             const playBg = () => {
                 const p = heroBgVideo.play();
                 if (p !== undefined) {
@@ -693,7 +697,10 @@
                 }
             };
             playBg();
-            document.addEventListener('touchstart', playBg, { once: true });
+            heroBgVideo.addEventListener('loadeddata', playBg, { once: true });
+            document.addEventListener('touchstart', playBg, { once: true, passive: true });
+            document.addEventListener('pointerdown', playBg, { once: true, passive: true });
             document.addEventListener('click', playBg, { once: true });
+            window.addEventListener('scroll', playBg, { once: true, passive: true });
         }
     });
