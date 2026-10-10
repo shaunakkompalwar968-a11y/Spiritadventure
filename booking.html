@@ -8,6 +8,42 @@
     <link rel="icon" type="image/png" href="Assests/img/logohead.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+    <style>
+        .summary-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(20, 184, 166, 0.28);
+            color: var(--yellow, #f59e0b);
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            margin-bottom: 8px;
+            width: fit-content;
+        }
+        .summary-section-heading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--teal, #14b8a6);
+            padding: 10px 0 6px;
+            border-bottom: 1px dashed #e2e8f0;
+            margin-bottom: 3px;
+        }
+        .summary-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+    </style>
 </head>
 <body class="booking-page-body">
 
@@ -142,23 +178,49 @@
                 <div class="summary-img-wrapper">
                     <img id="sum-img" src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80" alt="Package Thumbnail" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';">
                     <div class="summary-img-overlay">
+                        <span class="summary-badge"><i class="fas fa-bolt"></i> Live Booking Preview</span>
                         <h3 id="sum-title">Coorg Getaway</h3>
                         <span id="sum-duration"><i class="fas fa-clock"></i> 2 Days, 1 Night</span>
                     </div>
                 </div>
                 
                 <div class="summary-body">
+                    <div class="summary-section-heading">
+                        <i class="fas fa-clipboard-list"></i> <span>Your Reservation Details</span>
+                    </div>
+
                     <div class="summary-row">
-                        <span>Price per Person:</span>
+                        <span><i class="fas fa-map-marked-alt" style="color: var(--teal);"></i> Package:</span>
+                        <strong id="sum-pkg-name">Coorg Getaway</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span><i class="fas fa-user" style="color: var(--teal);"></i> Lead Traveler:</span>
+                        <strong id="sum-lead-name" style="color: #94a3b8;">Enter your name</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span><i class="fas fa-calendar-alt" style="color: var(--teal);"></i> Travel Date:</span>
+                        <strong id="sum-travel-date" style="color: #94a3b8;">Select date</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span><i class="fas fa-location-arrow" style="color: var(--teal);"></i> Pickup City:</span>
+                        <strong id="sum-pickup-city" style="color: #94a3b8;">Not specified</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span><i class="fas fa-users" style="color: var(--teal);"></i> Travelers:</span>
+                        <strong id="sum-pax">2 Persons</strong>
+                    </div>
+
+                    <div class="summary-section-heading" style="margin-top: 14px;">
+                        <i class="fas fa-receipt"></i> <span>Pricing Breakdown</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span><i class="fas fa-tag" style="color: var(--teal);"></i> Price per Person:</span>
                         <strong id="sum-rate">₹4,999</strong>
                     </div>
                     <div class="summary-row">
-                        <span>Travelers:</span>
-                        <strong id="sum-pax">2 Persons</strong>
-                    </div>
-                    <div class="summary-row">
-                        <span>All Taxes & Service Fees:</span>
-                        <strong style="color: #10B981;"><i class="fas fa-check"></i> Included</strong>
+                        <span><i class="fas fa-shield-alt" style="color: #10B981;"></i> Taxes & Service:</span>
+                        <strong style="color: #10B981;"><i class="fas fa-check"></i> 100% Included</strong>
                     </div>
                     <div class="summary-row total">
                         <span>Estimated Total:</span>
@@ -281,10 +343,25 @@
         try {
             const savedPackages = JSON.parse(localStorage.getItem('spirit_custom_packages') || '{}');
             Object.keys(savedPackages).forEach(key => {
-                if (pkgDetails[key]) {
-                    Object.assign(pkgDetails[key], savedPackages[key]);
-                } else {
-                    pkgDetails[key] = savedPackages[key];
+                const k = key.toLowerCase().trim();
+                const item = savedPackages[key];
+                if (item && typeof item === 'object') {
+                    if (pkgDetails[k]) {
+                        if (item.title) pkgDetails[k].title = item.title;
+                        if (item.duration) pkgDetails[k].duration = item.duration;
+                        if (item.rate) {
+                            const parsedRate = parseInt(String(item.rate).replace(/[^0-9]/g, ''), 10);
+                            if (parsedRate && !isNaN(parsedRate)) pkgDetails[k].rate = parsedRate;
+                        }
+                        if (item.img) pkgDetails[k].img = item.img;
+                    } else {
+                        pkgDetails[k] = {
+                            title: item.title || k,
+                            duration: item.duration || 'Flexible',
+                            rate: parseInt(String(item.rate || '4999').replace(/[^0-9]/g, ''), 10) || 4999,
+                            img: item.img || 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80'
+                        };
+                    }
                 }
             });
         } catch (e) {}
@@ -297,10 +374,16 @@
                     if (event.data && event.data.type === 'PACKAGE_UPDATE') {
                         if (event.data.packages) {
                             Object.keys(event.data.packages).forEach(key => {
-                                if (pkgDetails[key]) {
-                                    Object.assign(pkgDetails[key], event.data.packages[key]);
-                                } else {
-                                    pkgDetails[key] = event.data.packages[key];
+                                const k = key.toLowerCase().trim();
+                                const item = event.data.packages[key];
+                                if (item && typeof item === 'object' && pkgDetails[k]) {
+                                    if (item.title) pkgDetails[k].title = item.title;
+                                    if (item.duration) pkgDetails[k].duration = item.duration;
+                                    if (item.rate) {
+                                        const parsedRate = parseInt(String(item.rate).replace(/[^0-9]/g, ''), 10);
+                                        if (parsedRate && !isNaN(parsedRate)) pkgDetails[k].rate = parsedRate;
+                                    }
+                                    if (item.img) pkgDetails[k].img = item.img;
                                 }
                             });
                             updateSummary();
@@ -351,29 +434,39 @@
             const travelerEl = document.getElementById('traveler-count');
             const pax = parseInt(travelerEl ? travelerEl.value : '2', 10) || 1;
             
-            const data = pkgDetails[currentPkg] || pkgDetails['coorg'];
+            // 1. Get package details with comprehensive fallback
+            let data = pkgDetails[currentPkg];
+            if (!data) {
+                const opt = selectEl && selectEl.selectedOptions && selectEl.selectedOptions[0];
+                const optText = opt ? opt.textContent : 'Coorg Getaway';
+                const rateMatch = optText.match(/₹([0-9,]+)/);
+                const extractedRate = rateMatch ? parseInt(rateMatch[1].replace(/,/g, ''), 10) : 4999;
+                data = {
+                    title: optText.split('(')[0].trim() || 'Custom Package',
+                    duration: 'Flexible',
+                    rate: extractedRate,
+                    img: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80'
+                };
+            }
+
             const rate = typeof data.rate === 'number' 
                 ? data.rate 
                 : (parseInt(String(data.rate).replace(/[^0-9]/g, ''), 10) || 4999);
             const total = rate * pax;
 
+            // 2. Reflect Package Info
             const sumTitle = document.getElementById('sum-title');
             if (sumTitle) sumTitle.textContent = data.title;
+
+            const sumPkgName = document.getElementById('sum-pkg-name');
+            if (sumPkgName) sumPkgName.textContent = data.title;
 
             const sumDur = document.getElementById('sum-duration');
             if (sumDur) sumDur.innerHTML = `<i class="fas fa-clock"></i> ${data.duration}`;
 
-            const sumRate = document.getElementById('sum-rate');
-            if (sumRate) sumRate.textContent = `₹${rate.toLocaleString('en-IN')}`;
-
-            const sumPax = document.getElementById('sum-pax');
-            if (sumPax) sumPax.textContent = `${pax} ${pax > 1 ? 'Persons' : 'Person'}`;
-            
             const sumImg = document.getElementById('sum-img');
             if (sumImg) {
-                if (data.img) {
-                    sumImg.src = data.img;
-                }
+                if (data.img) sumImg.src = data.img;
                 sumImg.alt = `${data.title} Thumbnail`;
                 sumImg.onerror = function() {
                     this.onerror = null;
@@ -381,16 +474,72 @@
                 };
             }
 
-            const sumTotal = document.getElementById('sum-total');
-            if (sumTotal) {
-                sumTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+            // 3. Reflect Lead Traveler Name from form-card
+            const nameEl = document.getElementById('full-name');
+            const travelerName = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : '';
+            const sumLead = document.getElementById('sum-lead-name');
+            if (sumLead) {
+                if (travelerName) {
+                    sumLead.textContent = travelerName;
+                    sumLead.style.color = 'var(--teal)';
+                } else {
+                    sumLead.textContent = 'Enter your name';
+                    sumLead.style.color = '#94a3b8';
+                }
             }
+
+            // 4. Reflect Preferred Travel Date from form-card
+            const dateEl = document.getElementById('travel-date');
+            const rawDate = dateEl && dateEl.value ? dateEl.value : '';
+            const sumDate = document.getElementById('sum-travel-date');
+            let formattedDate = 'Upcoming dates';
+            if (sumDate) {
+                if (rawDate) {
+                    const parsedD = new Date(rawDate);
+                    formattedDate = !isNaN(parsedD.getTime()) 
+                        ? parsedD.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                        : rawDate;
+                    sumDate.textContent = formattedDate;
+                    sumDate.style.color = '#1e293b';
+                } else {
+                    sumDate.textContent = 'Select date';
+                    sumDate.style.color = '#94a3b8';
+                }
+            }
+
+            // 5. Reflect Pickup City from form-card
+            const cityEl = document.getElementById('pickup-city');
+            const pickupCity = (cityEl && cityEl.value.trim()) ? cityEl.value.trim() : '';
+            const sumCity = document.getElementById('sum-pickup-city');
+            if (sumCity) {
+                if (pickupCity) {
+                    sumCity.textContent = pickupCity;
+                    sumCity.style.color = '#1e293b';
+                } else {
+                    sumCity.textContent = 'Not specified';
+                    sumCity.style.color = '#94a3b8';
+                }
+            }
+
+            // 6. Reflect Travelers Count & Pricing
+            const sumPax = document.getElementById('sum-pax');
+            if (sumPax) sumPax.textContent = `${pax} ${pax > 1 ? 'Persons' : 'Person'}`;
+
+            const sumRate = document.getElementById('sum-rate');
+            if (sumRate) sumRate.textContent = `₹${rate.toLocaleString('en-IN')}`;
+
+            const sumTotal = document.getElementById('sum-total');
+            if (sumTotal) sumTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
             triggerPriceAnimation();
 
-            const travelDateEl = document.getElementById('travel-date');
-            const travelDate = (travelDateEl && travelDateEl.value) ? travelDateEl.value : 'Upcoming dates';
+            // 7. Reflect into WhatsApp Quick Booking Link
+            const clientPhoneEl = document.getElementById('phone-number');
+            const clientPhone = clientPhoneEl && clientPhoneEl.value.trim() ? ` (Phone: ${clientPhoneEl.value.trim()})` : '';
+            const leadInfo = travelerName ? `My name is ${travelerName}${clientPhone}. ` : '';
+            const pickupInfo = pickupCity ? ` Pickup from ${pickupCity}.` : '';
+
             const waText = encodeURIComponent(
-                `Hi Spirit Adventures! I want to book the *${data.title}* package for *${pax} traveler(s)* around *${travelDate}*. Estimated Total: ₹${total.toLocaleString('en-IN')}. Please share availability and payment details!`
+                `Hi Spirit Adventures! ${leadInfo}I want to book the *${data.title}* package for *${pax} traveler(s)* around *${formattedDate}*.${pickupInfo} Estimated Total: ₹${total.toLocaleString('en-IN')}. Please share availability and payment details!`
             );
             const waLink = document.getElementById('wa-book-link');
             if (waLink) {
@@ -398,23 +547,26 @@
             }
         }
 
-        // Event listeners for instantaneous reflection on every input/change
-        if (pkgSelect) {
-            pkgSelect.addEventListener('change', updateSummary);
-            pkgSelect.addEventListener('input', updateSummary);
-        }
+        // Real-time event listeners across ALL form inputs for live reflection
+        const formInputIds = [
+            'package-select',
+            'full-name',
+            'phone-number',
+            'email-address',
+            'travel-date',
+            'traveler-count',
+            'pickup-city',
+            'special-requests'
+        ];
 
-        const travelerCountEl = document.getElementById('traveler-count');
-        if (travelerCountEl) {
-            travelerCountEl.addEventListener('change', updateSummary);
-            travelerCountEl.addEventListener('input', updateSummary);
-        }
-
-        const fullNameEl = document.getElementById('full-name');
-        if (fullNameEl) fullNameEl.addEventListener('input', updateSummary);
-
-        const travelDateEl = document.getElementById('travel-date');
-        if (travelDateEl) travelDateEl.addEventListener('change', updateSummary);
+        formInputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', updateSummary);
+                el.addEventListener('change', updateSummary);
+                el.addEventListener('keyup', updateSummary);
+            }
+        });
 
         // =========================================================================
         // 🌐 SHEETDB BACKEND CONFIGURATION
@@ -560,7 +712,8 @@
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
-        });
+            });
+        }
 
         updateSummary();
     </script>
