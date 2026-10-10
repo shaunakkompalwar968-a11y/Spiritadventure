@@ -8,6 +8,42 @@
     <link rel="icon" type="image/png" href="Assests/img/logohead.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+    <style>
+        .summary-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(20, 184, 166, 0.28);
+            color: var(--yellow, #f59e0b);
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.35);
+            margin-bottom: 8px;
+            width: fit-content;
+        }
+        .summary-section-heading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--teal, #14b8a6);
+            padding: 10px 0 6px;
+            border-bottom: 1px dashed #e2e8f0;
+            margin-bottom: 6px;
+        }
+        .summary-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+    </style>
 </head>
 <body class="booking-page-body">
 
@@ -276,43 +312,74 @@
                 <div class="summary-img-wrapper">
                     <img id="custom-sum-img" src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80" alt="Destination Preview">
                     <div class="summary-img-overlay">
+                        <span class="summary-badge"><i class="fas fa-bolt"></i> Live Custom Plan</span>
                         <h3 id="custom-sum-title">Coorg Customized Tour</h3>
                         <span id="custom-sum-duration"><i class="fas fa-clock"></i> 3 Days, 2 Nights</span>
                     </div>
                 </div>
                 
                 <div class="summary-body">
-                    
-                    <div class="summary-row">
+                    <div class="summary-section-heading">
+                        <i class="fas fa-map-marked-alt"></i> <span>Destinations & Route</span>
+                    </div>
+
+                    <div class="summary-row" style="border-bottom: none; padding-bottom: 4px;">
                         <span>Selected Destinations:</span>
                     </div>
                     <div class="selected-dest-tags" id="selected-dest-container">
                         <span class="selected-dest-tag"><i class="fas fa-map-marker-alt"></i> Coorg</span>
                     </div>
 
-                    <div class="summary-row" style="margin-top: 10px;">
-                        <span>Starting City:</span>
+                    <div class="summary-section-heading" style="margin-top: 12px;">
+                        <i class="fas fa-user-check"></i> <span>Traveler & Schedule</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span><i class="fas fa-user" style="color: var(--teal);"></i> Lead Traveler:</span>
+                        <strong id="sum-lead-name" style="color: #94a3b8;">Enter your name</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span><i class="fas fa-calendar-alt" style="color: var(--teal);"></i> Travel Date:</span>
+                        <strong id="sum-travel-date" style="color: #94a3b8;">Select date</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span><i class="fas fa-location-arrow" style="color: var(--teal);"></i> Starting City:</span>
                         <strong id="sum-start-city">To be specified</strong>
                     </div>
 
                     <div class="summary-row">
-                        <span>Group Size:</span>
-                        <strong id="sum-group-size">4 Persons</strong>
+                        <span><i class="fas fa-users" style="color: var(--teal);"></i> Group Size:</span>
+                        <strong id="sum-group-size">4 Persons (Friends Group)</strong>
+                    </div>
+
+                    <div class="summary-section-heading" style="margin-top: 12px;">
+                        <i class="fas fa-hotel"></i> <span>Stay & Ride Preference</span>
                     </div>
 
                     <div class="summary-row">
-                        <span>Stay Preference:</span>
+                        <span><i class="fas fa-bed" style="color: var(--teal);"></i> Stay Choice:</span>
                         <strong id="sum-stay-pref">3-Star Comfort</strong>
                     </div>
 
                     <div class="summary-row">
-                        <span>Transport Choice:</span>
+                        <span><i class="fas fa-shuttle-van" style="color: var(--teal);"></i> Transport:</span>
                         <strong id="sum-trans-pref">Tempo Traveller</strong>
                     </div>
 
+                    <div class="summary-section-heading" style="margin-top: 12px;">
+                        <i class="fas fa-receipt"></i> <span>Budget & Estimate</span>
+                    </div>
+
                     <div class="summary-row">
-                        <span>Budget Tier:</span>
+                        <span><i class="fas fa-tag" style="color: var(--teal);"></i> Budget / Person:</span>
                         <strong id="sum-budget-tier" style="color: var(--teal);">Value Comfort</strong>
+                    </div>
+
+                    <div class="summary-row total">
+                        <span>Est. Group Total:</span>
+                        <span id="sum-group-total">₹24,000 - ₹38,000</span>
                     </div>
 
                     <div class="inclusions-list">
@@ -384,34 +451,46 @@
         };
 
         const dateInput = document.getElementById('custom-date');
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        dateInput.min = tomorrow.toISOString().split('T')[0];
+        if (dateInput) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+        }
 
         function toggleChip(checkbox) {
             const parent = checkbox.closest('.dest-chip');
-            if (checkbox.checked) {
-                parent.classList.add('active');
-                parent.querySelector('i').className = 'fas fa-check';
-            } else {
-                parent.classList.remove('active');
-                parent.querySelector('i').className = 'fas fa-plus';
+            if (parent) {
+                if (checkbox.checked) {
+                    parent.classList.add('active');
+                    const icon = parent.querySelector('i');
+                    if (icon) icon.className = 'fas fa-check';
+                } else {
+                    parent.classList.remove('active');
+                    const icon = parent.querySelector('i');
+                    if (icon) icon.className = 'fas fa-plus';
+                }
             }
             updateCustomSummary();
         }
 
         function selectPrefCard(card, groupName) {
             const container = card.closest('.pref-cards-grid');
-            container.querySelectorAll('.pref-card').forEach(c => c.classList.remove('active'));
+            if (container) {
+                container.querySelectorAll('.pref-card').forEach(c => c.classList.remove('active'));
+            }
             card.classList.add('active');
             const radio = card.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
+            if (radio) {
+                radio.checked = true;
+                // Dispatch change event to ensure any listeners pick it up
+                radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
             updateCustomSummary();
         }
 
         function getSelectedDestinations() {
             const checked = Array.from(document.querySelectorAll('input[name="destinations"]:checked')).map(cb => cb.value);
-            const other = document.getElementById('custom-other-dest').value.trim();
+            const other = document.getElementById('custom-other-dest')?.value.trim();
             if (other) checked.push(other);
             return checked.length > 0 ? checked : ['Coorg'];
         }
@@ -419,54 +498,183 @@
         function updateCustomSummary() {
             const selectedDests = getSelectedDestinations();
             const primaryDest = selectedDests[0] || 'Coorg';
-            const duration = document.getElementById('custom-duration').value;
-            const adults = document.getElementById('adult-count').value;
-            const groupType = document.getElementById('group-type').value;
-            const startCity = document.getElementById('starting-city').value.trim() || 'Any City';
-            const travelDate = document.getElementById('custom-date').value || 'Upcoming dates';
+            const durationEl = document.getElementById('custom-duration');
+            const duration = durationEl ? durationEl.value : '3 Days, 2 Nights';
+            const adultsEl = document.getElementById('adult-count');
+            const adults = adultsEl ? adultsEl.value : '4';
+            const adultsNum = parseInt(adults, 10) || 4;
+            const groupTypeEl = document.getElementById('group-type');
+            const groupType = groupTypeEl ? groupTypeEl.value : 'Friends Group';
+            
+            // Lead traveler name live update
+            const leadNameVal = document.getElementById('cust-name')?.value.trim();
+            const sumLeadEl = document.getElementById('sum-lead-name');
+            if (sumLeadEl) {
+                if (leadNameVal) {
+                    sumLeadEl.textContent = leadNameVal;
+                    sumLeadEl.style.color = '#0f172a';
+                } else {
+                    sumLeadEl.textContent = 'Enter your name';
+                    sumLeadEl.style.color = '#94a3b8';
+                }
+            }
 
-            // Active stay and transport
-            const activeStay = document.querySelector('input[name="accommodation"]:checked')?.value || '3-Star Comfort';
-            const activeTrans = document.querySelector('input[name="transport"]:checked')?.value || 'Tempo Traveller';
-            const budgetTier = document.getElementById('budget-range').value.split('(')[1]?.replace(')', '') || 'Value Comfort';
+            // Travel date live update
+            const travelDateVal = document.getElementById('custom-date')?.value;
+            const sumDateEl = document.getElementById('sum-travel-date');
+            let formattedDate = 'Upcoming dates';
+            if (sumDateEl) {
+                if (travelDateVal) {
+                    try {
+                        const d = new Date(travelDateVal + 'T00:00:00');
+                        formattedDate = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+                        sumDateEl.textContent = formattedDate;
+                        sumDateEl.style.color = '#0f172a';
+                    } catch (e) {
+                        formattedDate = travelDateVal;
+                        sumDateEl.textContent = travelDateVal;
+                        sumDateEl.style.color = '#0f172a';
+                    }
+                } else {
+                    sumDateEl.textContent = 'Select date';
+                    sumDateEl.style.color = '#94a3b8';
+                }
+            }
+
+            // Starting city live update
+            const startCityVal = document.getElementById('starting-city')?.value.trim();
+            const sumCityEl = document.getElementById('sum-start-city');
+            if (sumCityEl) {
+                if (startCityVal) {
+                    sumCityEl.textContent = startCityVal;
+                    sumCityEl.style.color = '#0f172a';
+                } else {
+                    sumCityEl.textContent = 'To be specified';
+                    sumCityEl.style.color = '#94a3b8';
+                }
+            }
+
+            // Group size live update
+            const sumGroupEl = document.getElementById('sum-group-size');
+            if (sumGroupEl) {
+                sumGroupEl.textContent = `${adults} Person(s) (${groupType})`;
+            }
+
+            // Active stay and transport preferences
+            const activeStayRadio = document.querySelector('input[name="accommodation"]:checked');
+            const activeStay = activeStayRadio ? activeStayRadio.value : 'Comfort 3-Star Hotels';
+            const sumStayEl = document.getElementById('sum-stay-pref');
+            if (sumStayEl) {
+                sumStayEl.textContent = activeStay.split('(')[0].trim();
+            }
+
+            const activeTransRadio = document.querySelector('input[name="transport"]:checked');
+            const activeTrans = activeTransRadio ? activeTransRadio.value : 'AC Tempo Traveller (Private Group)';
+            const sumTransEl = document.getElementById('sum-trans-pref');
+            if (sumTransEl) {
+                sumTransEl.textContent = activeTrans.split('(')[0].trim();
+            }
+
+            // Budget range and estimated group total calculation
+            const budgetRaw = document.getElementById('budget-range')?.value || '₹6,000 - ₹9,500 (Value Comfort)';
+            const budgetTierMatch = budgetRaw.match(/\((.*?)\)/);
+            const budgetTierLabel = budgetTierMatch ? budgetTierMatch[1] : 'Value Comfort';
+            const sumBudgetEl = document.getElementById('sum-budget-tier');
+            if (sumBudgetEl) {
+                sumBudgetEl.textContent = budgetTierLabel;
+            }
+
+            let lowPrice = 6000;
+            let highPrice = 9500;
+            let isPlus = false;
+
+            if (budgetRaw.includes('+') || budgetRaw.includes('16,000')) {
+                lowPrice = 16000;
+                isPlus = true;
+            } else {
+                const numbers = budgetRaw.match(/[\d,]+/g);
+                if (numbers && numbers.length >= 2) {
+                    lowPrice = parseInt(numbers[0].replace(/,/g, ''), 10) || 6000;
+                    highPrice = parseInt(numbers[1].replace(/,/g, ''), 10) || 9500;
+                }
+            }
+
+            const sumTotalEl = document.getElementById('sum-group-total');
+            if (sumTotalEl) {
+                if (isPlus) {
+                    sumTotalEl.textContent = `₹${(lowPrice * adultsNum).toLocaleString('en-IN')}+`;
+                } else {
+                    sumTotalEl.textContent = `₹${(lowPrice * adultsNum).toLocaleString('en-IN')} - ₹${(highPrice * adultsNum).toLocaleString('en-IN')}`;
+                }
+            }
 
             // Update Image
             const imgSrc = destImages[primaryDest] || 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80';
-            document.getElementById('custom-sum-img').src = imgSrc;
-            document.getElementById('custom-sum-title').textContent = `${selectedDests.slice(0, 2).join(' & ')} Custom Trip`;
-            document.getElementById('custom-sum-duration').innerHTML = `<i class="fas fa-clock"></i> ${duration}`;
+            const sumImgEl = document.getElementById('custom-sum-img');
+            if (sumImgEl && sumImgEl.src !== imgSrc) {
+                sumImgEl.src = imgSrc;
+            }
 
-            // Update Dest Tags
+            // Update Title
+            const sumTitleEl = document.getElementById('custom-sum-title');
+            if (sumTitleEl) {
+                if (selectedDests.length === 1) {
+                    sumTitleEl.textContent = `${selectedDests[0]} Customized Tour`;
+                } else if (selectedDests.length === 2) {
+                    sumTitleEl.textContent = `${selectedDests[0]} & ${selectedDests[1]} Tour`;
+                } else if (selectedDests.length > 2) {
+                    sumTitleEl.textContent = `${selectedDests[0]} & ${selectedDests.length - 1} More`;
+                } else {
+                    sumTitleEl.textContent = 'Customized Tour Plan';
+                }
+            }
+
+            // Update Duration
+            const sumDurationEl = document.getElementById('custom-sum-duration');
+            if (sumDurationEl) {
+                sumDurationEl.innerHTML = `<i class="fas fa-clock"></i> ${duration.split('(')[0].trim()}`;
+            }
+
+            // Update Destination Tags
             const tagContainer = document.getElementById('selected-dest-container');
-            tagContainer.innerHTML = selectedDests.map(d => `<span class="selected-dest-tag"><i class="fas fa-map-marker-alt"></i> ${d}</span>`).join('');
-
-            document.getElementById('sum-start-city').textContent = startCity;
-            document.getElementById('sum-group-size').textContent = `${adults} Person(s) (${groupType})`;
-            document.getElementById('sum-stay-pref').textContent = activeStay.split('(')[0].trim();
-            document.getElementById('sum-trans-pref').textContent = activeTrans.split('(')[0].trim();
-            document.getElementById('sum-budget-tier').textContent = budgetTier;
+            if (tagContainer) {
+                if (selectedDests.length > 0) {
+                    tagContainer.innerHTML = selectedDests.map(d => `<span class="selected-dest-tag"><i class="fas fa-map-marker-alt"></i> ${d}</span>`).join('');
+                } else {
+                    tagContainer.innerHTML = `<span class="selected-dest-tag" style="background:#f1f5f9; color:#64748b; border-color:#cbd5e1;"><i class="fas fa-info-circle"></i> None selected</span>`;
+                }
+            }
 
             // Generate WhatsApp message
-            const custNotes = document.getElementById('cust-notes').value.trim();
+            const custNotes = document.getElementById('cust-notes')?.value.trim() || '';
             const waText = encodeURIComponent(
                 `Hi Spirit Adventures! I want to customize a trip:\n` +
                 `📍 *Destinations:* ${selectedDests.join(', ')}\n` +
-                `🚗 *Pickup City:* ${startCity}\n` +
-                `📅 *Travel Date:* ${travelDate} (${duration})\n` +
+                `🚗 *Pickup City:* ${startCityVal || 'To be decided'}\n` +
+                `📅 *Travel Date:* ${formattedDate} (${duration})\n` +
                 `👥 *Travelers:* ${adults} Adults (${groupType})\n` +
-                `🏨 *Stay:* ${activeStay}\n` +
-                `🚐 *Vehicle:* ${activeTrans}\n` +
-                (custNotes ? `📝 *Notes:* ${custNotes}\n` : '') +
+                `🏨 *Stay:* ${activeStay.split('(')[0].trim()}\n` +
+                `🚐 *Vehicle:* ${activeTrans.split('(')[0].trim()}\n` +
+                `💰 *Est Budget:* ${budgetTierLabel} (${sumTotalEl ? sumTotalEl.textContent : 'Quote req'})\n` +
+                (leadNameVal ? `👤 *Lead Traveler:* ${leadNameVal}\n` : '') +
+                (custNotes ? `📝 *Special Requests:* ${custNotes}\n` : '') +
                 `Please share a customized itinerary and pricing quote!`
             );
-            document.getElementById('wa-custom-link').href = `https://wa.me/919666567551?text=${waText}`;
+            const waLinkEl = document.getElementById('wa-custom-link');
+            if (waLinkEl) {
+                waLinkEl.href = `https://wa.me/919666567551?text=${waText}`;
+            }
         }
 
         function openCustomModal(dests, pax, dur) {
-            document.getElementById('modal-cust-dest').textContent = dests.join(', ');
-            document.getElementById('modal-cust-pax').textContent = `${pax} Persons`;
-            document.getElementById('modal-cust-dur').textContent = dur;
-            document.getElementById('modal-cust-ref').textContent = '#CT-' + Math.floor(1000 + Math.random() * 9000);
+            const modalDest = document.getElementById('modal-cust-dest');
+            if (modalDest) modalDest.textContent = dests.join(', ');
+            const modalPax = document.getElementById('modal-cust-pax');
+            if (modalPax) modalPax.textContent = `${pax} Persons`;
+            const modalDur = document.getElementById('modal-cust-dur');
+            if (modalDur) modalDur.textContent = dur;
+            const modalRef = document.getElementById('modal-cust-ref');
+            if (modalRef) modalRef.textContent = '#CT-' + Math.floor(1000 + Math.random() * 9000);
             
             const modal = document.getElementById('custom-modal');
             if (modal) modal.classList.add('active');
@@ -485,100 +693,180 @@
             });
         }
 
+        // Form submission handling
         const customForm = document.getElementById('custom-tour-form');
         if (customForm) {
             customForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submit-custom-btn');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Your Plan...';
-            submitBtn.disabled = true;
+                e.preventDefault();
+                const submitBtn = document.getElementById('submit-custom-btn');
+                const originalText = submitBtn ? submitBtn.innerHTML : 'Submit';
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Your Plan...';
+                    submitBtn.disabled = true;
+                }
 
-            const selectedDests = getSelectedDestinations();
-            const adults = document.getElementById('adult-count').value;
-            const duration = document.getElementById('custom-duration').value;
+                const selectedDests = getSelectedDestinations();
+                const adults = document.getElementById('adult-count')?.value || '4';
+                const duration = document.getElementById('custom-duration')?.value || '3 Days, 2 Nights';
 
-            const formData = new FormData(customForm);
-            // Append explicit array string
-            formData.set('destinations_list', selectedDests.join(', '));
+                const formData = new FormData(customForm);
+                formData.set('destinations_list', selectedDests.join(', '));
 
-            const customRef = '#CT-' + Math.floor(100000 + Math.random() * 900000);
-            const clientName = (formData.get('name') || 'Custom Explorer').trim();
-            const clientPhone = (formData.get('phone') || '').trim();
-            const clientEmail = (formData.get('email') || '').trim();
-            const startCity = (document.getElementById('starting-city')?.value || '').trim() || 'Any City';
-            const travelDate = document.getElementById('custom-date').value || 'Upcoming';
-            const groupType = document.getElementById('group-type').value;
-            const activeStay = document.querySelector('input[name="accommodation"]:checked')?.value || '3-Star Comfort';
-            const activeTrans = document.querySelector('input[name="transport"]:checked')?.value || 'Tempo Traveller';
-            const budgetTier = document.getElementById('budget-range').value.split('(')[1]?.replace(')', '') || 'Custom Quote';
-            const custNotes = document.getElementById('cust-notes').value.trim();
+                const customRef = '#CT-' + Math.floor(100000 + Math.random() * 900000);
+                const clientName = (formData.get('name') || 'Custom Explorer').trim();
+                const clientPhone = (formData.get('phone') || '').trim();
+                const clientEmail = (formData.get('email') || '').trim();
+                const startCity = (document.getElementById('starting-city')?.value || '').trim() || 'Any City';
+                const travelDate = document.getElementById('custom-date')?.value || 'Upcoming';
+                const groupType = document.getElementById('group-type')?.value || 'Friends Group';
+                const activeStay = document.querySelector('input[name="accommodation"]:checked')?.value || '3-Star Comfort';
+                const activeTrans = document.querySelector('input[name="transport"]:checked')?.value || 'Tempo Traveller';
+                const budgetTier = document.getElementById('budget-range')?.value.split('(')[1]?.replace(')', '') || 'Custom Quote';
+                const custNotes = document.getElementById('cust-notes')?.value.trim() || '';
 
-            const customRecord = {
-                booking_id: customRef,
-                timestamp: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
-                name: clientName,
-                phone: clientPhone,
-                email: clientEmail,
-                package: `Custom: ${selectedDests.join(' & ')}`,
-                travel_date: `${travelDate} (${duration})`,
-                travelers: `${adults} (${groupType})`,
-                pickup_city: startCity,
-                total_amount: budgetTier,
-                notes: `Stay: ${activeStay} | Ride: ${activeTrans} | Special: ${custNotes || 'None'}`,
-                status: 'Pending',
-                source: 'customize.html'
-            };
-
-            // Store in shared local storage and broadcast to Admin Portal in real time
-            try {
-                const stored = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
-                stored.unshift(customRecord);
-                localStorage.setItem('spirit_local_bookings', JSON.stringify(stored));
-
-                localStorage.setItem('spirit_last_booking_event', JSON.stringify({
-                    time: Date.now(),
-                    ref: customRef,
+                const customRecord = {
+                    booking_id: customRef,
+                    timestamp: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
                     name: clientName,
-                    pkg: customRecord.package,
-                    amount: budgetTier,
+                    phone: clientPhone,
+                    email: clientEmail,
+                    package: `Custom: ${selectedDests.join(' & ')}`,
+                    travel_date: `${travelDate} (${duration})`,
+                    travelers: `${adults} (${groupType})`,
+                    pickup_city: startCity,
+                    total_amount: budgetTier,
+                    notes: `Stay: ${activeStay} | Ride: ${activeTrans} | Special: ${custNotes || 'None'}`,
                     status: 'Pending',
                     source: 'customize.html'
-                }));
+                };
 
-                if (window.BroadcastChannel) {
-                    const bc = new BroadcastChannel('spirit_booking_sync');
-                    bc.postMessage({
-                        type: 'NEW_BOOKING',
-                        source: 'customize.html',
-                        data: customRecord,
-                        timestamp: Date.now()
+                // Store in shared local storage and broadcast to Admin Portal in real time
+                try {
+                    const stored = JSON.parse(localStorage.getItem('spirit_local_bookings') || '[]');
+                    stored.unshift(customRecord);
+                    localStorage.setItem('spirit_local_bookings', JSON.stringify(stored));
+
+                    localStorage.setItem('spirit_last_booking_event', JSON.stringify({
+                        time: Date.now(),
+                        ref: customRef,
+                        name: clientName,
+                        pkg: customRecord.package,
+                        amount: budgetTier,
+                        status: 'Pending',
+                        source: 'customize.html'
+                    }));
+
+                    if (window.BroadcastChannel) {
+                        const bc = new BroadcastChannel('spirit_booking_sync');
+                        bc.postMessage({
+                            type: 'NEW_BOOKING',
+                            source: 'customize.html',
+                            data: customRecord,
+                            timestamp: Date.now()
+                        });
+                    }
+                } catch (err) {
+                    console.warn('Could not cache custom booking:', err);
+                }
+
+                try {
+                    const response = await fetch(customForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
                     });
+
+                    openCustomModal(selectedDests, adults, duration);
+                    customForm.reset();
+                    updateCustomSummary();
+                } catch (err) {
+                    openCustomModal(selectedDests, adults, duration);
+                    customForm.reset();
+                    updateCustomSummary();
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                }
+            });
+        } // Properly closed if (customForm)
+
+        // Pre-select destination from URL query parameters (e.g. ?dest=Goa or ?destination=Ooty)
+        function checkUrlParams() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const destParam = urlParams.get('dest') || urlParams.get('destination');
+                if (destParam) {
+                    const formatted = destParam.trim().toLowerCase();
+                    let matched = false;
+                    document.querySelectorAll('input[name="destinations"]').forEach(cb => {
+                        const parent = cb.closest('.dest-chip');
+                        const icon = parent ? parent.querySelector('i') : null;
+                        if (cb.value.toLowerCase() === formatted) {
+                            cb.checked = true;
+                            if (parent) parent.classList.add('active');
+                            if (icon) icon.className = 'fas fa-check';
+                            matched = true;
+                        } else {
+                            cb.checked = false;
+                            if (parent) parent.classList.remove('active');
+                            if (icon) icon.className = 'fas fa-plus';
+                        }
+                    });
+                    if (!matched) {
+                        const otherInput = document.getElementById('custom-other-dest');
+                        if (otherInput) otherInput.value = destParam;
+                    }
                 }
             } catch (err) {
-                console.warn('Could not cache custom booking:', err);
+                console.warn('URL params error:', err);
             }
+        }
 
-            try {
-                const response = await fetch(customForm.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
+        // Attach listeners and initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkUrlParams();
+
+            // Attach real-time input & change listeners to all interactive fields
+            const liveFieldIds = [
+                'custom-other-dest',
+                'starting-city',
+                'custom-date',
+                'custom-duration',
+                'group-type',
+                'adult-count',
+                'budget-range',
+                'cust-name',
+                'cust-phone',
+                'cust-email',
+                'cust-notes'
+            ];
+            liveFieldIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', updateCustomSummary);
+                    el.addEventListener('change', updateCustomSummary);
+                    el.addEventListener('keyup', updateCustomSummary);
+                }
+            });
+
+            document.querySelectorAll('input[name="destinations"]').forEach(cb => {
+                cb.addEventListener('change', () => toggleChip(cb));
+            });
+
+            document.querySelectorAll('.pref-cards-grid .pref-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const groupName = card.querySelector('input[type="radio"]')?.name;
+                    selectPrefCard(card, groupName);
                 });
+            });
 
-                openCustomModal(selectedDests, adults, duration);
-                customForm.reset();
-                updateCustomSummary();
-            } catch (err) {
-                openCustomModal(selectedDests, adults, duration);
-                customForm.reset();
-                updateCustomSummary();
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
+            updateCustomSummary();
         });
 
+        // Immediate run in case DOMContentLoaded has already fired
+        checkUrlParams();
         updateCustomSummary();
     </script>
 </body>
