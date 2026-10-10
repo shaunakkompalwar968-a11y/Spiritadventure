@@ -142,15 +142,15 @@
                 <div class="summary-img-wrapper">
                     <img id="sum-img" src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=800&q=80" alt="Package Thumbnail" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';">
                     <div class="summary-img-overlay">
-                        <h3 id="sum-title">Hampi, Gokarna & Dandeli</h3>
-                        <span id="sum-duration"><i class="fas fa-clock"></i> 4 Days, 3 Nights</span>
+                        <h3 id="sum-title">Coorg Getaway</h3>
+                        <span id="sum-duration"><i class="fas fa-clock"></i> 2 Days, 1 Night</span>
                     </div>
                 </div>
                 
                 <div class="summary-body">
                     <div class="summary-row">
                         <span>Price per Person:</span>
-                        <strong id="sum-rate">₹9,500</strong>
+                        <strong id="sum-rate">₹4,999</strong>
                     </div>
                     <div class="summary-row">
                         <span>Travelers:</span>
@@ -162,7 +162,7 @@
                     </div>
                     <div class="summary-row total">
                         <span>Estimated Total:</span>
-                        <span id="sum-total">₹19,000</span>
+                        <span id="sum-total">₹9,998</span>
                     </div>
 
                     <div class="inclusions-list">
@@ -280,7 +280,13 @@
         // Load custom rates if managed in real time via Admin Portal
         try {
             const savedPackages = JSON.parse(localStorage.getItem('spirit_custom_packages') || '{}');
-            Object.assign(pkgDetails, savedPackages);
+            Object.keys(savedPackages).forEach(key => {
+                if (pkgDetails[key]) {
+                    Object.assign(pkgDetails[key], savedPackages[key]);
+                } else {
+                    pkgDetails[key] = savedPackages[key];
+                }
+            });
         } catch (e) {}
 
         // Listen for live package updates from Admin in real time
@@ -290,7 +296,13 @@
                 liveSyncChannel.addEventListener('message', (event) => {
                     if (event.data && event.data.type === 'PACKAGE_UPDATE') {
                         if (event.data.packages) {
-                            Object.assign(pkgDetails, event.data.packages);
+                            Object.keys(event.data.packages).forEach(key => {
+                                if (pkgDetails[key]) {
+                                    Object.assign(pkgDetails[key], event.data.packages[key]);
+                                } else {
+                                    pkgDetails[key] = event.data.packages[key];
+                                }
+                            });
                             updateSummary();
                             console.log('⚡ [Real-Time Sync] Package pricing updated live from Admin Portal:', event.data.packages);
                         }
@@ -302,37 +314,66 @@
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        let selectedDest = urlParams.get('dest') || urlParams.get('package') || 'coorg';
+        let rawDest = (urlParams.get('dest') || urlParams.get('package') || 'coorg').toLowerCase().trim();
+        const pkgAliases = {
+            'kodaikanal': 'ooty',
+            'mysore': 'ooty',
+            'hampi-gokarna-dandeli': 'hampi',
+            'chickmagalur': 'chikmagalur'
+        };
+        let selectedDest = pkgAliases[rawDest] || rawDest;
         if (!pkgDetails[selectedDest]) selectedDest = 'coorg';
 
         const pkgSelect = document.getElementById('package-select');
-        pkgSelect.value = selectedDest;
+        if (pkgSelect) {
+            pkgSelect.value = selectedDest;
+        }
 
         const dateInput = document.getElementById('travel-date');
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        dateInput.min = tomorrow.toISOString().split('T')[0];
+        if (dateInput) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+        }
 
         function triggerPriceAnimation() {
             const totalEl = document.getElementById('sum-total');
-            totalEl.classList.remove('price-pop-anim');
-            void totalEl.offsetWidth; // Trigger reflow
-            totalEl.classList.add('price-pop-anim');
+            if (totalEl) {
+                totalEl.classList.remove('price-pop-anim');
+                void totalEl.offsetWidth; // Trigger reflow
+                totalEl.classList.add('price-pop-anim');
+            }
         }
 
         function updateSummary() {
-            const currentPkg = pkgSelect.value;
-            const pax = parseInt(document.getElementById('traveler-count').value, 10) || 1;
+            const selectEl = document.getElementById('package-select');
+            const currentPkg = (selectEl ? selectEl.value : 'coorg').trim().toLowerCase();
+            const travelerEl = document.getElementById('traveler-count');
+            const pax = parseInt(travelerEl ? travelerEl.value : '2', 10) || 1;
+            
             const data = pkgDetails[currentPkg] || pkgDetails['coorg'];
+            const rate = typeof data.rate === 'number' 
+                ? data.rate 
+                : (parseInt(String(data.rate).replace(/[^0-9]/g, ''), 10) || 4999);
+            const total = rate * pax;
 
-            document.getElementById('sum-title').textContent = data.title;
-            document.getElementById('sum-duration').innerHTML = `<i class="fas fa-clock"></i> ${data.duration}`;
-            document.getElementById('sum-rate').textContent = `₹${data.rate.toLocaleString('en-IN')}`;
-            document.getElementById('sum-pax').textContent = `${pax} ${pax > 1 ? 'Persons' : 'Person'}`;
+            const sumTitle = document.getElementById('sum-title');
+            if (sumTitle) sumTitle.textContent = data.title;
+
+            const sumDur = document.getElementById('sum-duration');
+            if (sumDur) sumDur.innerHTML = `<i class="fas fa-clock"></i> ${data.duration}`;
+
+            const sumRate = document.getElementById('sum-rate');
+            if (sumRate) sumRate.textContent = `₹${rate.toLocaleString('en-IN')}`;
+
+            const sumPax = document.getElementById('sum-pax');
+            if (sumPax) sumPax.textContent = `${pax} ${pax > 1 ? 'Persons' : 'Person'}`;
             
             const sumImg = document.getElementById('sum-img');
-            if (sumImg && data.img) {
-                sumImg.src = data.img;
+            if (sumImg) {
+                if (data.img) {
+                    sumImg.src = data.img;
+                }
                 sumImg.alt = `${data.title} Thumbnail`;
                 sumImg.onerror = function() {
                     this.onerror = null;
@@ -340,15 +381,33 @@
                 };
             }
 
-            const total = data.rate * pax;
-            document.getElementById('sum-total').textContent = `₹${total.toLocaleString('en-IN')}`;
+            const sumTotal = document.getElementById('sum-total');
+            if (sumTotal) {
+                sumTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+            }
             triggerPriceAnimation();
 
-            const travelDate = document.getElementById('travel-date').value || 'Upcoming dates';
+            const travelDateEl = document.getElementById('travel-date');
+            const travelDate = (travelDateEl && travelDateEl.value) ? travelDateEl.value : 'Upcoming dates';
             const waText = encodeURIComponent(
-                `Hi Spirit Adventures! I want to book the *${data.title}* package for *${pax} traveler(s)* around *${travelDate}*. Please share availability and payment details!`
+                `Hi Spirit Adventures! I want to book the *${data.title}* package for *${pax} traveler(s)* around *${travelDate}*. Estimated Total: ₹${total.toLocaleString('en-IN')}. Please share availability and payment details!`
+            );
             const waLink = document.getElementById('wa-book-link');
-            if (waLink) waLink.href = `https://wa.me/919666567551?text=${waText}`;
+            if (waLink) {
+                waLink.href = `https://wa.me/919666567551?text=${waText}`;
+            }
+        }
+
+        // Event listeners for instantaneous reflection on every input/change
+        if (pkgSelect) {
+            pkgSelect.addEventListener('change', updateSummary);
+            pkgSelect.addEventListener('input', updateSummary);
+        }
+
+        const travelerCountEl = document.getElementById('traveler-count');
+        if (travelerCountEl) {
+            travelerCountEl.addEventListener('change', updateSummary);
+            travelerCountEl.addEventListener('input', updateSummary);
         }
 
         const fullNameEl = document.getElementById('full-name');
@@ -402,10 +461,13 @@
             submitBtn.disabled = true;
 
             const formData = new FormData(bookingForm);
-            const currentPkg = pkgSelect.value;
+            const currentPkg = (pkgSelect ? pkgSelect.value : 'coorg').trim().toLowerCase();
             const pax = parseInt(document.getElementById('traveler-count').value, 10) || 1;
             const data = pkgDetails[currentPkg] || pkgDetails['coorg'];
-            const total = `₹${(data.rate * pax).toLocaleString('en-IN')}`;
+            const rate = typeof data.rate === 'number' 
+                ? data.rate 
+                : (parseInt(String(data.rate).replace(/[^0-9]/g, ''), 10) || 4999);
+            const total = `₹${(rate * pax).toLocaleString('en-IN')}`;
             const bookingRef = '#SA-' + Math.floor(100000 + Math.random() * 900000);
             
             const clientName = (formData.get('name') || '').trim();
