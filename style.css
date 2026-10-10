@@ -899,18 +899,28 @@ html.skip-intro #welcome-popup,
     .split-hero { 
         flex-direction: column; 
         height: auto; 
-        min-height: 100vh; 
+        min-height: auto; 
+    }
+    .split-hero::before {
+        background: linear-gradient(
+            180deg,
+            rgba(6, 32, 38, 0.70) 0%,
+            rgba(10, 52, 58, 0.58) 40%,
+            rgba(15, 82, 88, 0.48) 75%,
+            rgba(6, 30, 36, 0.75) 100%
+        ) !important;
+        z-index: 2 !important;
     }
     .hero-left { 
         flex: none; 
         width: 100%; 
-        background: linear-gradient(180deg, rgba(6, 32, 38, 0.48) 0%, rgba(10, 52, 58, 0.38) 60%, rgba(15, 82, 88, 0.25) 100%) !important; 
-        backdrop-filter: blur(2.5px) !important; 
-        -webkit-backdrop-filter: blur(2.5px) !important; 
+        background: rgba(8, 42, 48, 0.20) !important; 
+        backdrop-filter: blur(3px) !important; 
+        -webkit-backdrop-filter: blur(3px) !important; 
         border-right: none !important; 
         border-bottom: none !important; 
         box-shadow: none !important; 
-        padding: 110px 5% 35px 5%; 
+        padding: 95px 18px 20px 18px; 
         text-align: center;
         display: flex;
         justify-content: center;
@@ -925,17 +935,17 @@ html.skip-intro #welcome-popup,
     .hero-right { 
         flex: none; 
         width: 100%; 
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%) !important; 
-        backdrop-filter: blur(2.5px) !important; 
-        -webkit-backdrop-filter: blur(2.5px) !important; 
+        background: rgba(255, 255, 255, 0.08) !important; 
+        backdrop-filter: blur(3px) !important; 
+        -webkit-backdrop-filter: blur(3px) !important; 
         border: none !important; 
         box-shadow: none !important; 
-        padding: 30px 5% 70px 5%; 
+        padding: 15px 18px 30px 18px; 
         min-height: auto; 
         display: flex;
         justify-content: center;
     }
-    .media-frame { width: 100%; max-width: 560px; transform: none; margin: auto; }
+    .media-frame { width: 100%; max-width: 500px; transform: none; margin: auto; }
     .custom-nav { padding: 15px 25px !important; }
     .custom-nav.scrolled { padding: 12px 25px !important; }
     .nav-links { display: none !important; }
@@ -951,8 +961,8 @@ html.skip-intro #welcome-popup,
     .section-padding { padding: 50px 0; }
     .section-heading { font-size: clamp(1.6rem, 5vw, 2.2rem); }
     .subtitle-tag { font-size: 0.78rem; letter-spacing: 1.5px; }
-    .hero-left { padding: 95px 20px 20px 20px; }
-    .hero-right { padding: 15px 20px 55px 20px; }
+    .hero-left { padding: 95px 20px 18px 20px; }
+    .hero-right { padding: 12px 20px 28px 20px; }
     .top-subtitle { 
         font-size: clamp(1rem, 3.5vw, 1.3rem); 
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75) !important; 
@@ -1010,7 +1020,7 @@ html.skip-intro #welcome-popup,
     .login-btn { padding: 6px 12px; font-size: 0.75rem; white-space: nowrap; }
     .mobile-menu-btn { font-size: 1.3rem; padding: 4px; }
     .hero-left { padding: 85px 16px 15px; }
-    .hero-right { padding: 15px 16px 45px; min-height: auto; }
+    .hero-right { padding: 10px 16px 25px; min-height: auto; }
     .cursive-text { font-size: clamp(2.8rem, 10vw, 3.8rem); }
     .modern-grid { grid-template-columns: 1fr; gap: 18px; }
     .photo-grid { grid-template-columns: 1fr; gap: 12px; }
