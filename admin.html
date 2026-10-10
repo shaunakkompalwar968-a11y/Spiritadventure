@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // Instant pre-render authentication gate check to eliminate layout flicker
+        // Enforce strict fresh authentication lock on every visit / page reload
         (function() {
-            var isAuth = sessionStorage.getItem('spirit_admin_authenticated') === 'true' || localStorage.getItem('spirit_admin_authenticated') === 'true';
-            if (!isAuth) {
-                document.documentElement.classList.add('auth-pending');
-            }
+            try {
+                sessionStorage.removeItem('spirit_admin_authenticated');
+                localStorage.removeItem('spirit_admin_authenticated');
+            } catch(e) {}
+            document.documentElement.classList.add('auth-pending');
         })();
     </script>
     <title>Admin Dashboard | Spirit Adventures</title>
@@ -2160,12 +2161,10 @@
                     </div>
                 </div>
 
-                <div class="auth-remember-row">
-                    <label>
-                        <input type="checkbox" id="auth-remember-me" checked>
-                        <span>Stay signed in on this device</span>
-                    </label>
-                    <span style="font-size: 0.75rem; color: var(--admin-teal);"><i class="fas fa-shield-alt"></i> SSL Secured</span>
+                <div class="auth-remember-row" style="justify-content: center;">
+                    <span style="font-size: 0.78rem; color: var(--admin-teal); display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-lock"></i> Protected Admin Console &bull; Fresh Login Required Every Session
+                    </span>
                 </div>
 
                 <button type="submit" class="auth-btn-submit" id="auth-submit-btn">
@@ -3106,19 +3105,27 @@
         const VALID_ADMIN_USER = 'spirit_adventure';
         const VALID_ADMIN_PASS = 'spirit@12';
 
-        function checkAdminAuth() {
-            const isSessionAuth = sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
-            const isLocalAuth = localStorage.getItem(ADMIN_AUTH_KEY) === 'true';
+        // In-memory runtime authentication gate state - fresh login required on every visit/reload
+        window._spiritAdminUnlocked = false;
 
-            if (isSessionAuth || isLocalAuth) {
+        function checkAdminAuth() {
+            const isAuth = window._spiritAdminUnlocked === true;
+
+            if (isAuth) {
+                document.documentElement.classList.remove('auth-pending');
                 document.body.classList.remove('auth-locked');
                 const gate = document.getElementById('admin-auth-gate');
                 if (gate) gate.style.display = 'none';
                 return true;
             } else {
+                document.documentElement.classList.add('auth-pending');
                 document.body.classList.add('auth-locked');
                 const gate = document.getElementById('admin-auth-gate');
-                if (gate) gate.style.display = 'flex';
+                if (gate) {
+                    gate.style.display = 'flex';
+                    gate.style.opacity = '1';
+                    gate.style.transform = 'none';
+                }
                 const userField = document.getElementById('auth-username');
                 if (userField) setTimeout(() => userField.focus(), 250);
                 return false;
@@ -3132,7 +3139,6 @@
             e.preventDefault();
             const userInput = document.getElementById('auth-username');
             const passInput = document.getElementById('auth-password');
-            const rememberMe = document.getElementById('auth-remember-me');
             const errorBanner = document.getElementById('auth-error-banner');
             const errorText = document.getElementById('auth-error-text');
             const submitBtn = document.getElementById('auth-submit-btn');
@@ -3142,7 +3148,13 @@
             const enteredPass = passInput ? passInput.value : '';
 
             if (enteredUser === VALID_ADMIN_USER && enteredPass === VALID_ADMIN_PASS) {
-                // Correct credentials
+                // Correct credentials - grant in-memory runtime access
+                window._spiritAdminUnlocked = true;
+                try {
+                    sessionStorage.removeItem(ADMIN_AUTH_KEY);
+                    localStorage.removeItem(ADMIN_AUTH_KEY);
+                } catch(err) {}
+
                 if (errorBanner) errorBanner.style.display = 'none';
                 if (submitBtn) {
                     submitBtn.disabled = true;
@@ -3150,16 +3162,11 @@
                     submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                 }
 
-                // Persist session
-                sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
-                if (rememberMe && rememberMe.checked) {
-                    localStorage.setItem(ADMIN_AUTH_KEY, 'true');
-                } else {
-                    localStorage.removeItem(ADMIN_AUTH_KEY);
-                }
-
                 // Smooth reveal
                 setTimeout(() => {
+                    document.documentElement.classList.remove('auth-pending');
+                    document.body.classList.remove('auth-locked');
+
                     const gate = document.getElementById('admin-auth-gate');
                     if (gate) {
                         gate.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
@@ -3169,13 +3176,12 @@
                             gate.style.display = 'none';
                             gate.style.opacity = '1';
                             gate.style.transform = 'none';
-                            document.body.classList.remove('auth-locked');
                         }, 350);
-                    } else {
-                        document.body.classList.remove('auth-locked');
                     }
 
                     if (typeof refreshData === 'function') refreshData();
+                    if (typeof renderPricingEditor === 'function') renderPricingEditor();
+
                     showRealtimeToast({
                         booking_id: 'SEC-LOGIN',
                         name: 'Welcome, spirit_adventure',
@@ -3228,8 +3234,12 @@
 
         function adminLogout() {
             if (confirm('Are you sure you want to log out from the Spirit Adventures Admin Portal?')) {
-                sessionStorage.removeItem(ADMIN_AUTH_KEY);
-                localStorage.removeItem(ADMIN_AUTH_KEY);
+                window._spiritAdminUnlocked = false;
+                try {
+                    sessionStorage.removeItem(ADMIN_AUTH_KEY);
+                    localStorage.removeItem(ADMIN_AUTH_KEY);
+                } catch(e) {}
+                document.documentElement.classList.add('auth-pending');
                 document.body.classList.add('auth-locked');
                 const gate = document.getElementById('admin-auth-gate');
                 if (gate) {
@@ -3245,6 +3255,8 @@
                     submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In to Admin Console';
                     submitBtn.style.background = '';
                 }
+                const errorBanner = document.getElementById('auth-error-banner');
+                if (errorBanner) errorBanner.style.display = 'none';
                 const userField = document.getElementById('auth-username');
                 if (userField) userField.focus();
             }
