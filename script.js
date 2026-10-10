@@ -644,4 +644,19 @@
         if (window.SpiritTracker && typeof window.SpiritTracker.recordVisit === 'function') {
             window.SpiritTracker.recordVisit('index.html');
         }
+
+        // 15. Ensure Hero Background Video autoplays reliably across all devices
+        const heroBgVideo = document.querySelector('.full-bg-video');
+        if (heroBgVideo) {
+            heroBgVideo.muted = true;
+            const playBg = () => {
+                const p = heroBgVideo.play();
+                if (p !== undefined) {
+                    p.catch(() => {});
+                }
+            };
+            playBg();
+            document.addEventListener('touchstart', playBg, { once: true });
+            document.addEventListener('click', playBg, { once: true });
+        }
     });

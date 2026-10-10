@@ -47,29 +47,14 @@ body::before {
 .teal-btn { background: var(--teal); color: var(--white); font-size: 0.8rem; padding: 10px 20px; }
 .teal-btn:hover { background: var(--teal-dark); transform: translateY(-2px); }
 
-/* Split Hero Section (Unified Cinematic Travel Experience) */
+/* Split Hero Section with Vibrant Background Video */
 .split-hero { 
     display: flex; 
     width: 100%; 
     min-height: 100vh; 
     position: relative; 
     overflow: hidden; 
-    background: #081d22 url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center center / cover no-repeat;
-}
-
-.split-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    /* Unified cinematic travel color fade overlay across entire video */
-    background: linear-gradient(
-        135deg, 
-        rgba(8, 28, 34, 0.82) 0%, 
-        rgba(13, 74, 77, 0.65) 50%, 
-        rgba(8, 26, 31, 0.78) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
+    background: #081d22;
 }
 
 .full-bg-video { 
@@ -79,27 +64,40 @@ body::before {
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
-    z-index: 0; 
+    z-index: 1; 
     pointer-events: none; 
 }
 
-/* Left Half: High-Contrast Frosted Text Area */
+.split-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Light translucent tint so the video is clearly visible while text stays readable */
+    background: linear-gradient(
+        135deg, 
+        rgba(8, 28, 34, 0.40) 0%, 
+        rgba(13, 74, 77, 0.20) 50%, 
+        rgba(8, 26, 31, 0.35) 100%
+    );
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Left Half: High-Contrast Text Area */
 .hero-left { 
     flex: 0 0 55%; 
-    background: linear-gradient(90deg, rgba(6, 22, 27, 0.50) 0%, rgba(6, 22, 27, 0.18) 100%); 
-    backdrop-filter: blur(5px); 
-    -webkit-backdrop-filter: blur(5px); 
+    background: linear-gradient(90deg, rgba(6, 22, 27, 0.35) 0%, transparent 100%); 
     position: relative; 
     display: flex; 
     align-items: center; 
     padding: 100px 5% 60px 8%; 
-    z-index: 2; 
+    z-index: 3; 
 }
 .social-sidebar { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 15px; z-index: 10; }
 .social-sidebar a { color: var(--white); font-size: 1.1rem; opacity: 0.85; transition: var(--transition); text-decoration: none; }
 .social-sidebar a:hover { opacity: 1; color: var(--yellow); transform: translateX(3px); }
 
-.hero-content { position: relative; width: 100%; max-width: 480px; color: var(--white); z-index: 2; }
+.hero-content { position: relative; width: 100%; max-width: 480px; color: var(--white); z-index: 3; }
 .flight-path { position: absolute; top: -40px; left: -20px; width: 300px; height: 150px; z-index: -1; opacity: 0.6; }
 .top-subtitle { font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; margin-bottom: -10px; }
 .cursive-text { font-family: var(--font-cursive); font-size: clamp(4rem, 7vw, 6rem); color: var(--yellow); line-height: 1; position: relative; margin-bottom: 10px; }
@@ -113,7 +111,7 @@ body::before {
     flex: 0 0 45%; 
     background: transparent; 
     position: relative; 
-    z-index: 2; 
+    z-index: 3; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
