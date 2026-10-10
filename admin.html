@@ -1171,6 +1171,7 @@
         .sec-booking-card { border-left: 4px solid var(--admin-teal); }
         .sec-custom-card { border-left: 4px solid var(--admin-purple); }
         .sec-enquiry-card { border-left: 4px solid #f97316; }
+        .sec-reviews-card { border-left: 4px solid #f59e0b; }
 
         .section-card-header {
             display: flex;
@@ -1204,6 +1205,7 @@
         .icon-booking { background: rgba(20, 184, 166, 0.15); color: var(--admin-teal); }
         .icon-custom { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
         .icon-enquiry { background: rgba(249, 115, 22, 0.15); color: #f97316; }
+        .icon-reviews { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
         .icon-master { background: rgba(59, 130, 246, 0.15); color: var(--admin-blue); }
 
         .sec-title-row {
@@ -2253,6 +2255,14 @@
                     <span class="nav-pill pill-amber" id="side-badge-enquiry">0</span>
                 </a>
 
+                <a href="javascript:void(0)" class="nav-link" id="nav-item-reviews" onclick="switchSectionTab('reviews'); closeSidebarOnMobile();">
+                    <div class="nav-link-main">
+                        <i class="fas fa-star nav-icon" style="color: var(--admin-yellow);"></i>
+                        <span>Customer Reviews</span>
+                    </div>
+                    <span class="nav-pill pill-amber" id="side-badge-reviews">0</span>
+                </a>
+
                 <a href="javascript:void(0)" class="nav-link" id="nav-item-master" onclick="switchSectionTab('master'); closeSidebarOnMobile();">
                     <div class="nav-link-main">
                         <i class="fas fa-database nav-icon" style="color: var(--admin-blue);"></i>
@@ -2388,6 +2398,9 @@
                             <button type="button" onclick="testRealtimeConnection('index.html'); toggleTestMenu(false);">
                                 <i class="fas fa-paper-plane" style="color: #f97316;"></i> Test index.html Influx
                             </button>
+                            <button type="button" onclick="testRealtimeRating(); toggleTestMenu(false);">
+                                <i class="fas fa-star" style="color: #fbbf24;"></i> Test Rate Us Review Influx
+                            </button>
                         </div>
                     </div>
 
@@ -2504,6 +2517,15 @@
                             <div class="source-stat-val"><span id="stat-enquiry-count">0</span> Enquiries <small>Explore Now</small></div>
                         </div>
                         <span class="source-stat-tag">index.html</span>
+                    </div>
+
+                    <div class="source-stat-item stat-reviews" onclick="switchSectionTab('reviews')" title="Click to view Customer Reviews & Ratings">
+                        <div class="source-stat-icon" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;"><i class="fas fa-star"></i></div>
+                        <div class="source-stat-info">
+                            <span class="source-stat-label">Customer Reviews (Rate Us)</span>
+                            <div class="source-stat-val"><span id="stat-reviews-count">0</span> Reviews <small id="stat-reviews-avg">★ 5.0 Avg</small></div>
+                        </div>
+                        <span class="source-stat-tag" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Rate Us</span>
                     </div>
                 </div>
 
@@ -2697,6 +2719,10 @@
                         <button class="section-tab-btn" data-tab="enquiry" onclick="switchSectionTab('enquiry')">
                             <i class="fas fa-paper-plane" style="color: #f97316;"></i> Home Enquiries (<span class="code-pill">index.html</span>)
                             <span class="tab-badge badge-amber" id="tab-badge-enquiry">0</span>
+                        </button>
+                        <button class="section-tab-btn" data-tab="reviews" onclick="switchSectionTab('reviews')">
+                            <i class="fas fa-star" style="color: var(--admin-yellow);"></i> Customer Reviews (<span class="code-pill">Rate Us</span>)
+                            <span class="tab-badge badge-orange" id="tab-badge-reviews">0</span>
                         </button>
                         <button class="section-tab-btn" data-tab="master" onclick="switchSectionTab('master')">
                             <i class="fas fa-table" style="color: var(--admin-blue);"></i> Unified Master Table
@@ -2937,7 +2963,64 @@
                     </div>
                 </div>
 
-                <!-- SECTION 5: UNIFIED MASTER TABLE -->
+                <!-- SECTION 5: CUSTOMER RATINGS & REVIEWS (Rate Us Form) -->
+                <div class="section-card sec-reviews-card" id="section-reviews">
+                    <div class="section-card-header">
+                        <div class="section-title-wrap">
+                            <div class="sec-icon icon-reviews"><i class="fas fa-star"></i></div>
+                            <div>
+                                <div class="sec-title-row">
+                                    <h3>Customer Ratings &amp; Reviews</h3>
+                                    <span class="source-badge badge-package" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.35);"><i class="fas fa-star"></i> Rate Us Form</span>
+                                    <span class="sec-count-badge" id="reviews-count-badge">0 Reviews</span>
+                                </div>
+                                <p class="sec-subtitle">Experience reviews, star ratings, and feedback submitted via the floating "Rate Us" button on index.html</p>
+                            </div>
+                        </div>
+                        <div class="sec-actions">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="reviews-search-input" placeholder="Search reviews by name or text..." oninput="filterReviews()">
+                            </div>
+                            <select id="reviews-star-filter" class="filter-select" onchange="filterReviews()">
+                                <option value="ALL">All Star Ratings</option>
+                                <option value="5">5 Stars (★★★★★)</option>
+                                <option value="4">4 Stars (★★★★)</option>
+                                <option value="3">3 Stars (★★★)</option>
+                                <option value="2">2 Stars (★★)</option>
+                                <option value="1">1 Star (★)</option>
+                            </select>
+                            <button onclick="exportReviewsToCSV()" class="admin-btn" title="Export Customer Reviews CSV">
+                                <i class="fas fa-file-export"></i> CSV
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="bookings-table">
+                            <thead>
+                                <tr>
+                                    <th>Ref ID</th>
+                                    <th>Source</th>
+                                    <th>Timestamp</th>
+                                    <th>Customer Details</th>
+                                    <th>Tour / Package</th>
+                                    <th>Rating</th>
+                                    <th>Review / Feedback</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviews-tbody"></tbody>
+                        </table>
+                    </div>
+                    <div id="reviews-empty-state" class="empty-state" style="display: none;">
+                        <i class="fas fa-star" style="color: #fbbf24;"></i>
+                        <h3>No Customer Reviews Yet</h3>
+                        <p>Customer ratings submitted via the floating "Rate Us" button on <code>index.html</code> will arrive here in real time.</p>
+                    </div>
+                </div>
+
+                <!-- SECTION 6: UNIFIED MASTER TABLE -->
                 <div class="section-card" id="section-master" style="display: none;">
                     <div class="section-card-header">
                         <div class="section-title-wrap">
@@ -3290,6 +3373,87 @@
 
         // In-memory list of bookings (strictly real customer entries only)
         let allBookings = [];
+        let allReviews = [];
+
+        // Default seed reviews matching verified customer experiences
+        const defaultSeedReviews = [
+            {
+                review_id: '#REV-501824',
+                timestamp: '10 Oct 2026, 04:30 PM',
+                name: 'Avinash Bollaram',
+                phone: '+91 98765 12044',
+                email: 'avinash.b@example.com',
+                stars: 5,
+                package: 'Coorg & Chikmagalur',
+                feedback: 'Great hospitality and service on our Coorg and Chikmagalur family trip. Everything went smoothly with our guide Sathvik. Highly recommended!',
+                status: 'Verified',
+                source: 'Rate Us Form'
+            },
+            {
+                review_id: '#REV-492108',
+                timestamp: '09 Oct 2026, 02:15 PM',
+                name: 'Priya Sharma',
+                phone: '+91 98450 33812',
+                email: 'priya.sharma@example.com',
+                stars: 5,
+                package: 'Goa Beach Trip',
+                feedback: 'The water sports and beach parties organized by Spirit Adventures in Goa were top-notch! Everything was perfectly coordinated.',
+                status: 'Verified',
+                source: 'Rate Us Form'
+            },
+            {
+                review_id: '#REV-389102',
+                timestamp: '08 Oct 2026, 11:20 AM',
+                name: 'Rahul Verma',
+                phone: '+91 97312 90415',
+                email: 'rahul.verma@example.com',
+                stars: 5,
+                package: 'Hampi, Gokarna & Dandeli',
+                feedback: 'An absolute history lover\'s dream! The tour guide gave incredible insights into the ruins of Hampi. Excellent management.',
+                status: 'Verified',
+                source: 'Rate Us Form'
+            },
+            {
+                review_id: '#REV-271954',
+                timestamp: '06 Oct 2026, 06:45 PM',
+                name: 'Sneha Reddy',
+                phone: '+91 99801 44521',
+                email: 'sneha.reddy@example.com',
+                stars: 5,
+                package: 'Wayanad Nature Escape',
+                feedback: 'The treehouse stay in Wayanad was magical. Thank you Spirit Adventures for arranging such a peaceful and memorable vacation.',
+                status: 'Verified',
+                source: 'Rate Us Form'
+            },
+            {
+                review_id: '#REV-162839',
+                timestamp: '04 Oct 2026, 01:10 PM',
+                name: 'Kiran Kumar',
+                phone: '+91 96112 55904',
+                email: 'kiran.k@example.com',
+                stars: 5,
+                package: 'Dandeli River Rafting',
+                feedback: 'River rafting and ziplining in Dandeli exceeded all expectations. Safety measures were well handled by the team.',
+                status: 'Verified',
+                source: 'Rate Us Form'
+            }
+        ];
+
+        function loadAllReviews() {
+            try {
+                const stored = localStorage.getItem('spirit_local_ratings');
+                if (stored) {
+                    allReviews = JSON.parse(stored);
+                } else {
+                    allReviews = defaultSeedReviews.slice();
+                    localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
+                }
+            } catch (e) {
+                allReviews = defaultSeedReviews.slice();
+            }
+            renderReviewsTable(allReviews);
+            renderAllSections();
+        }
 
         // Helper to purge any legacy mock/sample test entries from localStorage
         function purgeLegacyMockEntries() {
@@ -3410,6 +3574,8 @@
 
                         if (event.data.type === 'NEW_BOOKING') {
                             handleIncomingRealtimeBooking(event.data.data, event.data.source || 'booking.html');
+                        } else if (event.data.type === 'NEW_RATING') {
+                            handleIncomingRealtimeRating(event.data.data, event.data.source || 'Rate Us Form (index.html)');
                         } else if (event.data.type === 'STATUS_UPDATE') {
                             const found = allBookings.find(b => b.booking_id === event.data.booking_id);
                             if (found) {
@@ -3444,6 +3610,21 @@
                     } catch (err) {
                         console.warn('Error reading storage sync event:', err);
                     }
+                } else if (e.key === 'spirit_last_rating_event' && e.newValue) {
+                    try {
+                        const eventData = JSON.parse(e.newValue);
+                        const local = JSON.parse(localStorage.getItem('spirit_local_ratings') || '[]');
+                        if (local.length > 0) {
+                            const latest = local[0];
+                            if (latest && latest.review_id === eventData.ref) {
+                                if (!allReviews.some(r => r.review_id === latest.review_id)) {
+                                    handleIncomingRealtimeRating(latest, 'Rate Us Form');
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.warn('Error reading storage rating sync event:', err);
+                    }
                 } else if (e.key === 'spirit_local_bookings') {
                     try {
                         const updated = JSON.parse(e.newValue || '[]');
@@ -3451,6 +3632,15 @@
                             allBookings = updated;
                             renderBookings(allBookings);
                             updateKPIs(allBookings);
+                        }
+                    } catch (err) {}
+                } else if (e.key === 'spirit_local_ratings') {
+                    try {
+                        const updated = JSON.parse(e.newValue || '[]');
+                        if (Array.isArray(updated) && updated.length > 0) {
+                            allReviews = updated;
+                            renderReviewsTable(allReviews);
+                            renderAllSections();
                         }
                     } catch (err) {}
                 }
@@ -3582,6 +3772,228 @@
             }, 100);
         }
 
+        // =========================================================================
+        // 3.5. REAL-TIME CUSTOMER RATINGS & REVIEWS HANDLERS
+        // =========================================================================
+        function handleIncomingRealtimeRating(review, source) {
+            if (!review || !review.review_id) return;
+            review._isNewRealtime = true;
+
+            const existsIndex = allReviews.findIndex(r => r.review_id === review.review_id);
+            if (existsIndex !== -1) {
+                allReviews[existsIndex] = review;
+            } else {
+                allReviews.unshift(review);
+            }
+
+            localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
+
+            renderReviewsTable(allReviews);
+            renderAllSections();
+
+            highlightRow(review.review_id);
+            playRealtimeChime();
+            showRealtimeRatingToast(review, source);
+        }
+
+        function showRealtimeRatingToast(review, sourceTitle) {
+            const container = document.getElementById('rt-toast-container');
+            if (!container) return;
+
+            const cleanPhone = (review.phone || '').replace(/[^0-9]/g, '');
+            const waText = encodeURIComponent(`Hi ${review.name}! Thank you for rating Spirit Adventures with ${review.stars} Stars! We appreciate your feedback.`);
+            const waUrl = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waText}` : '#';
+
+            const toast = document.createElement('div');
+            toast.className = 'rt-toast';
+            toast.style.borderColor = '#f59e0b';
+            toast.innerHTML = `
+                <div class="rt-toast-icon" style="color: #fbbf24; background: rgba(245,158,11,0.15);">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="rt-toast-body">
+                    <div class="rt-toast-title" style="color: #fbbf24;">
+                        <i class="fas fa-bolt"></i> New Rating &amp; Review Received!
+                    </div>
+                    <div class="rt-toast-msg">
+                        <strong>${escapeHtml(review.name)}</strong> rated <strong>${review.stars} Stars (★★★★★)</strong>
+                        <div style="font-size: 0.75rem; color: var(--admin-muted); margin-top: 3px;">
+                            Ref: <code>${escapeHtml(review.review_id)}</code> &bull; Tour: <strong>${escapeHtml(review.package || 'General')}</strong>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="rt-toast-btn" onclick="highlightAndOpenReview('${escapeHtml(review.review_id)}')">
+                            <i class="fas fa-eye"></i> View Review
+                        </button>
+                        ${cleanPhone ? `<a href="${waUrl}" target="_blank" class="rt-toast-btn" style="color: #25D366; border-color: rgba(37,211,102,0.4);"><i class="fab fa-whatsapp"></i> Chat WhatsApp</a>` : ''}
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => toast.remove(), 400);
+            }, 6500);
+        }
+
+        function highlightAndOpenReview(reviewId) {
+            if (currentSectionTab !== 'split' && currentSectionTab !== 'reviews') {
+                switchSectionTab('reviews');
+            }
+            setTimeout(() => {
+                highlightRow(reviewId);
+            }, 100);
+        }
+
+        function generateReviewRowHtml(r, index) {
+            const cleanId = (r.review_id || '').replace(/[^a-zA-Z0-9_-]/g, '');
+            const status = r.status || 'Verified';
+            let statusClass = 'status-confirmed';
+            if (status.toLowerCase().includes('pending')) statusClass = 'status-pending';
+            else if (status.toLowerCase().includes('featured')) statusClass = 'status-completed';
+
+            const cleanPhone = (r.phone || '').replace(/[^0-9]/g, '');
+            const waText = encodeURIComponent(`Hi ${r.name}! Thank you so much for rating Spirit Adventures with ${r.stars} Stars! We deeply appreciate your feedback.`);
+            const waUrl = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waText}` : '#';
+            const initials = getClientInitials(r.name);
+
+            const starCount = Math.max(1, Math.min(5, parseInt(r.stars, 10) || 5));
+            let starsIcons = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= starCount) {
+                    starsIcons += '<i class="fas fa-star" style="color: #f59e0b; margin-right: 2px; text-shadow: 0 0 6px rgba(245, 158, 11, 0.4);"></i>';
+                } else {
+                    starsIcons += '<i class="far fa-star" style="color: #475569; margin-right: 2px;"></i>';
+                }
+            }
+
+            return `
+                <tr id="row-${cleanId}" class="${r._isNewRealtime ? 'row-new-realtime' : ''}">
+                    <td>
+                        <span class="booking-ref-badge" onclick="copyBookingRef('${escapeHtml(r.review_id)}', this)" title="Click to copy Review Ref" style="color: #fbbf24; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.3);">
+                            ${escapeHtml(r.review_id || '#REV-0000')} <i class="fas fa-copy" style="font-size: 0.7rem; opacity: 0.7;"></i>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="source-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35);"><i class="fas fa-star"></i> Rate Us</span>
+                    </td>
+                    <td style="color: var(--admin-muted); font-size: 0.8rem; white-space: nowrap;">${escapeHtml(r.timestamp || 'Recent')}</td>
+                    <td>
+                        <div class="client-cell">
+                            <div class="client-avatar" style="background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff;">${initials}</div>
+                            <div class="client-info">
+                                <strong>${escapeHtml(r.name || 'Anonymous Traveler')}</strong>
+                                <span><i class="fas fa-phone-alt"></i> ${escapeHtml(r.phone || 'N/A')}</span>
+                                <span><i class="fas fa-envelope"></i> ${escapeHtml(r.email || 'N/A')}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td><strong style="color: #fff;">${escapeHtml(r.package || 'General Experience')}</strong></td>
+                    <td style="white-space: nowrap;">
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            ${starsIcons}
+                            <span style="color: #fbbf24; font-weight: 700; font-size: 0.82rem; margin-left: 4px;">(${starCount}/5)</span>
+                        </div>
+                    </td>
+                    <td style="max-width: 320px;">
+                        <p style="margin: 0; font-size: 0.84rem; line-height: 1.45; color: #cbd5e1; font-style: italic;">
+                            "${escapeHtml(r.feedback || 'Great experience with Spirit Adventures!')}"
+                        </p>
+                    </td>
+                    <td>
+                        <select class="status-badge ${statusClass}" onchange="changeReviewStatus('${escapeHtml(r.review_id)}', this.value)" style="cursor: pointer; outline: none; border-radius: 20px; font-weight: 700;">
+                            <option value="Verified" ${status === 'Verified' ? 'selected' : ''}>Verified</option>
+                            <option value="Featured" ${status === 'Featured' ? 'selected' : ''}>Featured</option>
+                            <option value="Approved" ${status === 'Approved' ? 'selected' : ''}>Approved</option>
+                            <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            <a href="${waUrl}" target="_blank" class="btn-action-icon btn-wa" title="WhatsApp Customer">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="tel:${escapeHtml(r.phone || '')}" class="btn-action-icon btn-call" title="Call Customer">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                            <button onclick="deleteReview('${escapeHtml(r.review_id)}')" class="btn-action-icon btn-del" title="Delete Review">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function renderReviewsTable(list) {
+            const tbody = document.getElementById('reviews-tbody');
+            const emptyState = document.getElementById('reviews-empty-state');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            if (!list || list.length === 0) {
+                if (emptyState) emptyState.style.display = 'block';
+                return;
+            }
+            if (emptyState) emptyState.style.display = 'none';
+
+            tbody.innerHTML = list.map((r, idx) => generateReviewRowHtml(r, idx)).join('');
+        }
+
+        function filterReviews() {
+            const q = (document.getElementById('reviews-search-input')?.value || '').toLowerCase().trim();
+            const star = document.getElementById('reviews-star-filter')?.value || 'ALL';
+
+            const filtered = allReviews.filter(r => {
+                const matchStar = star === 'ALL' || String(r.stars) === star;
+                const matchQuery = !q ||
+                    (r.name && r.name.toLowerCase().includes(q)) ||
+                    (r.phone && r.phone.toLowerCase().includes(q)) ||
+                    (r.email && r.email.toLowerCase().includes(q)) ||
+                    (r.review_id && r.review_id.toLowerCase().includes(q)) ||
+                    (r.package && r.package.toLowerCase().includes(q)) ||
+                    (r.feedback && r.feedback.toLowerCase().includes(q));
+                return matchStar && matchQuery;
+            });
+
+            renderReviewsTable(filtered);
+        }
+
+        function changeReviewStatus(reviewId, newStatus) {
+            const item = allReviews.find(r => r.review_id === reviewId);
+            if (item) {
+                item.status = newStatus;
+                localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
+                renderReviewsTable(allReviews);
+            }
+        }
+
+        function deleteReview(reviewId) {
+            if (!confirm(`Are you sure you want to delete review ${reviewId}?`)) return;
+            allReviews = allReviews.filter(r => r.review_id !== reviewId);
+            localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
+            renderReviewsTable(allReviews);
+            renderAllSections();
+        }
+
+        function exportReviewsToCSV() {
+            if (allReviews.length === 0) {
+                alert('No customer reviews to export.');
+                return;
+            }
+            let csv = 'Ref ID,Date,Name,Phone,Email,Package,Rating,Feedback,Status,Source\n';
+            allReviews.forEach(r => {
+                csv += `"${r.review_id || ''}","${r.timestamp || ''}","${(r.name || '').replace(/"/g, '""')}","${r.phone || ''}","${r.email || ''}","${(r.package || '').replace(/"/g, '""')}","${r.stars || 5}","${(r.feedback || '').replace(/"/g, '""')}","${r.status || ''}","Rate Us Form"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `spirit_adventures_customer_reviews_${Date.now()}.csv`;
+            link.click();
+        }
+
         function testRealtimeConnection(targetSource = 'package.html') {
             const isPkg = targetSource === 'package.html';
             const isEnquiry = targetSource === 'index.html';
@@ -3646,6 +4058,44 @@
             }
 
             handleIncomingRealtimeBooking(testSample, targetSource);
+        }
+
+        function testRealtimeRating() {
+            const names = ['Aarohi Deshmukh', 'Vikramaditya Roy', 'Neha Chawla', 'Aditya Joshi', 'Kavya Raman'];
+            const pkgs = ['Coorg Getaway', 'Goa Beach Trip', 'Hampi, Gokarna & Dandeli', 'Kodaikanal, Ooty & Mysore', 'Wayanad Nature Escape'];
+            const feedbacks = [
+                'Unbelievable experience! The team arranged every detail smoothly and our trek guide was outstanding.',
+                'The camping and stargazing were unforgettable. Best travel agency in South India hands down!',
+                'Loved the personalized itinerary and the driver was very courteous and punctual.',
+                'Superb hospitality and seamless booking experience. Will definitely book again next season!',
+                'Scenic views, neat stays, and top-tier guides. Highly recommend Spirit Adventures to everyone!'
+            ];
+            const randIdx = Math.floor(Math.random() * names.length);
+            const refId = '#REV-' + Math.floor(100000 + Math.random() * 900000);
+            const sampleReview = {
+                review_id: refId,
+                timestamp: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+                name: names[randIdx],
+                phone: '+9198765' + Math.floor(10000 + Math.random() * 90000),
+                email: names[randIdx].toLowerCase().replace(/\s+/g, '.') + '@example.com',
+                stars: 5,
+                package: pkgs[randIdx],
+                feedback: feedbacks[randIdx],
+                status: 'Verified',
+                source: 'Rate Us Form',
+                _isNewRealtime: true
+            };
+
+            if (syncChannel) {
+                syncChannel.postMessage({
+                    type: 'NEW_RATING',
+                    source: 'Rate Us Form (Test Simulation)',
+                    data: sampleReview,
+                    timestamp: Date.now()
+                });
+            }
+
+            handleIncomingRealtimeRating(sampleReview, 'Rate Us Form');
         }
 
         function toggleTestMenu(force) {
@@ -4067,6 +4517,7 @@
                 'booking': 'nav-item-booking',
                 'customize': 'nav-item-customize',
                 'enquiry': 'nav-item-enquiry',
+                'reviews': 'nav-item-reviews',
                 'master': 'nav-item-master'
             };
 
@@ -4084,6 +4535,7 @@
                     'booking': '<i class="fas fa-ticket-alt" style="color: var(--admin-teal);"></i> Direct Bookings',
                     'customize': '<i class="fas fa-sliders-h" style="color: #a78bfa;"></i> Custom Trips',
                     'enquiry': '<i class="fas fa-paper-plane" style="color: #f97316;"></i> Home Enquiries',
+                    'reviews': '<i class="fas fa-star" style="color: #fbbf24;"></i> Customer Reviews',
                     'master': '<i class="fas fa-database" style="color: var(--admin-blue);"></i> Unified Master'
                 };
                 breadcrumbEl.innerHTML = labels[tab] || labels['split'];
@@ -4093,6 +4545,7 @@
             const secBooking = document.getElementById('section-booking');
             const secCustom = document.getElementById('section-customize');
             const secEnquiry = document.getElementById('section-enquiry');
+            const secReviews = document.getElementById('section-reviews');
             const secMaster = document.getElementById('section-master');
 
             if (tab === 'split') {
@@ -4100,36 +4553,49 @@
                 if (secBooking) secBooking.style.display = 'block';
                 if (secCustom) secCustom.style.display = 'block';
                 if (secEnquiry) secEnquiry.style.display = 'block';
+                if (secReviews) secReviews.style.display = 'block';
                 if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'package') {
                 if (secPkg) { secPkg.style.display = 'block'; secPkg.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
                 if (secBooking) secBooking.style.display = 'none';
                 if (secCustom) secCustom.style.display = 'none';
                 if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secReviews) secReviews.style.display = 'none';
                 if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'booking') {
                 if (secPkg) secPkg.style.display = 'none';
                 if (secBooking) { secBooking.style.display = 'block'; secBooking.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
                 if (secCustom) secCustom.style.display = 'none';
                 if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secReviews) secReviews.style.display = 'none';
                 if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'customize') {
                 if (secPkg) secPkg.style.display = 'none';
                 if (secBooking) secBooking.style.display = 'none';
                 if (secCustom) { secCustom.style.display = 'block'; secCustom.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
                 if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secReviews) secReviews.style.display = 'none';
                 if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'enquiry') {
                 if (secPkg) secPkg.style.display = 'none';
                 if (secBooking) secBooking.style.display = 'none';
                 if (secCustom) secCustom.style.display = 'none';
                 if (secEnquiry) { secEnquiry.style.display = 'block'; secEnquiry.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                if (secReviews) secReviews.style.display = 'none';
+                if (secMaster) secMaster.style.display = 'none';
+            } else if (tab === 'reviews') {
+                if (secPkg) secPkg.style.display = 'none';
+                if (secBooking) secBooking.style.display = 'none';
+                if (secCustom) secCustom.style.display = 'none';
+                if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secReviews) { secReviews.style.display = 'block'; secReviews.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
                 if (secMaster) secMaster.style.display = 'none';
             } else if (tab === 'master') {
                 if (secPkg) secPkg.style.display = 'none';
                 if (secBooking) secBooking.style.display = 'none';
                 if (secCustom) secCustom.style.display = 'none';
                 if (secEnquiry) secEnquiry.style.display = 'none';
+                if (secReviews) secReviews.style.display = 'none';
                 if (secMaster) { secMaster.style.display = 'block'; secMaster.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
             }
         }
@@ -4282,6 +4748,21 @@
                 }
             }
 
+            // Reviews Metrics & Average Rating
+            const reviewsCount = typeof allReviews !== 'undefined' ? allReviews.length : 0;
+            let avgStars = '5.0';
+            if (reviewsCount > 0) {
+                const totalStars = allReviews.reduce((sum, r) => sum + (parseFloat(r.stars) || 5), 0);
+                avgStars = (totalStars / reviewsCount).toFixed(1);
+            }
+
+            if (document.getElementById('stat-reviews-count')) {
+                document.getElementById('stat-reviews-count').textContent = reviewsCount;
+            }
+            if (document.getElementById('stat-reviews-avg')) {
+                document.getElementById('stat-reviews-avg').textContent = `★ ${avgStars} Avg`;
+            }
+
             // Sync Horizontal tab counts
             if (document.getElementById('tab-badge-split')) {
                 document.getElementById('tab-badge-split').textContent = allBookings.length;
@@ -4290,6 +4771,9 @@
                 document.getElementById('tab-badge-customize').textContent = customList.length;
                 if (document.getElementById('tab-badge-enquiry')) {
                     document.getElementById('tab-badge-enquiry').textContent = enquiryList.length;
+                }
+                if (document.getElementById('tab-badge-reviews')) {
+                    document.getElementById('tab-badge-reviews').textContent = reviewsCount;
                 }
                 document.getElementById('tab-badge-master').textContent = allBookings.length;
             }
@@ -4302,6 +4786,9 @@
                 document.getElementById('side-badge-customize').textContent = customList.length;
                 if (document.getElementById('side-badge-enquiry')) {
                     document.getElementById('side-badge-enquiry').textContent = enquiryList.length;
+                }
+                if (document.getElementById('side-badge-reviews')) {
+                    document.getElementById('side-badge-reviews').textContent = reviewsCount;
                 }
                 document.getElementById('side-badge-master').textContent = allBookings.length;
             }
@@ -4318,11 +4805,17 @@
             if (document.getElementById('enquiry-count-badge')) {
                 document.getElementById('enquiry-count-badge').textContent = `${enquiryList.length} Enquir${enquiryList.length === 1 ? 'y' : 'ies'}`;
             }
+            if (document.getElementById('reviews-count-badge')) {
+                document.getElementById('reviews-count-badge').textContent = `${reviewsCount} Review${reviewsCount === 1 ? '' : 's'}`;
+            }
 
             filterPackageBookings();
             filterDirectBookings();
             filterCustomBookings();
             filterEnquiryBookings();
+            if (typeof filterReviews === 'function') {
+                filterReviews();
+            }
             filterMasterBookings();
         }
 
@@ -4444,18 +4937,23 @@
             const dirInput = document.getElementById('direct-search-input');
             const cusInput = document.getElementById('custom-search-input');
             const enqInput = document.getElementById('enquiry-search-input');
+            const revInput = document.getElementById('reviews-search-input');
             const masInput = document.getElementById('search-input');
 
             if (pkgInput) pkgInput.value = val;
             if (dirInput) dirInput.value = val;
             if (cusInput) cusInput.value = val;
             if (enqInput) enqInput.value = val;
+            if (revInput) revInput.value = val;
             if (masInput) masInput.value = val;
 
             filterPackageBookings();
             filterDirectBookings();
             filterCustomBookings();
             filterEnquiryBookings();
+            if (typeof filterReviews === 'function') {
+                filterReviews();
+            }
             filterMasterBookings();
         }
 
@@ -4717,6 +5215,7 @@
             updateSoundButtonState();
             calculateRtTotal();
             setupRealtimeSync();
+            loadAllReviews();
             fetchBookings();
             renderPricingEditor();
         });

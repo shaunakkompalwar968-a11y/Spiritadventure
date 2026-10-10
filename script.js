@@ -350,12 +350,115 @@
             closeInquiryBtn.addEventListener('click', () => window.resetInquiryModalState());
         }
 
+        // Dedicated Rate Us Experience Modal
+        const rateModal = document.getElementById('rate-modal');
+        const rateUsBtn = document.getElementById('rate-us-btn');
+        const closeRateBtn = document.getElementById('close-rate-modal');
+
+        const openRateModal = () => {
+            if (rateModal) {
+                const formBody = document.getElementById('rate-form-body');
+                const successCard = document.getElementById('rate-success-state');
+                if (formBody) formBody.style.display = 'block';
+                if (successCard) successCard.style.display = 'none';
+
+                rateModal.scrollTop = 0;
+                const container = rateModal.querySelector('.rate-modal-container');
+                if (container) container.scrollTop = 0;
+
+                rateModal.classList.remove('hidden');
+                rateModal.classList.add('active');
+                document.body.classList.add('modal-open');
+
+                const nameInput = document.getElementById('rate-name');
+                if (nameInput && window.innerWidth > 768) {
+                    setTimeout(() => nameInput.focus(), 250);
+                }
+            }
+        };
+        window.openRateModal = openRateModal;
+
+        const closeRateModal = () => {
+            if (rateModal) {
+                rateModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                setTimeout(() => {
+                    const formBody = document.getElementById('rate-form-body');
+                    const successCard = document.getElementById('rate-success-state');
+                    const form = document.getElementById('rate-us-form');
+                    if (form) form.reset();
+                    if (formBody) formBody.style.display = 'block';
+                    if (successCard) successCard.style.display = 'none';
+                    setStarRating(5);
+                }, 300);
+            }
+        };
+        window.closeRateModal = closeRateModal;
+
+        if (rateUsBtn) {
+            rateUsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if(mobileDrawer) mobileDrawer.classList.remove('active');
+                openRateModal();
+            });
+        }
+        if (closeRateBtn) {
+            closeRateBtn.addEventListener('click', () => closeRateModal());
+        }
+
+        // Star rating picker interactivity
+        const starButtons = document.querySelectorAll('.rate-stars-interactive .star-btn');
+        const rateStarsInput = document.getElementById('rate-stars-input');
+        const rateScoreText = document.getElementById('rate-score-text');
+
+        const scoreLabels = {
+            1: '⭐ Disappointing Experience (1/5)',
+            2: '⭐⭐ Needs Improvement (2/5)',
+            3: '⭐⭐⭐ Good Trip (3/5)',
+            4: '⭐⭐⭐⭐ Very Good Experience! (4/5)',
+            5: '⭐⭐⭐⭐⭐ Outstanding Experience! (5/5)'
+        };
+
+        function setStarRating(rating) {
+            if (rateStarsInput) rateStarsInput.value = rating;
+            if (rateScoreText) rateScoreText.textContent = scoreLabels[rating] || `${rating}/5 Stars`;
+            starButtons.forEach(btn => {
+                const r = parseInt(btn.getAttribute('data-rating'), 10);
+                if (r <= rating) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        window.setStarRating = setStarRating;
+
+        starButtons.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                const r = parseInt(btn.getAttribute('data-rating'), 10);
+                starButtons.forEach(b => {
+                    const br = parseInt(b.getAttribute('data-rating'), 10);
+                    b.classList.toggle('hover', br <= r);
+                });
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                starButtons.forEach(b => b.classList.remove('hover'));
+            });
+
+            btn.addEventListener('click', () => {
+                const r = parseInt(btn.getAttribute('data-rating'), 10);
+                setStarRating(r);
+            });
+        });
+
         window.addEventListener('click', (e) => {
             if (e.target === onlineBookingModal) {
                 onlineBookingModal.classList.remove('active');
                 document.body.classList.remove('modal-open');
             }
             if (e.target === inquiryModal) window.resetInquiryModalState();
+            if (e.target === rateModal) closeRateModal();
         });
 
         window.addEventListener('keydown', (e) => {
@@ -366,6 +469,9 @@
                 if (onlineBookingModal && onlineBookingModal.classList.contains('active')) {
                     onlineBookingModal.classList.remove('active');
                     document.body.classList.remove('modal-open');
+                }
+                if (rateModal && rateModal.classList.contains('active')) {
+                    closeRateModal();
                 }
             }
         });
@@ -598,6 +704,120 @@
                 if (successCard) successCard.style.display = 'block';
 
                 inquiryForm.reset();
+            });
+        }
+
+        // 7.5. Rate Us Form Submission with Real-Time Broadcast to admin.html
+        const rateForm = document.getElementById('rate-us-form');
+        if (rateForm) {
+            rateForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const submitBtn = document.getElementById('rate-submit-btn');
+                const origText = submitBtn ? submitBtn.innerHTML : 'Submit Review & Rating';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Review...';
+                }
+
+                const rating = parseInt(document.getElementById('rate-stars-input')?.value || '5', 10);
+                const name = (document.getElementById('rate-name')?.value || '').trim() || 'Valued Traveler';
+                const phone = (document.getElementById('rate-phone')?.value || '').trim() || 'N/A';
+                const email = (document.getElementById('rate-email')?.value || '').trim() || 'N/A';
+                const packageTaken = (document.getElementById('rate-pkg')?.value || '').trim() || 'Spirit Adventure Tour';
+                const feedback = (document.getElementById('rate-feedback')?.value || '').trim() || 'Great experience!';
+
+                const reviewRef = '#REV-' + Math.floor(100000 + Math.random() * 900000);
+                const timestamp = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+
+                const reviewRecord = {
+                    review_id: reviewRef,
+                    timestamp: timestamp,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    stars: rating,
+                    package: packageTaken,
+                    feedback: feedback,
+                    status: 'Verified',
+                    source: 'Rate Us Form',
+                    _isNewRealtime: true
+                };
+
+                // 1. Save to local storage for persistence across tabs and page reloads
+                try {
+                    const storedReviews = JSON.parse(localStorage.getItem('spirit_local_ratings') || '[]');
+                    storedReviews.unshift(reviewRecord);
+                    localStorage.setItem('spirit_local_ratings', JSON.stringify(storedReviews));
+
+                    // Storage event trigger for listening admin tabs
+                    localStorage.setItem('spirit_last_rating_event', JSON.stringify({
+                        time: Date.now(),
+                        ref: reviewRef,
+                        name: name,
+                        stars: rating,
+                        pkg: packageTaken,
+                        feedback: feedback
+                    }));
+
+                    // 2. Broadcast via BroadcastChannel in real-time to admin.html
+                    if (window.BroadcastChannel) {
+                        const bc = new BroadcastChannel('spirit_booking_sync');
+                        bc.postMessage({
+                            type: 'NEW_RATING',
+                            source: 'Rate Us Form (index.html)',
+                            data: reviewRecord,
+                            timestamp: Date.now()
+                        });
+                        console.log('⚡ Broadcasted Rate Us review in real time to admin.html:', reviewRef);
+                    }
+                } catch (storageErr) {
+                    console.warn('Could not cache or broadcast review:', storageErr);
+                }
+
+                // 3. Post to SheetDB endpoint if configured
+                const sheetDbUrl = localStorage.getItem('spirit_sheetdb_url');
+                if (sheetDbUrl && !sheetDbUrl.includes('YOUR_SHEETDB_API_ID')) {
+                    try {
+                        fetch(sheetDbUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                data: [{
+                                    booking_id: reviewRef,
+                                    timestamp: timestamp,
+                                    name: name,
+                                    phone: phone,
+                                    email: email,
+                                    package: `Review: ${packageTaken} (${rating}★)`,
+                                    travel_date: 'Reviewed',
+                                    travelers: `${rating} Stars`,
+                                    pickup_city: 'N/A',
+                                    total_amount: `${rating} / 5 Rating`,
+                                    notes: feedback,
+                                    status: 'Verified',
+                                    source: 'Rate Us Form'
+                                }]
+                            })
+                        }).catch(e => console.warn('SheetDB save error:', e));
+                    } catch(e) {}
+                }
+
+                // 4. Update UI to success state
+                const formBody = document.getElementById('rate-form-body');
+                const successCard = document.getElementById('rate-success-state');
+                const refBox = document.getElementById('rate-success-ref');
+                if (formBody) formBody.style.display = 'none';
+                if (refBox) refBox.textContent = `Review Ref: ${reviewRef}`;
+                if (successCard) successCard.style.display = 'block';
+
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = origText;
+                }
             });
         }
 

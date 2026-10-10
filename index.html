@@ -728,13 +728,119 @@
         </div>
     </div>
 
+    <!-- Dedicated Rate Us / Experience Review Modal -->
+    <div id="rate-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="rate-modal-title">
+        <div class="rate-modal-container">
+            <button id="close-rate-modal" class="inquiry-close-btn" type="button" aria-label="Close Rating Dialog">&times;</button>
+            
+            <div id="rate-form-body">
+                <div class="rate-modal-header text-center" style="text-align: center; margin-bottom: 16px;">
+                    <div class="rate-badge-circle">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 id="rate-modal-title" class="rate-modal-title">Rate Your Experience</h3>
+                    <p class="rate-modal-subtitle">We would love to hear about your adventure with Spirit Adventures! Your review helps fellow travelers and our team.</p>
+                </div>
+
+                <form id="rate-us-form">
+                    <!-- Interactive 5-Star Rating Selector -->
+                    <div class="rate-stars-picker-wrap">
+                        <label class="rate-stars-label">Select Your Star Rating *</label>
+                        <div class="rate-stars-interactive" id="rate-stars-picker">
+                            <button type="button" class="star-btn active" data-rating="1" title="1 Star - Poor"><i class="fas fa-star"></i></button>
+                            <button type="button" class="star-btn active" data-rating="2" title="2 Stars - Fair"><i class="fas fa-star"></i></button>
+                            <button type="button" class="star-btn active" data-rating="3" title="3 Stars - Good"><i class="fas fa-star"></i></button>
+                            <button type="button" class="star-btn active" data-rating="4" title="4 Stars - Very Good"><i class="fas fa-star"></i></button>
+                            <button type="button" class="star-btn active" data-rating="5" title="5 Stars - Outstanding!"><i class="fas fa-star"></i></button>
+                        </div>
+                        <div class="rate-score-text" id="rate-score-text">⭐⭐⭐⭐⭐ Outstanding Experience! (5/5)</div>
+                        <input type="hidden" id="rate-stars-input" name="rating" value="5">
+                    </div>
+
+                    <div class="inquiry-grid" style="margin-top: 15px;">
+                        <!-- Full Name -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="rate-name"><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="rate-name" name="name" placeholder="e.g. Rahul Sharma" required class="inquiry-input">
+                        </div>
+
+                        <!-- Phone / WhatsApp -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="rate-phone"><i class="fab fa-whatsapp"></i> WhatsApp / Phone *</label>
+                            <input type="tel" id="rate-phone" name="phone" placeholder="e.g. +91 98765 43210" required class="inquiry-input">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="rate-email"><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="rate-email" name="email" placeholder="e.g. rahul@example.com" class="inquiry-input">
+                        </div>
+
+                        <!-- Destination / Package -->
+                        <div class="inquiry-field-group">
+                            <label class="inquiry-label" for="rate-pkg"><i class="fas fa-map-marker-alt"></i> Tour / Destination Taken *</label>
+                            <select id="rate-pkg" name="package" required class="inquiry-select">
+                                <option value="Coorg Getaway" selected>Coorg Getaway</option>
+                                <option value="Goa Beach Trip">Goa Beach Trip</option>
+                                <option value="Hampi, Gokarna &amp; Dandeli">Hampi, Gokarna &amp; Dandeli</option>
+                                <option value="Kodaikanal, Ooty &amp; Mysore">Kodaikanal, Ooty &amp; Mysore</option>
+                                <option value="Chikmagalur Coffee Trail">Chikmagalur Coffee Trail</option>
+                                <option value="Wayanad Nature Escape">Wayanad Nature Escape</option>
+                                <option value="Kerala Backwaters &amp; Hills">Kerala Backwaters &amp; Hills</option>
+                                <option value="Dandeli River Rafting">Dandeli River Rafting</option>
+                                <option value="Custom Tailor-Made Adventure">Custom Tailor-Made Adventure</option>
+                                <option value="Other Destination">Other Destination</option>
+                            </select>
+                        </div>
+
+                        <!-- Review Text -->
+                        <div class="inquiry-field-group full-width">
+                            <label class="inquiry-label" for="rate-feedback"><i class="fas fa-comment-dots"></i> Your Review &amp; Feedback *</label>
+                            <textarea id="rate-feedback" name="feedback" rows="3" required placeholder="Tell us about your trip experience, tour guide, accommodations, food, safety, and hospitality..." class="inquiry-textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Trust highlights -->
+                    <div class="inquiry-trust-row" style="margin: 12px 0 16px;">
+                        <div class="inquiry-trust-item"><i class="fas fa-shield-alt" style="color: var(--teal);"></i> 100% Genuine Review</div>
+                        <div class="inquiry-trust-item"><i class="fas fa-bolt" style="color: #f59e0b;"></i> Real-Time Synced</div>
+                        <div class="inquiry-trust-item"><i class="fas fa-heart" style="color: #ef4444;"></i> Thank you for your feedback!</div>
+                    </div>
+
+                    <button type="submit" class="inquiry-submit-btn" id="rate-submit-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <span>Submit Review &amp; Rating</span> <i class="fas fa-star"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success State -->
+            <div id="rate-success-state" class="inquiry-success-card" style="display: none;">
+                <div class="inquiry-success-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3 style="color: #b45309; font-size: 1.35rem; font-weight: 800; margin-bottom: 6px;">Thank You for Rating Us!</h3>
+                <p style="color: #64748b; font-size: 0.9rem; max-width: 480px; margin: 0 auto;">
+                    Your rating and feedback have been successfully logged with our Spirit Adventures travel desk.
+                </p>
+                <div class="inquiry-ref-box" id="rate-success-ref" style="border-color: #f59e0b; color: #b45309; background: #fef3c7;">
+                    Review Ref: #REV-000000
+                </div>
+                <div style="margin-top: 15px;">
+                    <button type="button" class="btn yellow-btn" onclick="closeRateModal()" style="padding: 9px 26px;">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Floating Actions -->
     <div class="floating-actions">
-        <!-- Google Maps Rating Button -->
-        <a href="https://maps.app.goo.gl/me7tbu9Co6W8F4EHA" target="_blank" class="action-btn map-btn pulse-map" title="Rate Us on Google Maps">
+        <!-- Rate Us Floating Button (No Map Location, Opens Rate Us Form) -->
+        <button id="rate-us-btn" class="action-btn rate-btn pulse-rate" type="button" title="Rate Your Experience with Us">
             <i class="fas fa-star"></i>
             <span class="tooltip-text">Rate Us!</span>
-        </a>
+        </button>
         <!-- WhatsApp Floating Button -->
         <a href="https://wa.me/919666567551?text=Hi%20Spirit%20Adventures,%20I%20want%20to%20know%20more%20about%20your%20packages!" target="_blank" class="action-btn wa-btn pulse-anim" title="Chat on WhatsApp">
             <i class="fab fa-whatsapp"></i>
