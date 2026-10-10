@@ -189,6 +189,7 @@
         // 5. Show More / Show Less Photos Toggle Logic
         const togglePhotosBtn = document.getElementById('toggle-photos-btn');
         const hiddenPhotos = document.querySelectorAll('.hidden-photo');
+        const galleryInstaBtn = document.getElementById('gallery-insta-btn');
 
         if(togglePhotosBtn) {
             let isExpanded = false;
@@ -198,6 +199,15 @@
                     if(isExpanded) photo.classList.add('revealed');
                     else photo.classList.remove('revealed');
                 });
+
+                // Reveal / Hide Animated Instagram button synchronously with photos expansion
+                if(galleryInstaBtn) {
+                    if(isExpanded) {
+                        galleryInstaBtn.classList.add('revealed');
+                    } else {
+                        galleryInstaBtn.classList.remove('revealed');
+                    }
+                }
 
                 if(isExpanded) {
                     togglePhotosBtn.innerHTML = 'Show Less Photos <i class="fas fa-chevron-up" id="toggle-icon"></i>';

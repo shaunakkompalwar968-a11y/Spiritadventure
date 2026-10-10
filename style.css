@@ -512,6 +512,31 @@ body::before {
     transform: translateY(-1px) scale(0.98);
 }
 
+/* Hidden state until user expands photos */
+.hidden-insta-btn {
+    display: none !important;
+}
+
+.hidden-insta-btn.revealed {
+    display: inline-flex !important;
+    animation: instaBtnEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards, instaGradientShift 3.5s ease infinite alternate, instaHaloPulse 2.4s infinite ease-in-out;
+}
+
+@keyframes instaBtnEntrance {
+    0% {
+        opacity: 0;
+        transform: scale(0.65) translateY(20px);
+    }
+    65% {
+        opacity: 1;
+        transform: scale(1.08) translateY(-4px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
 /* --- REVIEWS SECTION --- */
 .reviews-section { background: var(--gray); position: relative; }
 .review-grid { display: flex; flex-wrap: wrap; gap: 25px; margin-top: 25px; justify-content: center; }
