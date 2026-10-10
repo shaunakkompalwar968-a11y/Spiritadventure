@@ -47,35 +47,48 @@ body::before {
 .teal-btn { background: var(--teal); color: var(--white); font-size: 0.8rem; padding: 10px 20px; }
 .teal-btn:hover { background: var(--teal-dark); transform: translateY(-2px); }
 
-/* Split Hero Section (Premium Dual-Tone Frosted Glassmorphism) */
+/* Split Hero Section (Unified Cinematic Travel Experience) */
 .split-hero { 
     display: flex; 
     width: 100%; 
     min-height: 100vh; 
     position: relative; 
     overflow: hidden; 
+    background: #081d22 url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center center / cover no-repeat;
 }
 
 .split-hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    /* Soft vertical edge vignette for navbar and bottom section transition */
-    background: linear-gradient(180deg, rgba(8, 28, 34, 0.40) 0%, transparent 20%, transparent 80%, rgba(8, 28, 34, 0.65) 100%);
-    z-index: 0;
+    /* Unified cinematic travel color fade overlay across entire video */
+    background: linear-gradient(
+        135deg, 
+        rgba(8, 28, 34, 0.82) 0%, 
+        rgba(13, 74, 77, 0.65) 50%, 
+        rgba(8, 26, 31, 0.78) 100%
+    );
+    z-index: 1;
     pointer-events: none;
 }
 
-.full-bg-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; z-index: -2; }
+.full-bg-video { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    z-index: 0; 
+    pointer-events: none; 
+}
 
-/* Left Half: Rich Frosted Luxury Teal Glass */
+/* Left Half: High-Contrast Frosted Text Area */
 .hero-left { 
     flex: 0 0 55%; 
-    background: linear-gradient(135deg, rgba(10, 48, 54, 0.85) 0%, rgba(15, 74, 82, 0.74) 100%) !important; 
-    backdrop-filter: blur(12px) !important; 
-    -webkit-backdrop-filter: blur(12px) !important; 
-    border-right: 1.5px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 12px 0 35px rgba(0, 0, 0, 0.28);
+    background: linear-gradient(90deg, rgba(6, 22, 27, 0.50) 0%, rgba(6, 22, 27, 0.18) 100%); 
+    backdrop-filter: blur(5px); 
+    -webkit-backdrop-filter: blur(5px); 
     position: relative; 
     display: flex; 
     align-items: center; 
@@ -95,19 +108,17 @@ body::before {
 .hero-desc { font-size: 0.9rem; line-height: 1.7; opacity: 0.95; margin-bottom: 25px; max-width: 400px; }
 .dots-pattern { position: absolute; bottom: -40px; left: 0; width: 120px; height: 60px; background-image: radial-gradient(rgba(255,255,255,0.4) 2px, transparent 2px); background-size: 15px 15px; }
 
-/* Right Half: Crystal Clear Sunlit Frosted Glass */
+/* Right Half: Floating Featured Media Frame */
 .hero-right { 
     flex: 0 0 45%; 
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%) !important; 
-    backdrop-filter: blur(5px) !important; 
-    -webkit-backdrop-filter: blur(5px) !important; 
+    background: transparent; 
     position: relative; 
-    z-index: 1; 
+    z-index: 2; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
 }
-.media-frame { width: 85%; max-width: 500px; aspect-ratio: 16/10; background: var(--white); padding: 10px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; border-radius: 6px; margin: auto; }
+.media-frame { width: 85%; max-width: 500px; aspect-ratio: 16/10; background: var(--white); padding: 10px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); position: relative; border-radius: 6px; margin: auto; }
 .featured-media { width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
 .tape { position: absolute; width: 70px; height: 22px; background: rgba(245, 222, 179, 0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 11; }
 .tape-top-left { top: -8px; left: -15px; transform: rotate(-45deg); }
@@ -606,11 +617,38 @@ html.skip-intro #welcome-popup,
 
 /* --- RESPONSIVE MEDIA QUERIES FOR ALL DEVICES --- */
 @media (max-width: 1024px) {
-    .split-hero { flex-direction: column; height: auto; min-height: 100vh; }
-    .hero-left, .hero-right { flex: none; width: 100%; border-right: none !important; }
-    .hero-left { padding: 110px 5% 50px 5%; border-bottom: 1.5px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); }
-    .hero-right { padding: 40px 5% 80px 5%; min-height: 420px; }
-    .media-frame { width: 100%; max-width: 550px; transform: none; }
+    .split-hero { 
+        flex-direction: column; 
+        height: auto; 
+        min-height: 100vh; 
+    }
+    .hero-left, .hero-right { 
+        flex: none; 
+        width: 100%; 
+        background: transparent !important; 
+        backdrop-filter: none !important; 
+        -webkit-backdrop-filter: none !important; 
+        border: none !important; 
+        box-shadow: none !important; 
+    }
+    .hero-left { 
+        padding: 110px 5% 25px 5%; 
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+    .hero-content {
+        margin: 0 auto;
+        max-width: 540px;
+    }
+    .hero-desc {
+        margin: 0 auto 25px auto;
+    }
+    .hero-right { 
+        padding: 15px 5% 70px 5%; 
+        min-height: auto; 
+    }
+    .media-frame { width: 100%; max-width: 500px; transform: none; }
     .custom-nav { padding: 15px 25px !important; }
     .custom-nav.scrolled { padding: 12px 25px !important; }
     .nav-links { display: none !important; }
@@ -626,17 +664,21 @@ html.skip-intro #welcome-popup,
     .section-padding { padding: 50px 0; }
     .section-heading { font-size: clamp(1.6rem, 5vw, 2.2rem); }
     .subtitle-tag { font-size: 0.78rem; letter-spacing: 1.5px; }
-    .hero-left { padding: 100px 20px 40px 20px; }
+    .hero-left { padding: 100px 20px 20px 20px; }
+    .hero-right { padding: 15px 20px 55px 20px; }
     .top-subtitle { font-size: clamp(1rem, 3.5vw, 1.3rem); }
-    .cursive-text { font-size: clamp(3.2rem, 11vw, 5rem); }
+    .cursive-text { font-size: clamp(3.2rem, 11vw, 4.8rem); }
     .plane-icon { font-size: 1.4rem; top: 6px; right: -15px; }
     .hero-desc { font-size: 0.88rem; max-width: 100%; }
+    .dots-pattern { display: none; }
+    .flight-path { display: none; }
     .custom-nav { padding: 12px 18px !important; }
     .custom-nav.scrolled { padding: 10px 18px !important; }
-    .nav-logo-img { height: 32px; }
+    .nav-logo-img { height: 32px; max-width: 125px; object-fit: contain; }
     .nav-home-icon-btn { display: inline-flex; }
-    .nav-customize-btn { padding: 7px 14px; font-size: 0.78rem; }
-    .login-btn { padding: 7px 16px; font-size: 0.78rem; }
+    .nav-customize-btn { display: none !important; }
+    .btn-all-dest { display: none !important; }
+    .login-btn { padding: 7px 15px; font-size: 0.78rem; }
     .mobile-menu-btn { display: inline-flex !important; }
     .tour-card { height: 340px; }
     .social-sidebar { display: none; }
@@ -653,6 +695,7 @@ html.skip-intro #welcome-popup,
     .floating-actions { bottom: 15px; right: 15px; gap: 10px; }
     .action-btn { width: 45px; height: 45px; font-size: 1.3rem; }
     .chat-window { width: calc(100vw - 30px); right: 15px; bottom: 75px; max-height: calc(100vh - 100px); }
+    .tape { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -660,15 +703,14 @@ html.skip-intro #welcome-popup,
     .container { padding: 0 16px; }
     .custom-nav { padding: 10px 12px !important; }
     .custom-nav.scrolled { padding: 8px 12px !important; }
-    .nav-logo-img { height: 28px; }
+    .nav-logo-img { height: 28px; max-width: 110px; object-fit: contain; }
     .nav-right { gap: 6px; }
     .nav-home-icon-btn { width: 32px; height: 32px; font-size: 0.85rem; }
-    .nav-customize-btn { padding: 6px 10px; font-size: 0.72rem; }
     .login-btn { padding: 6px 11px; font-size: 0.72rem; }
     .mobile-menu-btn { font-size: 1.25rem; }
-    .hero-left { padding: 90px 16px 35px; }
-    .hero-right { padding: 25px 16px 50px; min-height: 320px; }
-    .flight-path { display: none; }
+    .hero-left { padding: 85px 16px 15px; }
+    .hero-right { padding: 15px 16px 45px; min-height: auto; }
+    .cursive-text { font-size: clamp(2.8rem, 10vw, 3.8rem); }
     .modern-grid { grid-template-columns: 1fr; gap: 18px; }
     .photo-grid { grid-template-columns: 1fr; gap: 12px; }
     .photo-item { height: 220px; }
@@ -684,11 +726,10 @@ html.skip-intro #welcome-popup,
 
 @media (max-width: 360px) {
     .nav-right { gap: 4px; }
-    .nav-customize-btn .btn-text, .login-btn .btn-text { display: none; }
-    .nav-customize-btn { padding: 6px 8px; }
-    .login-btn { padding: 6px 8px; }
-    .nav-home-icon-btn { width: 30px; height: 30px; }
-    .cursive-text { font-size: 2.8rem; }
+    .login-btn .btn-text { display: none; }
+    .login-btn { padding: 6px 9px; }
+    .nav-home-icon-btn { width: 28px; height: 28px; font-size: 0.8rem; }
+    .cursive-text { font-size: 2.6rem; }
 }
 
 /* ======================================================== */
