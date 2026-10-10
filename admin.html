@@ -1285,6 +1285,42 @@
             cursor: pointer;
         }
 
+        /* Display on About Us Website Toggle Button */
+        .btn-site-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 13px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            outline: none;
+            border: 1px solid transparent;
+        }
+        .btn-site-toggle.active {
+            background: rgba(16, 185, 129, 0.16);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        }
+        .btn-site-toggle.active:hover {
+            background: rgba(16, 185, 129, 0.28);
+            transform: scale(1.03);
+        }
+        .btn-site-toggle.inactive {
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border-color: rgba(148, 163, 184, 0.25);
+        }
+        .btn-site-toggle.inactive:hover {
+            background: rgba(148, 163, 184, 0.2);
+            color: #e2e8f0;
+            transform: scale(1.03);
+        }
+
         /* Bookings Table */
         .table-wrapper {
             overflow-x: auto;
@@ -2990,6 +3026,11 @@
                                 <option value="2">2 Stars (★★)</option>
                                 <option value="1">1 Star (★)</option>
                             </select>
+                            <select id="reviews-site-filter" class="filter-select" onchange="filterReviews()">
+                                <option value="ALL">All Website Visibilities</option>
+                                <option value="DISPLAYED">Showing on About Us</option>
+                                <option value="HIDDEN">Hidden from Website</option>
+                            </select>
                             <button onclick="exportReviewsToCSV()" class="admin-btn" title="Export Customer Reviews CSV">
                                 <i class="fas fa-file-export"></i> CSV
                             </button>
@@ -3006,6 +3047,7 @@
                                     <th>Tour / Package</th>
                                     <th>Rating</th>
                                     <th>Review / Feedback</th>
+                                    <th>Display on About Us</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -3371,86 +3413,27 @@
             refreshData();
         }
 
-        // In-memory list of bookings (strictly real customer entries only)
+        // In-memory list of bookings & reviews (strictly real customer entries only)
         let allBookings = [];
         let allReviews = [];
-
-        // Default seed reviews matching verified customer experiences
-        const defaultSeedReviews = [
-            {
-                review_id: '#REV-501824',
-                timestamp: '10 Oct 2026, 04:30 PM',
-                name: 'Avinash Bollaram',
-                phone: '+91 98765 12044',
-                email: 'avinash.b@example.com',
-                stars: 5,
-                package: 'Coorg & Chikmagalur',
-                feedback: 'Great hospitality and service on our Coorg and Chikmagalur family trip. Everything went smoothly with our guide Sathvik. Highly recommended!',
-                status: 'Verified',
-                source: 'Rate Us Form'
-            },
-            {
-                review_id: '#REV-492108',
-                timestamp: '09 Oct 2026, 02:15 PM',
-                name: 'Priya Sharma',
-                phone: '+91 98450 33812',
-                email: 'priya.sharma@example.com',
-                stars: 5,
-                package: 'Goa Beach Trip',
-                feedback: 'The water sports and beach parties organized by Spirit Adventures in Goa were top-notch! Everything was perfectly coordinated.',
-                status: 'Verified',
-                source: 'Rate Us Form'
-            },
-            {
-                review_id: '#REV-389102',
-                timestamp: '08 Oct 2026, 11:20 AM',
-                name: 'Rahul Verma',
-                phone: '+91 97312 90415',
-                email: 'rahul.verma@example.com',
-                stars: 5,
-                package: 'Hampi, Gokarna & Dandeli',
-                feedback: 'An absolute history lover\'s dream! The tour guide gave incredible insights into the ruins of Hampi. Excellent management.',
-                status: 'Verified',
-                source: 'Rate Us Form'
-            },
-            {
-                review_id: '#REV-271954',
-                timestamp: '06 Oct 2026, 06:45 PM',
-                name: 'Sneha Reddy',
-                phone: '+91 99801 44521',
-                email: 'sneha.reddy@example.com',
-                stars: 5,
-                package: 'Wayanad Nature Escape',
-                feedback: 'The treehouse stay in Wayanad was magical. Thank you Spirit Adventures for arranging such a peaceful and memorable vacation.',
-                status: 'Verified',
-                source: 'Rate Us Form'
-            },
-            {
-                review_id: '#REV-162839',
-                timestamp: '04 Oct 2026, 01:10 PM',
-                name: 'Kiran Kumar',
-                phone: '+91 96112 55904',
-                email: 'kiran.k@example.com',
-                stars: 5,
-                package: 'Dandeli River Rafting',
-                feedback: 'River rafting and ziplining in Dandeli exceeded all expectations. Safety measures were well handled by the team.',
-                status: 'Verified',
-                source: 'Rate Us Form'
-            }
-        ];
 
         function loadAllReviews() {
             try {
                 const stored = localStorage.getItem('spirit_local_ratings');
                 if (stored) {
-                    allReviews = JSON.parse(stored);
+                    const parsed = JSON.parse(stored);
+                    const demoRevIds = ['#REV-501824', '#REV-492108', '#REV-389102', '#REV-271954', '#REV-162839'];
+                    const demoNames = ['Avinash Bollaram', 'Priya Sharma', 'Rahul Verma', 'Sneha Reddy', 'Kiran Kumar'];
+                    allReviews = Array.isArray(parsed)
+                        ? parsed.filter(r => r && r.review_id && !demoRevIds.includes(r.review_id) && !demoNames.includes(r.name))
+                        : [];
                 } else {
-                    allReviews = defaultSeedReviews.slice();
-                    localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
+                    allReviews = [];
                 }
             } catch (e) {
-                allReviews = defaultSeedReviews.slice();
+                allReviews = [];
             }
+            localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
             renderReviewsTable(allReviews);
             renderAllSections();
         }
@@ -3458,15 +3441,32 @@
         // Helper to purge any legacy mock/sample test entries from localStorage
         function purgeLegacyMockEntries() {
             try {
+                // 1. Purge legacy mock bookings
                 const raw = localStorage.getItem('spirit_local_bookings');
-                if (!raw) return;
-                const parsed = JSON.parse(raw);
-                if (!Array.isArray(parsed)) return;
-                const sampleIds = ['#PK-492104', '#SA-78213', '#CT-334190', '#PK-108295'];
-                const sampleNames = ['Rahul Sharma', 'Priya Patel', 'Vikram Reddy', 'Ananya Deshmukh'];
-                const cleaned = parsed.filter(b => b && b.booking_id && !sampleIds.includes(b.booking_id) && !sampleNames.includes(b.name));
-                if (cleaned.length !== parsed.length) {
-                    localStorage.setItem('spirit_local_bookings', JSON.stringify(cleaned));
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        const sampleIds = ['#PK-492104', '#SA-78213', '#CT-334190', '#PK-108295'];
+                        const sampleNames = ['Rahul Sharma', 'Priya Patel', 'Vikram Reddy', 'Ananya Deshmukh'];
+                        const cleaned = parsed.filter(b => b && b.booking_id && !sampleIds.includes(b.booking_id) && !sampleNames.includes(b.name));
+                        if (cleaned.length !== parsed.length) {
+                            localStorage.setItem('spirit_local_bookings', JSON.stringify(cleaned));
+                        }
+                    }
+                }
+
+                // 2. Purge legacy demo reviews from localStorage
+                const rawRev = localStorage.getItem('spirit_local_ratings');
+                if (rawRev) {
+                    const parsedRev = JSON.parse(rawRev);
+                    if (Array.isArray(parsedRev)) {
+                        const demoRevIds = ['#REV-501824', '#REV-492108', '#REV-389102', '#REV-271954', '#REV-162839'];
+                        const demoNames = ['Avinash Bollaram', 'Priya Sharma', 'Rahul Verma', 'Sneha Reddy', 'Kiran Kumar'];
+                        const cleanedRev = parsedRev.filter(r => r && r.review_id && !demoRevIds.includes(r.review_id) && !demoNames.includes(r.name));
+                        if (cleanedRev.length !== parsedRev.length) {
+                            localStorage.setItem('spirit_local_ratings', JSON.stringify(cleanedRev));
+                        }
+                    }
                 }
             } catch (e) {}
         }
@@ -3869,6 +3869,17 @@
                 }
             }
 
+            const isVisibleOnSite = r.display_on_website !== false;
+            const siteToggleBtn = `
+                <button type="button" 
+                        class="btn-site-toggle ${isVisibleOnSite ? 'active' : 'inactive'}" 
+                        onclick="toggleWebsiteDisplay('${escapeHtml(r.review_id)}')"
+                        title="${isVisibleOnSite ? 'Currently live on About Us reviews section. Click to Hide.' : 'Hidden from website. Click to Show on About Us reviews section.'}">
+                    <i class="fas ${isVisibleOnSite ? 'fa-check-circle' : 'fa-eye-slash'}"></i>
+                    <span>${isVisibleOnSite ? 'Showing on About Us' : 'Hidden'}</span>
+                </button>
+            `;
+
             return `
                 <tr id="row-${cleanId}" class="${r._isNewRealtime ? 'row-new-realtime' : ''}">
                     <td>
@@ -3897,10 +3908,13 @@
                             <span style="color: #fbbf24; font-weight: 700; font-size: 0.82rem; margin-left: 4px;">(${starCount}/5)</span>
                         </div>
                     </td>
-                    <td style="max-width: 320px;">
+                    <td style="max-width: 300px;">
                         <p style="margin: 0; font-size: 0.84rem; line-height: 1.45; color: #cbd5e1; font-style: italic;">
                             "${escapeHtml(r.feedback || 'Great experience with Spirit Adventures!')}"
                         </p>
+                    </td>
+                    <td>
+                        ${siteToggleBtn}
                     </td>
                     <td>
                         <select class="status-badge ${statusClass}" onchange="changeReviewStatus('${escapeHtml(r.review_id)}', this.value)" style="cursor: pointer; outline: none; border-radius: 20px; font-weight: 700;">
@@ -3945,9 +3959,15 @@
         function filterReviews() {
             const q = (document.getElementById('reviews-search-input')?.value || '').toLowerCase().trim();
             const star = document.getElementById('reviews-star-filter')?.value || 'ALL';
+            const siteFilter = document.getElementById('reviews-site-filter')?.value || 'ALL';
 
             const filtered = allReviews.filter(r => {
                 const matchStar = star === 'ALL' || String(r.stars) === star;
+                const isVisible = r.display_on_website !== false;
+                const matchSite = siteFilter === 'ALL' ||
+                    (siteFilter === 'DISPLAYED' && isVisible) ||
+                    (siteFilter === 'HIDDEN' && !isVisible);
+
                 const matchQuery = !q ||
                     (r.name && r.name.toLowerCase().includes(q)) ||
                     (r.phone && r.phone.toLowerCase().includes(q)) ||
@@ -3955,10 +3975,38 @@
                     (r.review_id && r.review_id.toLowerCase().includes(q)) ||
                     (r.package && r.package.toLowerCase().includes(q)) ||
                     (r.feedback && r.feedback.toLowerCase().includes(q));
-                return matchStar && matchQuery;
+
+                return matchStar && matchSite && matchQuery;
             });
 
             renderReviewsTable(filtered);
+        }
+
+        function toggleWebsiteDisplay(reviewId) {
+            const item = allReviews.find(r => r.review_id === reviewId);
+            if (!item) return;
+
+            item.display_on_website = (item.display_on_website !== false) ? false : true;
+            localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
+
+            // Sync with other open windows (including index.html) in real time
+            if (syncChannel) {
+                syncChannel.postMessage({
+                    type: 'REVIEWS_VISIBILITY_UPDATE',
+                    review_id: reviewId,
+                    display_on_website: item.display_on_website,
+                    timestamp: Date.now()
+                });
+            }
+
+            localStorage.setItem('spirit_reviews_sync_event', JSON.stringify({
+                time: Date.now(),
+                review_id: reviewId,
+                display_on_website: item.display_on_website
+            }));
+
+            filterReviews();
+            renderAllSections();
         }
 
         function changeReviewStatus(reviewId, newStatus) {
@@ -3974,6 +4022,22 @@
             if (!confirm(`Are you sure you want to delete review ${reviewId}?`)) return;
             allReviews = allReviews.filter(r => r.review_id !== reviewId);
             localStorage.setItem('spirit_local_ratings', JSON.stringify(allReviews));
+
+            if (syncChannel) {
+                syncChannel.postMessage({
+                    type: 'REVIEWS_VISIBILITY_UPDATE',
+                    review_id: reviewId,
+                    deleted: true,
+                    timestamp: Date.now()
+                });
+            }
+
+            localStorage.setItem('spirit_reviews_sync_event', JSON.stringify({
+                time: Date.now(),
+                review_id: reviewId,
+                deleted: true
+            }));
+
             renderReviewsTable(allReviews);
             renderAllSections();
         }
@@ -3983,9 +4047,10 @@
                 alert('No customer reviews to export.');
                 return;
             }
-            let csv = 'Ref ID,Date,Name,Phone,Email,Package,Rating,Feedback,Status,Source\n';
+            let csv = 'Ref ID,Date,Name,Phone,Email,Package,Rating,Feedback,Show on About Us,Status,Source\n';
             allReviews.forEach(r => {
-                csv += `"${r.review_id || ''}","${r.timestamp || ''}","${(r.name || '').replace(/"/g, '""')}","${r.phone || ''}","${r.email || ''}","${(r.package || '').replace(/"/g, '""')}","${r.stars || 5}","${(r.feedback || '').replace(/"/g, '""')}","${r.status || ''}","Rate Us Form"\n`;
+                const onSite = r.display_on_website !== false ? 'Yes' : 'No';
+                csv += `"${r.review_id || ''}","${r.timestamp || ''}","${(r.name || '').replace(/"/g, '""')}","${r.phone || ''}","${r.email || ''}","${(r.package || '').replace(/"/g, '""')}","${r.stars || 5}","${(r.feedback || '').replace(/"/g, '""')}","${onSite}","${r.status || ''}","Rate Us Form"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
@@ -4082,6 +4147,7 @@
                 package: pkgs[randIdx],
                 feedback: feedbacks[randIdx],
                 status: 'Verified',
+                display_on_website: true,
                 source: 'Rate Us Form',
                 _isNewRealtime: true
             };

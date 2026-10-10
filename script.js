@@ -740,6 +740,7 @@
                     package: packageTaken,
                     feedback: feedback,
                     status: 'Verified',
+                    display_on_website: true,
                     source: 'Rate Us Form',
                     _isNewRealtime: true
                 };
@@ -749,6 +750,11 @@
                     const storedReviews = JSON.parse(localStorage.getItem('spirit_local_ratings') || '[]');
                     storedReviews.unshift(reviewRecord);
                     localStorage.setItem('spirit_local_ratings', JSON.stringify(storedReviews));
+
+                    // Immediately render in About Us reviews section on this page
+                    if (typeof renderDynamicAboutReviews === 'function') {
+                        renderDynamicAboutReviews();
+                    }
 
                     // Storage event trigger for listening admin tabs
                     localStorage.setItem('spirit_last_rating_event', JSON.stringify({
@@ -820,6 +826,114 @@
                 }
             });
         }
+
+        // 7.6. Dynamic About Us Customer Reviews Rendering & Real-Time Sync with Admin Console
+        function escapeReviewText(text) {
+            if (!text) return '';
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function renderDynamicAboutReviews() {
+            const container = document.getElementById('dynamic-user-reviews');
+            if (!container) return;
+
+            let reviews = [];
+            try {
+                reviews = JSON.parse(localStorage.getItem('spirit_local_ratings') || '[]');
+            } catch (e) {
+                reviews = [];
+            }
+
+            // Exclude demo review references to ensure only real customer ratings appear
+            const demoIds = ['#REV-501824', '#REV-492108', '#REV-389102', '#REV-271954', '#REV-162839'];
+            const activeReviews = Array.isArray(reviews)
+                ? reviews.filter(r => r && r.review_id && !demoIds.includes(r.review_id) && r.display_on_website !== false)
+                : [];
+
+            if (activeReviews.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = activeReviews.map(r => {
+                const initials = (r.name || 'Traveler')
+                    .trim()
+                    .split(/\s+/)
+                    .map(w => w[0])
+                    .join('')
+                    .substring(0, 2)
+                    .toUpperCase() || 'SA';
+
+                const starCount = Math.max(1, Math.min(5, parseInt(r.stars, 10) || 5));
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= starCount) {
+                        starsHtml += '<i class="fas fa-star"></i>';
+                    } else {
+                        starsHtml += '<i class="far fa-star" style="opacity: 0.35;"></i>';
+                    }
+                }
+
+                const safeName = escapeReviewText(r.name || 'Valued Traveler');
+                const safePkg = escapeReviewText(r.package || 'Spirit Adventure Tour');
+                const safeFeedback = escapeReviewText(r.feedback || 'Great experience with Spirit Adventures!');
+
+                return `
+                    <div class="review-card tilt-card dynamic-review-card" data-review-id="${escapeReviewText(r.review_id)}">
+                        <div class="dynamic-review-badge">
+                            <i class="fas fa-check-circle"></i> Verified Review
+                        </div>
+                        <div class="review-header">
+                            <div class="reviewer-avatar-circle">${initials}</div>
+                            <div>
+                                <h4>${safeName}</h4>
+                                <span class="review-trip"><i class="fas fa-map-pin"></i> ${safePkg}</span>
+                            </div>
+                        </div>
+                        <div class="stars">
+                            ${starsHtml}
+                        </div>
+                        <p>"${safeFeedback}"</p>
+                        <div class="review-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Verified Traveler</span>
+                            <span style="font-size: 0.72rem; color: #10b981; font-weight: 700;"><i class="fas fa-shield-alt"></i> Verified Experience</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize dynamic reviews on page load
+        renderDynamicAboutReviews();
+
+        // Listen for Real-Time synchronization from admin.html via BroadcastChannel
+        if (window.BroadcastChannel) {
+            try {
+                const reviewSyncChannel = new BroadcastChannel('spirit_booking_sync');
+                reviewSyncChannel.onmessage = (event) => {
+                    const data = event.data;
+                    if (!data) return;
+                    if (data.type === 'REVIEWS_VISIBILITY_UPDATE' || data.type === 'NEW_RATING') {
+                        console.log('⚡ Real-time review visibility/content update received from admin:', data);
+                        renderDynamicAboutReviews();
+                    }
+                };
+            } catch (bcErr) {
+                console.warn('BroadcastChannel error in script.js:', bcErr);
+            }
+        }
+
+        // Cross-window localStorage storage event fallback listener
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'spirit_reviews_sync_event' || e.key === 'spirit_local_ratings') {
+                renderDynamicAboutReviews();
+            }
+        });
 
         // 8. AI Chatbot Logic
         const chatToggleBtn = document.getElementById('chat-toggle');
