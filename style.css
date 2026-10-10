@@ -242,7 +242,7 @@ body::before {
 .nav-left { display: flex; align-items: center; gap: 40px; }
 .nav-logo-img { height: 42px; width: auto; filter: brightness(0) invert(1); transition: var(--transition); }
 .nav-links { display: flex; gap: 30px; list-style: none; }
-.nav-links a { color: var(--white); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: var(--transition); position: relative; display: inline-flex; align-items: center; gap: 7px; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35); }
+.nav-links a { color: var(--white); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: var(--transition); position: relative; display: inline-flex; align-items: center; gap: 7px; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35); white-space: nowrap; }
 .nav-links a i { font-size: 0.95rem; }
 .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--yellow); transition: width 0.3s ease; }
 .nav-links a:hover::after { width: 100%; }
@@ -587,31 +587,75 @@ body::before {
 .footer-bottom { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.75rem; color: #94a3b8; }
 
 /* Modals */
-.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: var(--transition); padding: 15px; }
+.modal { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(3, 14, 20, 0.82); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1000005 !important; /* Always appears on top of navbar (99999), watermark (9999), and popups */
+    display: flex; 
+    align-items: flex-start; /* Always start from top so header, title and close button are never cut off */
+    justify-content: center; 
+    opacity: 0; 
+    pointer-events: none; 
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
+    padding: 30px 15px 40px; 
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+}
 .modal.active { opacity: 1; pointer-events: all; }
-.modal-content { background: white; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.25); transform: scale(0.9); transition: var(--transition); }
-.modal.active .modal-content { transform: scale(1); }
-.close-modal { position: absolute; top: 12px; right: 18px; font-size: 1.8rem; cursor: pointer; color: var(--teal); }
+body.modal-open { overflow: hidden !important; }
+body.modal-open::before { display: none !important; /* Hide watermark when modal is active */ }
+
+.modal-content { background: white; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.25); transform: translateY(20px) scale(0.96); transition: var(--transition); margin: auto; z-index: 1000006 !important; }
+.modal.active .modal-content { transform: translateY(0) scale(1); }
+
+.close-modal { 
+    position: absolute; 
+    top: 16px; 
+    right: 18px; 
+    width: 36px; 
+    height: 36px; 
+    border-radius: 50%; 
+    background: #f1f5f9; 
+    color: var(--teal); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 1.4rem; 
+    line-height: 1; 
+    cursor: pointer; 
+    transition: all 0.25s ease; 
+    border: 1px solid #e2e8f0; 
+    z-index: 50; 
+}
+.close-modal:hover { 
+    background: var(--yellow); 
+    color: #ffffff; 
+    transform: rotate(90deg) scale(1.08); 
+}
 .modal-input { width: 100%; padding: 10px 14px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; font-size: 0.85rem; background: var(--gray); }
 
 /* --- EXPANDED ENQUIRY MODAL (HOME EXPLORE NOW) --- */
 .inquiry-modal-container {
     background: #ffffff;
-    padding: 30px 32px;
-    border-radius: 20px;
+    padding: 32px 34px;
+    border-radius: 22px;
     width: 100%;
     max-width: 680px;
-    max-height: 90vh;
-    overflow-y: auto;
+    margin: 10px auto 40px auto;
     position: relative;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(5, 102, 141, 0.18);
-    transform: scale(0.95);
-    transition: var(--transition);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(19, 106, 110, 0.2);
+    transform: translateY(20px) scale(0.96);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
     box-sizing: border-box;
+    z-index: 1000006 !important;
 }
 .modal.active .inquiry-modal-container {
-    transform: scale(1);
+    transform: translateY(0) scale(1);
 }
 .inquiry-header-badge {
     display: inline-flex;
@@ -916,7 +960,7 @@ html.skip-intro #welcome-popup,
     .custom-nav.scrolled { padding: 10px 18px !important; }
     .nav-logo-img { height: 32px; max-width: 125px; object-fit: contain; }
     .nav-home-icon-btn { display: inline-flex; }
-    .nav-customize-btn { display: none !important; }
+    .nav-customize-btn, .nav-enquire-btn { display: none !important; }
     .btn-all-dest { display: none !important; }
     .login-btn { padding: 7px 15px; font-size: 0.78rem; }
     .mobile-menu-btn { display: inline-flex !important; }
@@ -2770,6 +2814,44 @@ html.skip-intro #welcome-popup,
 
 .nav-customize-btn:hover i {
     color: var(--dark-teal);
+    transform: scale(1.18);
+}
+
+.nav-enquire-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(19, 106, 110, 0.45);
+    color: #ffffff !important;
+    border: 1.5px solid var(--teal-light);
+    padding: 9px 18px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.84rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nav-enquire-btn:hover {
+    background: var(--teal);
+    color: #ffffff !important;
+    border-color: var(--yellow);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(19, 106, 110, 0.4);
+}
+
+.nav-enquire-btn i {
+    color: var(--yellow);
+    font-size: 0.88rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-enquire-btn:hover i {
     transform: scale(1.18);
 }
 

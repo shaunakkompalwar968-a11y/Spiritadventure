@@ -298,15 +298,23 @@
                     dateInput.value = nextWeek.toISOString().split('T')[0];
                 }
 
+                // Ensure container and window are scrolled to top so form appears on top
+                inquiryModal.scrollTop = 0;
+                const container = inquiryModal.querySelector('.inquiry-modal-container');
+                if (container) container.scrollTop = 0;
+
                 inquiryModal.classList.remove('hidden');
                 inquiryModal.classList.add('active');
+                document.body.classList.add('modal-open');
 
                 const nameInput = document.getElementById('inq-name');
                 if (nameInput) setTimeout(() => nameInput.focus(), 250);
             }
         };
+        window.openInquiryModal = openInquiryModal;
 
-        inquiryTriggers.forEach(btn => {
+        // Attach to all inquiry triggers
+        document.querySelectorAll('.inquiry-trigger').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 if(mobileDrawer) mobileDrawer.classList.remove('active'); 
@@ -318,6 +326,7 @@
         window.resetInquiryModalState = function() {
             if (inquiryModal) {
                 inquiryModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
                 setTimeout(() => {
                     const formBody = document.getElementById('inquiry-form-body');
                     const successCard = document.getElementById('inquiry-success-state');
@@ -330,15 +339,33 @@
         };
 
         if(closeBookingBtn) {
-            closeBookingBtn.addEventListener('click', () => onlineBookingModal.classList.remove('active'));
+            closeBookingBtn.addEventListener('click', () => {
+                onlineBookingModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
         }
         if(closeInquiryBtn) {
             closeInquiryBtn.addEventListener('click', () => window.resetInquiryModalState());
         }
 
         window.addEventListener('click', (e) => {
-            if (e.target === onlineBookingModal) onlineBookingModal.classList.remove('active');
+            if (e.target === onlineBookingModal) {
+                onlineBookingModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            }
             if (e.target === inquiryModal) window.resetInquiryModalState();
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (inquiryModal && inquiryModal.classList.contains('active')) {
+                    window.resetInquiryModalState();
+                }
+                if (onlineBookingModal && onlineBookingModal.classList.contains('active')) {
+                    onlineBookingModal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                }
+            }
         });
 
         // Form Submissions & Razorpay Test Integration
