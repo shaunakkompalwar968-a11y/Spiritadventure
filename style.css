@@ -816,14 +816,22 @@ body.modal-open::before { display: none !important; /* Hide watermark when modal
     color: var(--dark-teal);
 }
 @media (max-width: 640px) {
+    .modal {
+        padding: 15px 10px 40px !important;
+        align-items: flex-start !important;
+    }
     .inquiry-modal-container {
-        padding: 22px 16px;
-        max-width: 95vw;
-        max-height: 92vh;
+        padding: 24px 16px 28px;
+        max-width: 100%;
+        width: 100%;
+        max-height: none !important;
+        overflow: visible !important;
+        margin: 5px auto 25px auto;
+        border-radius: 18px;
     }
     .inquiry-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 11px;
     }
     .inquiry-modal-title {
         font-size: 1.25rem;
@@ -831,7 +839,7 @@ body.modal-open::before { display: none !important; /* Hide watermark when modal
     .inquiry-trust-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
+        gap: 7px;
     }
 }
 
@@ -1029,9 +1037,9 @@ html.skip-intro #welcome-popup,
     .welcome-modal { padding: 10px !important; }
     .welcome-modal-content { max-width: 95vw !important; border-radius: 14px !important; }
     .welcome-text-box { padding: 16px 14px; }
-    .welcome-text-box h2 { font-size: 1.15rem; }
-    .modal { padding: 10px; }
+    .modal { padding: 12px 8px 35px !important; }
     .modal-content { padding: 22px 18px; border-radius: 16px; }
+    .inquiry-modal-container { padding: 22px 14px 26px; border-radius: 16px; margin: 4px auto 25px auto; }
     .form-control, .modal-input, input, select, textarea { font-size: 16px !important; } /* Prevents iOS auto-zoom */
 }
 

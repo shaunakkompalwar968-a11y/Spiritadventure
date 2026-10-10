@@ -308,7 +308,9 @@
                 document.body.classList.add('modal-open');
 
                 const nameInput = document.getElementById('inq-name');
-                if (nameInput) setTimeout(() => nameInput.focus(), 250);
+                if (nameInput && window.innerWidth > 768) {
+                    setTimeout(() => nameInput.focus(), 250);
+                }
             }
         };
         window.openInquiryModal = openInquiryModal;
