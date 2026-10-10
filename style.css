@@ -93,7 +93,7 @@ body::before {
 /* Torn Paper Divider */
 .torn-paper-divider { width: 100%; height: 25px; background: radial-gradient(circle, transparent, transparent 50%, var(--gray) 50%, var(--gray)); background-size: 25px 25px; margin-top: -12px; position: relative; z-index: 5; }
 
-/* --- DYNAMIC NAVBAR --- */
+/* --- DYNAMIC NAVBAR WITH LIGHT BLUR GRADIENT EFFECT --- */
 .custom-nav { 
     position: fixed !important; 
     top: 0 !important; 
@@ -102,29 +102,29 @@ body::before {
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    padding: 22px 40px; 
+    padding: 18px 40px; 
     z-index: 99999 !important; 
-    background: transparent !important; 
-    backdrop-filter: blur(0px); 
-    -webkit-backdrop-filter: blur(0px); 
-    border-bottom: 1px solid transparent; 
-    box-shadow: none; 
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(20, 184, 166, 0.22) 38%, rgba(10, 35, 40, 0.42) 100%) !important; 
+    backdrop-filter: blur(12px) saturate(135%) !important; 
+    -webkit-backdrop-filter: blur(12px) saturate(135%) !important; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18); 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12); 
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
 }
 
 .custom-nav.scrolled {
-    background: linear-gradient(135deg, rgba(10, 35, 40, 0.85), rgba(19, 106, 110, 0.85)) !important; 
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    padding: 14px 40px;
+    background: linear-gradient(135deg, rgba(15, 50, 56, 0.82) 0%, rgba(19, 106, 110, 0.76) 55%, rgba(10, 35, 40, 0.88) 100%) !important; 
+    backdrop-filter: blur(18px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    padding: 12px 40px;
 }
 
 .nav-left { display: flex; align-items: center; gap: 40px; }
 .nav-logo-img { height: 42px; width: auto; filter: brightness(0) invert(1); transition: var(--transition); }
 .nav-links { display: flex; gap: 30px; list-style: none; }
-.nav-links a { color: var(--white); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: var(--transition); position: relative; display: inline-flex; align-items: center; gap: 7px; }
+.nav-links a { color: var(--white); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: var(--transition); position: relative; display: inline-flex; align-items: center; gap: 7px; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35); }
 .nav-links a i { font-size: 0.95rem; }
 .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--yellow); transition: width 0.3s ease; }
 .nav-links a:hover::after { width: 100%; }
