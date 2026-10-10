@@ -54,7 +54,7 @@ body::before {
     min-height: 100vh; 
     position: relative; 
     overflow: hidden; 
-    background: #081d22;
+    background: #04181d;
 }
 
 .full-bg-video { 
@@ -72,21 +72,26 @@ body::before {
     content: '';
     position: absolute;
     inset: 0;
-    /* Light translucent tint so the video is clearly visible while text stays readable */
+    /* Oceanic coastal gradient tuned for travel-coast.mp4 */
     background: linear-gradient(
         135deg, 
-        rgba(8, 28, 34, 0.40) 0%, 
-        rgba(13, 74, 77, 0.20) 50%, 
-        rgba(8, 26, 31, 0.35) 100%
+        rgba(4, 24, 30, 0.44) 0%, 
+        rgba(8, 60, 70, 0.22) 50%, 
+        rgba(3, 19, 24, 0.38) 100%
     );
     z-index: 2;
     pointer-events: none;
 }
 
-/* Left Half: High-Contrast Text Area */
+/* Left Half: High-Contrast Text Area with Soft Coastal Fade */
 .hero-left { 
     flex: 0 0 55%; 
-    background: linear-gradient(90deg, rgba(6, 22, 27, 0.35) 0%, transparent 100%); 
+    background: linear-gradient(
+        90deg, 
+        rgba(3, 20, 26, 0.46) 0%, 
+        rgba(4, 28, 35, 0.22) 65%, 
+        transparent 100%
+    ); 
     position: relative; 
     display: flex; 
     align-items: center; 
@@ -99,11 +104,46 @@ body::before {
 
 .hero-content { position: relative; width: 100%; max-width: 480px; color: var(--white); z-index: 3; }
 .flight-path { position: absolute; top: -40px; left: -20px; width: 300px; height: 150px; z-index: -1; opacity: 0.6; }
-.top-subtitle { font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; margin-bottom: -10px; }
-.cursive-text { font-family: var(--font-cursive); font-size: clamp(4rem, 7vw, 6rem); color: var(--yellow); line-height: 1; position: relative; margin-bottom: 10px; }
-.plane-icon { font-size: 2rem; color: var(--white); position: absolute; top: 10px; right: -20px; transform: rotate(45deg); }
-.main-title { font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 15px; }
-.hero-desc { font-size: 0.9rem; line-height: 1.7; opacity: 0.95; margin-bottom: 25px; max-width: 400px; }
+.top-subtitle { 
+    font-size: 1.4rem; 
+    font-weight: 800; 
+    letter-spacing: 1.5px; 
+    margin-bottom: -10px; 
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+.cursive-text { 
+    font-family: var(--font-cursive); 
+    font-size: clamp(4rem, 7vw, 6rem); 
+    color: var(--yellow); 
+    line-height: 1; 
+    position: relative; 
+    margin-bottom: 10px; 
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.75);
+}
+.plane-icon { 
+    font-size: 2rem; 
+    color: var(--white); 
+    position: absolute; 
+    top: 10px; 
+    right: -20px; 
+    transform: rotate(45deg); 
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
+.main-title { 
+    font-size: 1.1rem; 
+    font-weight: 700; 
+    letter-spacing: 2px; 
+    margin-bottom: 15px; 
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+}
+.hero-desc { 
+    font-size: 0.95rem; 
+    line-height: 1.7; 
+    opacity: 0.95; 
+    margin-bottom: 25px; 
+    max-width: 420px; 
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+}
 .dots-pattern { position: absolute; bottom: -40px; left: 0; width: 120px; height: 60px; background-image: radial-gradient(rgba(255,255,255,0.4) 2px, transparent 2px); background-size: 15px 15px; }
 
 /* Right Half: Floating Featured Media Frame */
@@ -620,16 +660,14 @@ html.skip-intro #welcome-popup,
         height: auto; 
         min-height: 100vh; 
     }
-    .hero-left, .hero-right { 
+    .hero-left { 
         flex: none; 
         width: 100%; 
-        background: transparent !important; 
+        background: linear-gradient(180deg, rgba(3, 20, 26, 0.45) 0%, rgba(4, 28, 35, 0.20) 80%, transparent 100%) !important; 
         backdrop-filter: none !important; 
         -webkit-backdrop-filter: none !important; 
         border: none !important; 
         box-shadow: none !important; 
-    }
-    .hero-left { 
         padding: 110px 5% 25px 5%; 
         text-align: center;
         display: flex;
@@ -643,6 +681,13 @@ html.skip-intro #welcome-popup,
         margin: 0 auto 25px auto;
     }
     .hero-right { 
+        flex: none; 
+        width: 100%; 
+        background: transparent !important; 
+        backdrop-filter: none !important; 
+        -webkit-backdrop-filter: none !important; 
+        border: none !important; 
+        box-shadow: none !important; 
         padding: 15px 5% 70px 5%; 
         min-height: auto; 
     }
