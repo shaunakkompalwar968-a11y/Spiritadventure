@@ -385,7 +385,132 @@ body::before {
 .hidden-photo, .hidden-review { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
 .hidden-photo.revealed { display: block !important; visibility: visible !important; height: auto !important; margin-bottom: 22px !important; opacity: 1; transform: translateY(0); }
 .hidden-review.revealed { display: flex !important; visibility: visible !important; height: auto !important; margin-bottom: 25px !important; opacity: 1; transform: translateY(0); }
-.gallery-btn-wrapper { margin-top: 25px !important; width: 100%; display: flex; justify-content: center; clear: both; }
+.gallery-btn-wrapper { margin-top: 25px !important; width: 100%; display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap; clear: both; }
+
+/* --- VIBRANT ANIMATED INSTAGRAM BUTTON --- */
+.insta-anim-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 28px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background-size: 260% 260%;
+    animation: instaGradientShift 3.5s ease infinite alternate, instaHaloPulse 2.4s infinite ease-in-out;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(220, 39, 67, 0.45);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+}
+
+/* Moving continuous shimmer sheen ray */
+.insta-anim-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.55) 50%, 
+        transparent 100%
+    );
+    transform: rotate(25deg);
+    animation: instaShimmer 2.8s infinite cubic-bezier(0.19, 1, 0.22, 1);
+    pointer-events: none;
+}
+
+/* Animated Instagram Camera Icon */
+.insta-icon-anim {
+    font-size: 1.3rem;
+    display: inline-block;
+    color: #ffffff;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    animation: instaCameraBounce 2.4s infinite ease-in-out;
+    transform-origin: center;
+}
+
+/* Arrow indicator micro-nudge */
+.insta-arrow-anim {
+    font-size: 0.85rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+    animation: instaArrowNudge 1.8s infinite ease-in-out;
+}
+
+/* Keyframes for Gradient Shift */
+@keyframes instaGradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Keyframes for Glowing Pulse Halo */
+@keyframes instaHaloPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 39, 67, 0.75), 0 8px 20px rgba(220, 39, 67, 0.35);
+    }
+    50% {
+        box-shadow: 0 0 0 14px rgba(240, 148, 51, 0), 0 12px 30px rgba(188, 24, 136, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 39, 67, 0), 0 8px 20px rgba(220, 39, 67, 0.35);
+    }
+}
+
+/* Keyframes for Shimmer Light Sweep */
+@keyframes instaShimmer {
+    0% { left: -100%; }
+    38%, 100% { left: 160%; }
+}
+
+/* Keyframes for Camera Bounce & Wiggle */
+@keyframes instaCameraBounce {
+    0%, 65%, 100% { transform: scale(1) rotate(0deg); }
+    10% { transform: scale(1.35) rotate(-14deg); }
+    20% { transform: scale(1.2) rotate(14deg); }
+    30% { transform: scale(1.28) rotate(-8deg); }
+    40% { transform: scale(1.12) rotate(6deg); }
+    50% { transform: scale(1) rotate(0deg); }
+}
+
+/* Keyframes for Arrow Nudge */
+@keyframes instaArrowNudge {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(3px, -3px); }
+}
+
+/* Interactive Hover & Focus Effects */
+.insta-anim-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 16px 36px rgba(220, 39, 67, 0.65), 0 0 25px rgba(240, 148, 51, 0.55);
+    color: #ffffff !important;
+}
+
+.insta-anim-btn:hover .insta-icon-anim {
+    animation-duration: 1.2s;
+    transform: scale(1.35) rotate(15deg);
+}
+
+.insta-anim-btn:hover .insta-arrow-anim {
+    transform: translate(4px, -4px) scale(1.25);
+}
+
+.insta-anim-btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
 
 /* --- REVIEWS SECTION --- */
 .reviews-section { background: var(--gray); position: relative; }
