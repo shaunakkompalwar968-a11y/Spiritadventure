@@ -60,6 +60,23 @@
 
         const unmuteBtn = document.getElementById('video-unmute-btn');
 
+        const updateSoundIconState = () => {
+            if (!unmuteBtn) return;
+            const icon = unmuteBtn.querySelector('i');
+            const isMuted = !openingVideo || openingVideo.muted || openingVideo.volume === 0;
+            if (isMuted) {
+                if (icon) icon.className = 'fas fa-volume-mute';
+                unmuteBtn.classList.add('muted');
+                unmuteBtn.setAttribute('title', 'Unmute Video');
+                unmuteBtn.setAttribute('aria-label', 'Unmute Video');
+            } else {
+                if (icon) icon.className = 'fas fa-volume-up';
+                unmuteBtn.classList.remove('muted');
+                unmuteBtn.setAttribute('title', 'Mute Video');
+                unmuteBtn.setAttribute('aria-label', 'Mute Video');
+            }
+        };
+
         const ensureUnmuted = () => {
             if (openingVideo) {
                 openingVideo.muted = false;
@@ -68,24 +85,40 @@
                     openingVideo.play().catch(() => {});
                 }
             }
-            if (unmuteBtn) unmuteBtn.style.display = 'none';
+            updateSoundIconState();
         };
 
-        // Unmute immediately on any user interaction with the window/modal
+        if (openingVideo) {
+            openingVideo.addEventListener('volumechange', updateSoundIconState);
+        }
+
+        // Unmute immediately on any user interaction with the window/modal if autoplay was muted
+        const handleFirstGestureUnmute = () => {
+            if (welcomePopup && !welcomePopup.classList.contains('hidden') && openingVideo && openingVideo.muted) {
+                ensureUnmuted();
+            }
+        };
+
         ['click', 'touchstart', 'pointerdown', 'keydown'].forEach(evtType => {
-            window.addEventListener(evtType, () => {
-                if (welcomePopup && !welcomePopup.classList.contains('hidden')) {
-                    ensureUnmuted();
-                }
-            }, { capture: true });
+            window.addEventListener(evtType, handleFirstGestureUnmute, { capture: true, passive: true });
         });
 
         if (unmuteBtn) {
             unmuteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                ensureUnmuted();
+                if (openingVideo) {
+                    if (openingVideo.muted || openingVideo.volume === 0) {
+                        ensureUnmuted();
+                    } else {
+                        openingVideo.muted = true;
+                        updateSoundIconState();
+                    }
+                }
             });
         }
+
+        // Initial icon state setup (video should appear unmuted)
+        updateSoundIconState();
 
         // If reloading the website or already visited in this session, skip the opening video completely
         if (isPageReload || hasAlreadySeenIntro) {
@@ -99,23 +132,23 @@
             document.documentElement.classList.add('skip-intro');
             sessionStorage.setItem('spirit_intro_played', 'true');
         } else {
-            // First time opening the website: mark as seen and play video with full sound on load
+            // First time opening the website: mark as seen and play video with unmuted audio on load
             sessionStorage.setItem('spirit_intro_played', 'true');
             window.addEventListener('load', () => {
                 if (welcomePopup && openingVideo && !welcomePopup.classList.contains('hidden') && !document.documentElement.classList.contains('skip-intro')) {
                     openingVideo.muted = false;
                     openingVideo.volume = 1.0;
+                    updateSoundIconState();
                     const playPromise = openingVideo.play();
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
                             ensureUnmuted();
                         }).catch(error => {
                             console.log("Browser policy restricted unmuted autoplay before user interaction:", error);
-                            // Temporarily allow playback while displaying the prominent Sound button
+                            // Temporarily play muted until user interaction while keeping unmute icon ready
                             openingVideo.muted = true;
-                            openingVideo.play().then(() => {
-                                if (unmuteBtn) unmuteBtn.style.display = 'inline-flex';
-                            }).catch(() => {});
+                            updateSoundIconState();
+                            openingVideo.play().catch(() => {});
                         });
                     }
                 }

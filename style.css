@@ -891,8 +891,10 @@ html.skip-intro #welcome-popup,
 .welcome-close-btn { position: absolute; top: 12px; right: 15px; background: rgba(0, 0, 0, 0.7); border: none; color: white; font-size: 0.75rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; cursor: pointer; z-index: 30; }
 .welcome-video-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; }
 .welcome-video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.video-unmute-badge { position: absolute; bottom: 14px; left: 14px; background: var(--yellow); color: var(--dark-teal); border: none; padding: 8px 18px; border-radius: 30px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: none; align-items: center; gap: 8px; z-index: 35; box-shadow: 0 4px 18px rgba(0,0,0,0.4); animation: pulseUnmuteBadge 1.8s infinite ease-in-out; }
-@keyframes pulseUnmuteBadge { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(253, 185, 19, 0.7); } 50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(253, 185, 19, 0); } }
+.video-unmute-badge { position: absolute; top: 12px; left: 15px; background: var(--yellow); color: var(--dark-teal); border: 2px solid rgba(255, 255, 255, 0.4); width: 38px; height: 38px; border-radius: 50%; font-size: 1.05rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 35; box-shadow: 0 4px 18px rgba(0,0,0,0.45); transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease; animation: pulseUnmuteBadge 2s infinite ease-in-out; }
+.video-unmute-badge:hover { transform: scale(1.12); background: #ffffff; color: var(--teal); }
+.video-unmute-badge.muted { background: rgba(15, 28, 63, 0.9); color: var(--yellow); border-color: var(--yellow); }
+@keyframes pulseUnmuteBadge { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(253, 185, 19, 0.7); } 50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(253, 185, 19, 0); } }
 .welcome-text-box { padding: 20px; color: white; }
 .welcome-text-box h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; color: var(--yellow); }
 .welcome-text-box p { font-size: 0.8rem; color: #cbd5e1; margin-bottom: 15px; }
