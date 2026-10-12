@@ -1,0 +1,1 @@
+# Spirit Adventures Django Project
